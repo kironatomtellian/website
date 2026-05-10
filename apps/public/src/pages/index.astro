@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import PressCycle from "../components/PressCycle.astro";
+import BioTeaser from "../components/BioTeaser.astro";
+import FullBleedImage from "../components/FullBleedImage.astro";
+import NextConcerts from "../components/NextConcerts.astro";
+import MediaGrid from "../components/MediaGrid.astro";
+import PhotoTicker from "../components/PhotoTicker.astro";
+import data from "../data/home.json";
+---
+
+<Layout title="Kiron Atom Tellian — Pianist · Composer">
+  <Hero
+    title={data.hero.title}
+    subtitle={data.hero.subtitle}
+    image={data.hero.image}
+    imageAlt={data.hero.imageAlt}
+  />
+
+  <PressCycle quotes={data.pressCycle} />
+
+  <BioTeaser paragraphs={data.bio} />
+
+  <FullBleedImage src={data.secondaryImage.src} alt={data.secondaryImage.alt} height="65vh" />
+
+  <NextConcerts concerts={data.concerts} intro={data.calendarQuote} />
+
+  <FullBleedImage src={data.tertiaryImage.src} alt={data.tertiaryImage.alt} height="65vh" />
+
+  <MediaGrid items={data.media} />
+
+  <PhotoTicker photos={data.gallery} credit={data.photoCredit} />
+</Layout>

@@ -1,0 +1,120 @@
+{
+  "hero": {
+    "title": "Kiron Atom Tellian",
+    "subtitle": "Pianist · Composer",
+    "image": "/img/hero-4_vor_dem_klavier.jpg",
+    "imageAlt": "Kiron Atom Tellian seated at a grand piano, photographed by Shervin Lainez."
+  },
+  "pressCycle": [
+    {
+      "publication": "NDR Kultur",
+      "quote": "Devilish, virtuoso, and simply: brilliant.",
+      "date": "November 2021"
+    },
+    {
+      "publication": "la Repubblica",
+      "quote": "Without resorting to ostentatious virtuosity, articulated phrases, accents, and lyrical lines with remarkable freedom.",
+      "date": "November 2024"
+    },
+    {
+      "publication": "The Tennessean",
+      "quote": "…an incredible combination of sensitivity and taste.",
+      "date": "October 2023"
+    },
+    {
+      "publication": "Badische Neueste Nachrichten",
+      "quote": "The bravura and maturity of his playing render speechless.",
+      "date": "October 2021"
+    }
+  ],
+  "bio": [
+    "Austrian pianist and composer Kiron Atom Tellian is currently pursuing his bachelor’s degree at The Juilliard School in New York, studying with Maestro Sergei Babayan as a recipient of the prestigious Kovner Fellowship. Born in Vienna, he began his piano studies at the University for Music and Performing Arts Vienna (MDW) at age seven and made his orchestral debut at nine.",
+    "Tellian has garnered top prizes at international competitions across Europe, the USA, and Japan. In 2024, he won the YCA Susan Wadsworth International Auditions, receiving eight special prizes. As a composer, his works have been widely recognised; this season, he has been commissioned to write an orchestral work premiering at the Vienna Musikverein.",
+    "This season, Tellian performs at the Vienna Konzerthaus, the Viotti Festival, the Vienna Musikverein, and made his debut with the Orchestra Sinfonica di Milano in Chopin’s First Piano Concerto. Looking ahead: debuts with the San Diego Symphony, a recital at Villa Senar invited by the Rachmaninov Foundation, and his solo recital debut at Carnegie Hall."
+  ],
+  "secondaryImage": {
+    "src": "/img/secondary-2_auf_klaviatur_liegend.jpg",
+    "alt": "Kiron Atom Tellian resting his hands on the keyboard."
+  },
+  "calendarQuote": {
+    "publication": "Salzburger Nachrichten",
+    "quote": "…experienced with countless and beautiful compositional techniques.",
+    "date": "June 2016"
+  },
+  "concerts": [
+    {
+      "date": "2026-05-21",
+      "displayDate": "May 21, 2026",
+      "venue": "Auditorium di Milano, Italy",
+      "programme": "Giacomo Rossini, Franz Liszt & Hector Berlioz",
+      "ticketsUrl": "https://sinfonicadimilano.org/it/eventi/2025-26/rossini-liszt-berlioz/1437"
+    },
+    {
+      "date": "2026-05-23",
+      "displayDate": "May 23, 2026",
+      "venue": "Auditorium di Milano, Italy",
+      "programme": "Giacomo Rossini, Franz Liszt & Hector Berlioz",
+      "ticketsUrl": "https://sinfonicadimilano.org/it/eventi/2025-26/rossini-liszt-berlioz/1438"
+    },
+    {
+      "date": "2026-05-27",
+      "displayDate": "May 27, 2026",
+      "venue": "Salzburg Großes Festspielhaus, Austria",
+      "programme": "Giacomo Rossini, Franz Liszt & Ludwig van Beethoven",
+      "ticketsUrl": "https://www.kulturvereinigung.com/de/Konzerte/Beethoven-7_e_1249"
+    }
+  ],
+  "tertiaryImage": {
+    "src": "/img/tertiary-10_vor_der_wand.jpg",
+    "alt": "Kiron Atom Tellian standing against a wall."
+  },
+  "media": [
+    {
+      "title": "Jeremias Fliedl & Kiron Atom Tellian at Elm Court",
+      "description": "Duo Recital with Jeremias Fliedl at Elm Court in Butler, Pennsylvania.",
+      "youtubeId": "a02HF7wXM6U",
+      "thumbnail": "/img/media-elm-court.jpg",
+      "url": "https://youtu.be/a02HF7wXM6U?feature=shared",
+      "source": "youtube"
+    },
+    {
+      "title": "Interview with The Violin Channel at Carnegie Hall",
+      "description": "Interview before sold-out debut at Zankel Hall at Carnegie Hall with The Violin Channel.",
+      "youtubeId": null,
+      "thumbnail": "/img/media-tvc-carnegie.jpg",
+      "url": "https://www.instagram.com/reel/DQXXI9zAHPV/?igsh=MXN1aGhzYTN5OXIyaQ==",
+      "source": "instagram"
+    },
+    {
+      "title": "YCA Susan Wadsworth Auditions Winner’s Concert",
+      "description": "Winner's Concert at the Gilder Lehrman Hall at the Morgan Library & Museum.",
+      "youtubeId": "XJ-q2G6jPpE",
+      "thumbnail": "/img/media-yca-winners.jpg",
+      "url": "https://www.youtube.com/live/XJ-q2G6jPpE?feature=shared",
+      "source": "youtube"
+    },
+    {
+      "title": "YCA Susan Wadsworth Winner’s Announcement",
+      "description": "Kiron Atom Tellian wins the 2024 YCA Susan Wadsworth International Auditions and eight special prizes.",
+      "youtubeId": null,
+      "thumbnail": "/img/media-yca-announcement.jpg",
+      "url": "https://yca.org/2024-winners/",
+      "source": "external"
+    }
+  ],
+  "gallery": [
+    { "src": "/img/gallery-01.jpg", "alt": "Kiron Atom Tellian portrait 1" },
+    { "src": "/img/gallery-02.jpg", "alt": "Kiron Atom Tellian portrait 2" },
+    { "src": "/img/gallery-03.jpg", "alt": "Kiron Atom Tellian portrait 3" },
+    { "src": "/img/gallery-04.jpg", "alt": "Kiron Atom Tellian portrait 4" },
+    { "src": "/img/gallery-05.jpg", "alt": "Kiron Atom Tellian portrait 5" },
+    { "src": "/img/gallery-06.jpg", "alt": "Kiron Atom Tellian portrait 6" },
+    { "src": "/img/gallery-07.jpg", "alt": "Kiron Atom Tellian portrait 7" },
+    { "src": "/img/gallery-08.jpg", "alt": "Kiron Atom Tellian portrait 8" },
+    { "src": "/img/gallery-09.jpg", "alt": "Kiron Atom Tellian portrait 9" },
+    { "src": "/img/gallery-10.jpg", "alt": "Kiron Atom Tellian portrait 10" },
+    { "src": "/img/gallery-11.jpg", "alt": "Kiron Atom Tellian portrait 11" },
+    { "src": "/img/gallery-12.jpg", "alt": "Kiron Atom Tellian portrait 12" }
+  ],
+  "photoCredit": "© Photos Shervin Lainez"
+}

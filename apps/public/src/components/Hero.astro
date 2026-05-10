@@ -1,0 +1,139 @@
+---
+export interface Props {
+  title: string;
+  subtitle: string;
+  image: string;
+  imageAlt: string;
+}
+const { title, subtitle, image, imageAlt } = Astro.props;
+---
+
+<section class="hero bg-deep" aria-label="Introduction">
+  <div class="hero__media">
+    <img
+      class="hero__img"
+      src={image}
+      alt={imageAlt}
+      width="2560"
+      height="1707"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="hero__veil" aria-hidden="true"></div>
+  </div>
+
+  <div class="container hero__content">
+    <h1 class="display-xl hero__title" aria-label={title}>
+      <span class="hero__title-line">{title}</span>
+    </h1>
+    <p class="eyebrow hero__subtitle accent">{subtitle}</p>
+  </div>
+
+  <a class="hero__scroll" href="#bio-teaser" aria-label="Scroll to content">
+    <svg width="20" height="32" viewBox="0 0 20 32" fill="none" aria-hidden="true">
+      <path d="M10 2 L10 26 M2 18 L10 28 L18 18" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" />
+    </svg>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding-top: var(--nav-h);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.06);
+    animation: hero-zoom 1600ms var(--ease-out-expo) 50ms forwards;
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 12, 10, 0.55) 0%,
+      rgba(14, 12, 10, 0.15) 30%,
+      rgba(14, 12, 10, 0.15) 60%,
+      rgba(14, 12, 10, 0.85) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-bottom: clamp(var(--space-16), 12vh, var(--space-32));
+  }
+
+  .hero__title {
+    margin: 0;
+    color: var(--ink-light);
+    max-width: 16ch;
+  }
+
+  .hero__title-line {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(28px);
+    animation: hero-rise 900ms var(--ease-out-expo) 250ms forwards;
+  }
+
+  .hero__subtitle {
+    margin-top: var(--space-4);
+    color: var(--accent-soft);
+    opacity: 0;
+    transform: translateY(12px);
+    animation: hero-rise 700ms var(--ease-out-expo) 650ms forwards;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    bottom: var(--space-6);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: var(--ink-light);
+    opacity: 0;
+    animation: fade-in 600ms var(--ease-standard) 1200ms forwards;
+    transition: transform var(--t-hover) var(--ease-out-expo),
+                color var(--t-hover) var(--ease-standard);
+  }
+
+  .hero__scroll:hover {
+    transform: translateX(-50%) translateY(-4px);
+    color: var(--accent-soft);
+  }
+
+  @keyframes hero-zoom {
+    to { transform: scale(1); }
+  }
+
+  @keyframes hero-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__img { animation: none; transform: none; }
+    .hero__title-line,
+    .hero__subtitle,
+    .hero__scroll { animation: none; opacity: 1; transform: none; }
+    .hero__scroll { transform: translateX(-50%); }
+  }
+</style>

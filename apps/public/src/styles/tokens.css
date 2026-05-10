@@ -1,0 +1,42 @@
+:root {
+  --paper: #f5f0e8;
+  --paper-deep: #0e0c0a;
+  --ink: #1a1714;
+  --ink-light: #e8ddd0;
+  --accent: #8c6f47;
+  --accent-soft: #b89976;
+  --rule: rgba(26, 23, 20, 0.12);
+  --rule-dark: rgba(232, 221, 208, 0.16);
+  --muted: rgba(26, 23, 20, 0.6);
+  --muted-light: rgba(232, 221, 208, 0.6);
+
+  --serif: "adobe-caslon-pro", "Newsreader", "Sorts Mill Goudy", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --t-entry: 600ms;
+  --t-page: 500ms;
+  --t-hover: 200ms;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-48: 12rem;
+  --space-64: 16rem;
+
+  --gutter: clamp(1rem, 2vw, 2rem);
+  --reading-max: 66ch;
+  --site-max: 1440px;
+
+  --nav-h: 4rem;
+  --nav-h-scrolled: 3.5rem;
+}

@@ -1,0 +1,203 @@
+---
+export interface Quote {
+  publication: string;
+  quote: string;
+  date: string;
+}
+export interface Props {
+  quotes: Quote[];
+}
+const { quotes } = Astro.props;
+---
+
+<section class="press-cycle reveal" aria-label="Press highlights">
+  <div class="container">
+    <div class="press-cycle__inner" data-press-cycle>
+      {quotes.map((q, i) => (
+        <figure
+          class={`press-cycle__quote ${i === 0 ? "is-active" : ""}`}
+          data-press-quote
+          aria-hidden={i === 0 ? "false" : "true"}
+        >
+          <p class="eyebrow accent press-cycle__pub">{q.publication}</p>
+          <blockquote class="pull-quote press-cycle__text">
+            <span class="press-cycle__mark" aria-hidden="true">»</span>
+            <span class="press-cycle__text-inner">{q.quote}</span>
+            <span class="press-cycle__mark press-cycle__mark--end" aria-hidden="true">«</span>
+          </blockquote>
+          <figcaption class="small muted press-cycle__date">{q.date}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div class="press-cycle__dots" role="tablist" aria-label="Press quote selector" data-press-dots>
+      {quotes.map((_, i) => (
+        <button
+          type="button"
+          role="tab"
+          class={`press-cycle__dot ${i === 0 ? "is-active" : ""}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-label={`Quote ${i + 1} of ${quotes.length}`}
+          data-press-dot={i}
+        ></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .press-cycle {
+    padding-block: var(--space-32) var(--space-16);
+    text-align: center;
+  }
+
+  .press-cycle__inner {
+    position: relative;
+    min-height: clamp(14rem, 28vh, 22rem);
+  }
+
+  .press-cycle__quote {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 1200ms var(--ease-in-out),
+                transform 1200ms var(--ease-out-expo);
+    pointer-events: none;
+  }
+
+  .press-cycle__quote.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .press-cycle__pub {
+    margin-bottom: var(--space-4);
+    display: inline-block;
+  }
+
+  .press-cycle__text {
+    max-width: 24ch;
+    margin-inline: auto;
+    margin-bottom: var(--space-4);
+    position: relative;
+  }
+
+  .press-cycle__text-inner {
+    display: inline;
+  }
+
+  .press-cycle__mark {
+    color: var(--accent-soft);
+    font-style: italic;
+    font-size: 1.2em;
+    line-height: 1;
+    vertical-align: -0.05em;
+    margin-right: 0.15em;
+  }
+
+  .press-cycle__mark--end {
+    margin-right: 0;
+    margin-left: 0.15em;
+  }
+
+  .press-cycle__date {
+    font-style: italic;
+  }
+
+  .press-cycle__dots {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-8);
+  }
+
+  .press-cycle__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+    border: 1px solid transparent;
+    transition: background var(--t-hover) var(--ease-standard),
+                transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .press-cycle__dot:hover {
+    background: var(--accent-soft);
+    transform: scale(1.25);
+  }
+
+  .press-cycle__dot.is-active {
+    background: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .press-cycle__text {
+      max-width: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-press-cycle]");
+  if (root) {
+    const quotes = Array.from(root.querySelectorAll<HTMLElement>("[data-press-quote]"));
+    const dotsContainer = document.querySelector<HTMLElement>("[data-press-dots]");
+    const dots = dotsContainer
+      ? Array.from(dotsContainer.querySelectorAll<HTMLButtonElement>("[data-press-dot]"))
+      : [];
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let idx = 0;
+    let timer: number | null = null;
+    let paused = false;
+    const INTERVAL = 9000;
+
+    const show = (i: number) => {
+      idx = (i + quotes.length) % quotes.length;
+      quotes.forEach((q, k) => {
+        q.classList.toggle("is-active", k === idx);
+        q.setAttribute("aria-hidden", k === idx ? "false" : "true");
+      });
+      dots.forEach((d, k) => {
+        d.classList.toggle("is-active", k === idx);
+        d.setAttribute("aria-selected", k === idx ? "true" : "false");
+      });
+    };
+
+    const next = () => show(idx + 1);
+
+    const start = () => {
+      if (reduce || paused || timer !== null) return;
+      timer = window.setInterval(next, INTERVAL);
+    };
+
+    const stop = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    dots.forEach((dot, k) => {
+      dot.addEventListener("click", () => {
+        show(k);
+        stop();
+        start();
+      });
+    });
+
+    root.addEventListener("mouseenter", () => { paused = true; stop(); });
+    root.addEventListener("mouseleave", () => { paused = false; start(); });
+    root.addEventListener("focusin", () => { paused = true; stop(); });
+    root.addEventListener("focusout", () => { paused = false; start(); });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop(); else start();
+    });
+
+    start();
+  }
+</script>

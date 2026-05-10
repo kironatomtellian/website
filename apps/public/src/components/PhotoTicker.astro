@@ -1,0 +1,110 @@
+---
+export interface Photo {
+  src: string;
+  alt: string;
+}
+export interface Props {
+  photos: Photo[];
+  credit?: string;
+}
+const { photos, credit } = Astro.props;
+const doubled = [...photos, ...photos];
+---
+
+<section class="photo-ticker bg-deep reveal" aria-label="Photo gallery preview">
+  <a class="photo-ticker__link" href="/gallery" aria-label="Open gallery">
+    <div class="photo-ticker__viewport" data-ticker>
+      <ul class="photo-ticker__track" data-ticker-track>
+        {doubled.map((p, i) => (
+          <li class="photo-ticker__item" aria-hidden={i >= photos.length ? "true" : "false"}>
+            <img
+              src={p.src}
+              alt={i >= photos.length ? "" : p.alt}
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </a>
+  {credit && <p class="photo-ticker__credit small muted">{credit}</p>}
+  <p class="photo-ticker__cta">
+    <a class="link-quiet" href="/gallery">
+      All photos <span aria-hidden="true">→</span>
+    </a>
+  </p>
+</section>
+
+<style>
+  .photo-ticker {
+    padding-block: var(--space-16) var(--space-16);
+    overflow: hidden;
+  }
+
+  .photo-ticker__link {
+    display: block;
+    color: inherit;
+  }
+
+  .photo-ticker__viewport {
+    overflow: hidden;
+    width: 100%;
+    --speed: 60s;
+  }
+
+  .photo-ticker__track {
+    display: flex;
+    gap: var(--space-6);
+    width: max-content;
+    animation: ticker var(--speed) linear infinite;
+    will-change: transform;
+  }
+
+  .photo-ticker__viewport:hover .photo-ticker__track,
+  .photo-ticker__viewport:focus-within .photo-ticker__track {
+    animation-play-state: paused;
+  }
+
+  .photo-ticker__item {
+    flex: 0 0 auto;
+    height: clamp(14rem, 26vh, 22rem);
+    overflow: hidden;
+  }
+
+  .photo-ticker__item img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .photo-ticker__credit {
+    text-align: center;
+    margin-top: var(--space-6);
+  }
+
+  .photo-ticker__cta {
+    text-align: center;
+    margin-top: var(--space-4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-ticker__track {
+      animation: none;
+      transform: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      max-width: 100%;
+    }
+    .photo-ticker__item {
+      scroll-snap-align: center;
+    }
+  }
+</style>

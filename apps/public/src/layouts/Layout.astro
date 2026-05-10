@@ -1,0 +1,64 @@
+---
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/type.css";
+import "../styles/motion.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = "Kiron Atom Tellian — Austrian pianist and composer.",
+  bodyClass = "",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="stylesheet" href="https://use.typekit.net/ysr5edr.css" />
+    <title>{title}</title>
+    <meta name="theme-color" content="#0e0c0a" />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+      );
+
+      const observe = () => {
+        for (const el of document.querySelectorAll(".reveal, .reveal-stagger")) {
+          io.observe(el);
+        }
+      };
+      observe();
+      document.addEventListener("astro:page-load", observe);
+    </script>
+  </body>
+</html>

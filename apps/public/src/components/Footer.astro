@@ -1,0 +1,137 @@
+---
+---
+
+<footer class="site-footer bg-deep">
+  <div class="container site-footer__inner">
+    <div class="site-footer__col site-footer__col--lead">
+      <p class="eyebrow accent">Contact</p>
+      <p class="body">Kiron Atom Tellian is represented worldwide by Young Concert Artists.</p>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="eyebrow muted">Management</p>
+      <p class="body">
+        Christina Baker<br />
+        <a class="site-footer__link" href="mailto:christina@yca.org">christina@yca.org</a><br />
+        <span class="muted small">+1 (212) 307-6670</span>
+      </p>
+      <p class="body">
+        Mic Herring<br />
+        <a class="site-footer__link" href="mailto:mic@yca.org">mic@yca.org</a><br />
+        <span class="muted small">+1 (212) 307-6668</span>
+      </p>
+    </div>
+
+    <div class="site-footer__col">
+      <p class="eyebrow muted">Direct</p>
+      <p class="body">
+        <a class="site-footer__link" href="mailto:kiron@kironatomtellian.com">
+          kiron@kironatomtellian.com
+        </a>
+      </p>
+      <p class="body">
+        <a class="site-footer__link" href="/contact">Imprint</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="container site-footer__base">
+    <a
+      class="site-footer__link site-footer__yt"
+      href="https://www.youtube.com/channel/UCgh0E-zCipS0smDr9FKus6g"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="YouTube channel"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.5 29.5 0 0 0 1 12c-.02 1.85.12 3.7.46 5.52a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2c.32-1.82.46-3.67.46-5.52a29.5 29.5 0 0 0-.46-5.6Z"
+          fill="currentColor"
+        />
+        <path d="M9.75 15.5V8.5L15.5 12l-5.75 3.5Z" fill="var(--paper-deep)" />
+      </svg>
+    </a>
+    <p class="small muted">© {new Date().getFullYear()} Kiron Atom Tellian</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-24) var(--space-12);
+    margin-top: var(--space-24);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-12) var(--space-16);
+  }
+
+  .site-footer__col p {
+    margin-bottom: var(--space-4);
+  }
+
+  .site-footer__col p.eyebrow {
+    margin-bottom: var(--space-3);
+  }
+
+  .site-footer__col--lead .body {
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.45;
+  }
+
+  .site-footer__link {
+    position: relative;
+    color: var(--ink-light);
+    transition: color var(--t-hover) var(--ease-standard);
+  }
+
+  .site-footer__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--accent-soft);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .site-footer__link:hover {
+    color: var(--accent-soft);
+  }
+
+  .site-footer__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .site-footer__base {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule-dark);
+  }
+
+  .site-footer__yt {
+    color: var(--ink-light);
+    line-height: 0;
+  }
+
+  .site-footer__yt:hover {
+    color: var(--accent-soft);
+  }
+
+  .site-footer__yt::after { display: none; }
+
+  @media (max-width: 768px) {
+    .site-footer__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

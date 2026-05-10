@@ -1,0 +1,248 @@
+---
+export interface Concert {
+  date: string;
+  displayDate: string;
+  venue: string;
+  programme: string;
+  ticketsUrl?: string;
+}
+export interface Props {
+  concerts: Concert[];
+  intro?: { publication: string; quote: string; date: string };
+}
+const { concerts, intro } = Astro.props;
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const featured = concerts[0];
+const rest = concerts.slice(1);
+
+const daysUntil = (iso: string): number => {
+  const d = new Date(iso);
+  d.setHours(0, 0, 0, 0);
+  return Math.round((d.getTime() - today.getTime()) / 86400000);
+};
+---
+
+<section class="next-concerts bg-deep" aria-label="Upcoming concerts">
+  <div class="container">
+    {intro && (
+      <figure class="next-concerts__intro reveal">
+        <p class="eyebrow accent">{intro.publication}</p>
+        <blockquote class="pull-quote">
+          <span class="accent">»</span>
+          <span class="italic">{intro.quote}</span>
+          <span class="accent">«</span>
+        </blockquote>
+        <figcaption class="small muted italic">{intro.date}</figcaption>
+      </figure>
+    )}
+
+    <div class="next-concerts__header reveal">
+      <p class="eyebrow accent">Next Concerts</p>
+    </div>
+
+    {featured && (
+      <article class="featured reveal">
+        <div class="featured__top">
+          <div>
+            <p class="display-l-italic featured__date">{featured.displayDate}</p>
+            <p class="h3 featured__programme">{featured.programme}</p>
+          </div>
+          <div class="featured__count">
+            <span class="featured__count-num accent">{daysUntil(featured.date)}</span>
+            <span class="eyebrow muted">days</span>
+          </div>
+        </div>
+        <div class="featured__bottom">
+          <p class="featured__venue">{featured.venue}</p>
+          {featured.ticketsUrl && (
+            <a class="link-quiet featured__tickets" href={featured.ticketsUrl} target="_blank" rel="noopener">
+              Details &amp; tickets <span aria-hidden="true">→</span>
+            </a>
+          )}
+        </div>
+      </article>
+    )}
+
+    {rest.length > 0 && (
+      <ul class="upcoming reveal-stagger">
+        {rest.map((c) => (
+          <li class="upcoming__row">
+            <span class="upcoming__date">{c.displayDate}</span>
+            <span class="upcoming__venue muted">{c.venue}</span>
+            <span class="upcoming__programme italic">{c.programme}</span>
+            {c.ticketsUrl && (
+              <a class="upcoming__link" href={c.ticketsUrl} target="_blank" rel="noopener">
+                Tickets <span aria-hidden="true">→</span>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <p class="next-concerts__cta reveal">
+      <a class="link-quiet" href="/schedule">
+        Full schedule <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .next-concerts {
+    padding-block: var(--space-32);
+  }
+
+  .next-concerts__intro {
+    max-width: 28ch;
+    margin: 0 auto var(--space-24);
+    text-align: center;
+  }
+
+  .next-concerts__intro .pull-quote {
+    margin-block: var(--space-2);
+  }
+
+  .next-concerts__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .featured {
+    border-top: 1px solid var(--rule-dark);
+    border-bottom: 1px solid var(--rule-dark);
+    padding-block: var(--space-12);
+    max-width: 880px;
+    margin-inline: auto;
+    margin-bottom: var(--space-16);
+  }
+
+  .featured__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-8);
+    margin-bottom: var(--space-6);
+  }
+
+  .featured__date {
+    margin: 0 0 var(--space-2);
+    color: var(--ink-light);
+  }
+
+  .featured__programme {
+    margin: 0;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-soft);
+  }
+
+  .featured__count {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .featured__count-num {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-style: italic;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .featured__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .featured__venue {
+    margin: 0;
+    font-size: 1.0625rem;
+  }
+
+  .upcoming {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
+  .upcoming__row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 11rem) minmax(0, 1.2fr) minmax(0, 1.8fr) auto;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule-dark);
+    transition: padding-left var(--t-hover) var(--ease-out-expo);
+  }
+
+  .upcoming__row:hover {
+    padding-left: var(--space-2);
+  }
+
+  .upcoming__date {
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+
+  .upcoming__venue {
+    font-size: 1rem;
+  }
+
+  .upcoming__programme {
+    font-size: 1rem;
+    color: var(--ink-light);
+  }
+
+  .upcoming__link {
+    font-size: 0.9375rem;
+    color: var(--accent-soft);
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .upcoming__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0.9em;
+    bottom: -2px;
+    height: 1px;
+    background: var(--accent-soft);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .upcoming__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .next-concerts__cta {
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+
+  @media (max-width: 768px) {
+    .featured__top {
+      flex-direction: column;
+    }
+    .featured__count {
+      text-align: left;
+    }
+
+    .upcoming__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+      padding-block: var(--space-3);
+    }
+    .upcoming__row:hover {
+      padding-left: 0;
+    }
+  }
+</style>

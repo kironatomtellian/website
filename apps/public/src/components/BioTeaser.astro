@@ -1,0 +1,88 @@
+---
+export interface Props {
+  paragraphs: string[];
+}
+const { paragraphs } = Astro.props;
+---
+
+<section class="bio-teaser" id="bio-teaser" aria-label="Biography excerpt">
+  <div class="container">
+    <div class="bio-teaser__inner reading reveal-stagger">
+      <p class="eyebrow accent">Biography</p>
+      {paragraphs.map((p, i) => (
+        <p class={`body bio-teaser__p ${i === 0 ? "dropcap" : ""}`}>{p}</p>
+      ))}
+      <p class="bio-teaser__cta">
+        <a class="link-quiet" href="/about">
+          Read full biography <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bio-teaser {
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  .bio-teaser__inner {
+    text-align: left;
+  }
+
+  .bio-teaser__inner > .eyebrow {
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+
+  .bio-teaser__p {
+    font-size: 1.1875rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .bio-teaser__cta {
+    text-align: center;
+    margin-top: var(--space-8);
+  }
+
+  .link-quiet {
+    position: relative;
+    font-style: italic;
+    color: var(--ink);
+    transition: color var(--t-hover) var(--ease-standard);
+  }
+
+  .link-quiet::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 1.25em;
+    bottom: -2px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0.4);
+    transform-origin: left center;
+    transition: transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .link-quiet:hover {
+    color: var(--accent);
+  }
+
+  .link-quiet:hover::after {
+    transform: scaleX(1);
+  }
+
+  .bg-deep .link-quiet {
+    color: var(--ink-light);
+  }
+
+  .bg-deep .link-quiet:hover {
+    color: var(--accent-soft);
+  }
+
+  .bg-deep .link-quiet::after {
+    background: var(--accent-soft);
+  }
+</style>
