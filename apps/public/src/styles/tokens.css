@@ -29,9 +29,13 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-24: 6rem;
+  --space-20: 5rem;
   --space-32: 8rem;
   --space-48: 12rem;
   --space-64: 16rem;
+
+  --section-y: clamp(2.5rem, 5vw, 5rem);
+  --section-y-tight: clamp(1.5rem, 3vw, 3rem);
 
   --gutter: clamp(1rem, 2vw, 2rem);
   --reading-max: 66ch;

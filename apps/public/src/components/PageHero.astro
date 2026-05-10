@@ -1,0 +1,109 @@
+---
+import { withBase } from "../lib/url";
+
+export interface Props {
+  title: string;
+  image?: string;
+  imageAlt?: string;
+  eyebrow?: string;
+  light?: boolean;
+}
+const { title, image, imageAlt = "", eyebrow, light = false } = Astro.props;
+const hasImage = Boolean(image);
+---
+
+<header class={`page-hero ${hasImage ? "page-hero--media" : "page-hero--plain"} ${light ? "page-hero--light" : ""}`}>
+  {hasImage && (
+    <div class="page-hero__media">
+      <img class="page-hero__img" src={withBase(image!)} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
+      <div class="page-hero__veil" aria-hidden="true"></div>
+    </div>
+  )}
+  <div class="container page-hero__content">
+    {eyebrow && <p class="eyebrow accent page-hero__eyebrow">{eyebrow}</p>}
+    <h1 class="display-l-italic page-hero__title">{title}</h1>
+  </div>
+</header>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-top: calc(var(--nav-h) + var(--space-8));
+    padding-bottom: var(--space-8);
+    overflow: hidden;
+  }
+
+  .page-hero--media {
+    min-height: clamp(20rem, 55svh, 32rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: var(--ink-light);
+    background: var(--paper-deep);
+    padding-bottom: var(--space-12);
+  }
+
+  .page-hero--plain {
+    background: var(--paper);
+    color: var(--ink);
+    text-align: center;
+  }
+
+  .page-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .page-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .page-hero__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 12, 10, 0.45) 0%,
+      rgba(14, 12, 10, 0.1) 35%,
+      rgba(14, 12, 10, 0.1) 65%,
+      rgba(14, 12, 10, 0.8) 100%
+    );
+  }
+
+  .page-hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-hero__eyebrow {
+    margin-bottom: var(--space-3);
+    opacity: 0;
+    transform: translateY(8px);
+    animation: page-hero-rise 700ms var(--ease-out-expo) 150ms forwards;
+  }
+
+  .page-hero__title {
+    margin: 0;
+    color: inherit;
+    max-width: 18ch;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: page-hero-rise 900ms var(--ease-out-expo) 300ms forwards;
+  }
+
+  .page-hero--plain .page-hero__title {
+    margin-inline: auto;
+  }
+
+  @keyframes page-hero-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-hero__eyebrow,
+    .page-hero__title { animation: none; opacity: 1; transform: none; }
+  }
+</style>

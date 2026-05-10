@@ -1,0 +1,76 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+---
+
+<Layout title="Contact · Kiron Atom Tellian">
+  <PageHero title="Contact" eyebrow="Imprint" />
+
+  <section class="contact container">
+    <div class="reading contact__inner">
+      <div class="reveal contact__block">
+        <p class="eyebrow accent">Management</p>
+        <p class="body italic">Kiron Atom Tellian is represented worldwide by Young Concert Artists.</p>
+        <p class="body">
+          Christina Baker<br />
+          <a class="link-quiet" href="mailto:christina@yca.org">christina@yca.org</a><br />
+          <span class="small muted">+1 (212) 307-6670</span>
+        </p>
+        <p class="body">
+          Mic Herring<br />
+          <a class="link-quiet" href="mailto:mic@yca.org">mic@yca.org</a><br />
+          <span class="small muted">+1 (212) 307-6668</span>
+        </p>
+      </div>
+
+      <hr class="contact__rule" />
+
+      <div class="reveal contact__block">
+        <p class="eyebrow accent">Direct</p>
+        <p class="body">
+          <a class="link-quiet" href="mailto:kiron@kironatomtellian.com">
+            kiron@kironatomtellian.com
+          </a>
+        </p>
+      </div>
+
+      <hr class="contact__rule" />
+
+      <div class="reveal contact__block">
+        <p class="eyebrow accent">Imprint</p>
+        <p class="small muted">
+          Information in accordance with applicable disclosure law. Personal
+          data and the legal Impressum are maintained by the site owner. For
+          press, licensing, or rights inquiries please contact management
+          above. Photographs by Shervin Lainez, used by permission.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact {
+    padding-block: var(--section-y-tight) var(--section-y);
+  }
+
+  .contact__inner {
+    max-width: 56ch;
+  }
+
+  .contact__block {
+    margin-block: var(--space-6);
+  }
+
+  .contact__block p + p {
+    margin-top: var(--space-3);
+  }
+
+  .contact__rule {
+    margin-block: var(--space-8);
+    width: 4rem;
+    border: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+</style>

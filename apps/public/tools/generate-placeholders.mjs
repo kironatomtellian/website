@@ -22,15 +22,30 @@ const images = [
   { name: "hero-4_vor_dem_klavier.jpg", w: 2560, h: 1707, label: "hero" },
   { name: "secondary-2_auf_klaviatur_liegend.jpg", w: 2400, h: 1600, label: "intermezzo" },
   { name: "tertiary-10_vor_der_wand.jpg", w: 2400, h: 1500, label: "intermezzo" },
+  { name: "about-hero.jpg", w: 2400, h: 1500, label: "biography" },
+  { name: "press-hero.jpg", w: 2400, h: 1500, label: "press" },
+  { name: "schedule-hero.jpg", w: 2400, h: 1500, label: "schedule" },
+  { name: "archive-hero.jpg", w: 2400, h: 1500, label: "archive" },
+  { name: "media-hero.jpg", w: 2400, h: 1500, label: "media" },
   { name: "media-elm-court.jpg", w: 1280, h: 720, label: "video" },
   { name: "media-tvc-carnegie.jpg", w: 1280, h: 720, label: "video" },
   { name: "media-yca-winners.jpg", w: 1280, h: 720, label: "video" },
   { name: "media-yca-announcement.jpg", w: 1280, h: 720, label: "video" },
+  { name: "media-placeholder.jpg", w: 1280, h: 720, label: "video" },
 ];
 
 for (let i = 1; i <= 12; i++) {
   images.push({
     name: `gallery-${String(i).padStart(2, "0")}.jpg`,
+    w: 800,
+    h: 1000 + ((i * 47) % 320),
+    label: `${i}`,
+  });
+}
+
+for (let i = 1; i <= 17; i++) {
+  images.push({
+    name: `gallery/${String(i).padStart(2, "0")}.jpg`,
     w: 800,
     h: 1000 + ((i * 47) % 320),
     label: `${i}`,
@@ -88,6 +103,7 @@ let skipped = 0;
 for (const img of images) {
   const dest = path.join(outDir, img.name);
   if (!force && (await exists(dest))) { skipped++; continue; }
+  await mkdir(path.dirname(dest), { recursive: true });
   const svg = Buffer.from(buildSvg(img.w, img.h, img.label));
   await sharp(svg).jpeg({ quality: 78, mozjpeg: true }).toFile(dest);
   generated++;

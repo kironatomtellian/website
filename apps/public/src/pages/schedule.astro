@@ -1,0 +1,145 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import ConcertRow from "../components/ConcertRow.astro";
+import { withBase } from "../lib/url";
+import { type Concert, ensembleLabel, daysUntil, groupByMonth } from "../lib/concert";
+import upcoming from "../data/concerts-upcoming.json";
+
+const concerts = upcoming as Concert[];
+const featured = concerts[0];
+const rest = concerts.slice(1);
+const grouped = groupByMonth(rest);
+---
+
+<Layout title="Schedule · Kiron Atom Tellian">
+  <PageHero
+    title="Schedule"
+    eyebrow="Upcoming concerts"
+    image="/img/schedule-hero.jpg"
+    imageAlt="Kiron Atom Tellian preparing for a performance."
+  />
+
+  <section class="schedule container">
+    {featured && (
+      <article class="schedule__featured reveal">
+        <div class="schedule__featured-top">
+          <div>
+            <p class="display-l-italic schedule__featured-date">{featured.displayDate}</p>
+            {ensembleLabel(featured) && (
+              <p class="small accent schedule__featured-ensemble italic">{ensembleLabel(featured)}</p>
+            )}
+            <p class="h2 schedule__featured-programme italic">{featured.programme}</p>
+            <p class="schedule__featured-venue">{featured.venue}</p>
+          </div>
+          {featured.date && (
+            <div class="schedule__featured-count">
+              <span class="schedule__featured-count-num accent">{daysUntil(featured.date)}</span>
+              <span class="eyebrow muted">days</span>
+            </div>
+          )}
+        </div>
+        {featured.ticketsUrl && (
+          <p class="schedule__featured-cta">
+            <a class="link-quiet" href={featured.ticketsUrl} target="_blank" rel="noopener">
+              Details &amp; tickets <span aria-hidden="true">→</span>
+            </a>
+          </p>
+        )}
+      </article>
+    )}
+
+    {grouped.map((group) => (
+      <div class="schedule__group reveal">
+        <h2 class="display-l-italic accent schedule__month">{group.label}</h2>
+        <div class="schedule__rows">
+          {group.items.map((c) => <ConcertRow concert={c} />)}
+        </div>
+      </div>
+    ))}
+
+    <p class="schedule__cta reveal">
+      <a class="link-quiet" href={withBase("/schedule-archive")}>
+        Past concerts <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .schedule {
+    padding-block: var(--section-y-tight) var(--section-y);
+    max-width: 1080px;
+  }
+
+  .schedule__featured {
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: var(--space-16);
+  }
+
+  .schedule__featured-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .schedule__featured-date {
+    margin: 0 0 var(--space-1);
+  }
+
+  .schedule__featured-ensemble {
+    margin: 0 0 var(--space-3);
+  }
+
+  .schedule__featured-programme {
+    margin: 0 0 var(--space-2);
+    font-weight: 400;
+  }
+
+  .schedule__featured-venue {
+    margin: 0;
+    font-size: 1.0625rem;
+  }
+
+  .schedule__featured-count {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .schedule__featured-count-num {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-style: italic;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .schedule__featured-cta {
+    margin-top: var(--space-4);
+  }
+
+  .schedule__group + .schedule__group {
+    margin-top: var(--space-12);
+  }
+
+  .schedule__month {
+    margin: 0 0 var(--space-3);
+  }
+
+  .schedule__cta {
+    text-align: center;
+    margin-top: var(--space-16);
+  }
+
+  @media (max-width: 768px) {
+    .schedule__featured-top {
+      flex-direction: column;
+    }
+    .schedule__featured-count {
+      text-align: left;
+    }
+  }
+</style>

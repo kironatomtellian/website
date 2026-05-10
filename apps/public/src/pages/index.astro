@@ -8,6 +8,10 @@ import NextConcerts from "../components/NextConcerts.astro";
 import MediaGrid from "../components/MediaGrid.astro";
 import PhotoTicker from "../components/PhotoTicker.astro";
 import data from "../data/home.json";
+import upcoming from "../data/concerts-upcoming.json";
+import type { Concert } from "../lib/concert";
+
+const concerts = (upcoming as Concert[]).slice(0, 6);
 ---
 
 <Layout title="Kiron Atom Tellian — Pianist · Composer">
@@ -24,7 +28,7 @@ import data from "../data/home.json";
 
   <FullBleedImage src={data.secondaryImage.src} alt={data.secondaryImage.alt} height="65vh" />
 
-  <NextConcerts concerts={data.concerts} intro={data.calendarQuote} />
+  <NextConcerts concerts={concerts} intro={data.calendarQuote} />
 
   <FullBleedImage src={data.tertiaryImage.src} alt={data.tertiaryImage.alt} height="65vh" />
 

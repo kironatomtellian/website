@@ -1,0 +1,212 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import { withBase } from "../lib/url";
+import mediaData from "../data/media.json";
+
+const items = mediaData.items;
+
+const thumbFor = (t: string | null): string => {
+  if (!t) return withBase("/img/media-placeholder.jpg");
+  // Snapshot paths like ./cms/uploads/images/XYZ.jpeg — the eventual
+  // production site serves those at /cms/uploads/... For now we host
+  // placeholders at /img/media-* until real images are committed.
+  const fname = t.split("/").pop() ?? "";
+  return withBase(`/img/media/${fname}`);
+};
+---
+
+<Layout title="Media · Kiron Atom Tellian">
+  <PageHero
+    title="Audio & Video"
+    eyebrow="Media"
+    image="/img/media-hero.jpg"
+    imageAlt="Kiron Atom Tellian performing."
+  />
+
+  <section class="media-page container">
+    <ul class="media-page__grid">
+      {items.map((m) => (
+        <li class="media-page__item reveal">
+          <a
+            class="media-card"
+            href={m.url ?? "#"}
+            target={m.url ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            aria-label={m.url ? `Open ${m.title} in new tab` : m.title}
+            data-yt-id={m.youtubeId ?? ""}
+          >
+            <div class="media-card__frame">
+              <img
+                class="media-card__img"
+                src={thumbFor(m.thumbnail)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="1280"
+                height="720"
+              />
+              <div class="media-card__overlay" aria-hidden="true">
+                <svg viewBox="0 0 64 64" width="44" height="44" fill="none">
+                  <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="1" />
+                  <path d="M26 22 L44 32 L26 42 Z" fill="currentColor" />
+                </svg>
+              </div>
+            </div>
+            <h2 class="h3 media-card__title">{m.title}</h2>
+            <p class="small muted media-card__desc">{m.description}</p>
+            {m.details && (
+              <details class="media-card__details" onclick="event.stopPropagation()">
+                <summary class="small accent">Programme</summary>
+                <div class="small muted media-card__details-body">{m.details}</div>
+              </details>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>
+
+<style>
+  .media-page {
+    padding-block: var(--section-y-tight) var(--section-y);
+  }
+
+  .media-page__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-12) var(--space-8);
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .media-card {
+    display: block;
+    color: var(--ink);
+  }
+
+  .media-card__frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--paper-deep);
+    aspect-ratio: 16 / 9;
+    margin-bottom: var(--space-4);
+  }
+
+  .media-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms var(--ease-out-expo);
+  }
+
+  .media-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-light);
+    background: linear-gradient(to bottom, rgba(14,12,10,0) 50%, rgba(14,12,10,0.35) 100%);
+    opacity: 0;
+    transition: opacity var(--t-hover) var(--ease-standard);
+  }
+
+  .media-card:hover .media-card__overlay,
+  .media-card:focus-visible .media-card__overlay {
+    opacity: 1;
+  }
+
+  .media-card:hover .media-card__img,
+  .media-card:focus-visible .media-card__img {
+    transform: scale(1.03);
+  }
+
+  .media-card__title {
+    margin: 0 0 var(--space-2);
+    font-style: italic;
+    font-weight: 400;
+    transition: color var(--t-hover) var(--ease-standard);
+  }
+
+  .media-card:hover .media-card__title {
+    color: var(--accent);
+  }
+
+  .media-card__desc {
+    margin: 0 0 var(--space-2);
+  }
+
+  .media-card__details {
+    margin-top: var(--space-2);
+  }
+
+  .media-card__details summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  .media-card__details summary::-webkit-details-marker { display: none; }
+
+  .media-card__details summary::after {
+    content: "+";
+    transition: transform var(--t-hover) var(--ease-out-expo);
+    display: inline-block;
+  }
+
+  .media-card__details[open] summary::after {
+    content: "−";
+  }
+
+  .media-card__details-body {
+    margin-top: var(--space-2);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .media-page__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+    }
+  }
+</style>
+
+<script>
+  const cards = document.querySelectorAll<HTMLAnchorElement>(".media-card[data-yt-id]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia("(hover: none)").matches;
+  if (!reduceMotion && !isTouch) {
+    cards.forEach((card) => {
+      const ytId = card.getAttribute("data-yt-id");
+      if (!ytId) return;
+      const img = card.querySelector<HTMLImageElement>(".media-card__img");
+      if (!img) return;
+      const original = img.src;
+      const frames = [
+        `https://i.ytimg.com/vi/${ytId}/1.jpg`,
+        `https://i.ytimg.com/vi/${ytId}/2.jpg`,
+        `https://i.ytimg.com/vi/${ytId}/3.jpg`,
+      ];
+      frames.forEach((src) => { const i = new Image(); i.src = src; });
+      let timer: number | null = null;
+      let i = 0;
+      card.addEventListener("mouseenter", () => {
+        if (timer !== null) return;
+        timer = window.setInterval(() => {
+          i = (i + 1) % frames.length;
+          img.src = frames[i] ?? original;
+        }, 700);
+      });
+      card.addEventListener("mouseleave", () => {
+        if (timer !== null) window.clearInterval(timer);
+        timer = null;
+        i = 0;
+        img.src = original;
+      });
+    });
+  }
+</script>

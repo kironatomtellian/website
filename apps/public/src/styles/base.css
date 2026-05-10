@@ -147,13 +147,11 @@ hr {
 }
 
 .section {
-  padding-block: var(--space-32);
+  padding-block: var(--section-y);
 }
 
-@media (max-width: 768px) {
-  .section {
-    padding-block: var(--space-16);
-  }
+.section--tight {
+  padding-block: var(--section-y-tight);
 }
 
 .bg-deep {

@@ -1,0 +1,87 @@
+{
+  "hero": {
+    "title": "Press",
+    "eyebrow": "Selected reviews",
+    "image": "/img/press-hero.jpg",
+    "imageAlt": "Kiron Atom Tellian at the piano."
+  },
+  "quotes": [
+    {
+      "publication": "la Repubblica",
+      "byline": null,
+      "date": "November 2024",
+      "url": "https://milano.repubblica.it/cronaca/2024/11/17/news/emmanuel_tjeknavorian_direttore_orchestra_sinfonica_auditorium-423636494/",
+      "quote": "Two intense weeks. Emmanuel Tjeknavorian takes up his role as music director of the Orchestra Sinfonica di Milano… <strong>They prepared the canvas for the soloist, who, without resorting to ostentatious virtuosity, articulated phrases, accents, and lyrical lines with remarkable freedom. Intriguing was how Tellian dissected the athletic, “Paganini-esque” score to extract its essence: the emotional and pianistic tone that had not existed before Chopin.</strong>"
+    },
+    {
+      "publication": "Les Arts-Chipels",
+      "byline": null,
+      "date": "December 2023",
+      "url": "http://www.arts-chipels.fr/2023/12/kiron-atom-tellian-au-concours-chopin-de-paris.un-pianiste-virtuose-et-inspire.html",
+      "quote": "Kiron Atom Tellian belongs to the rare breed of pianists who caress the piano, whose fingers lovingly glide over the keyboard, drawing out infinite nuances, from the most subtle and gentle to the most vigorous and dynamic. He is among those who do not just play but are truly in the music. […] One enters a state of weightlessness — following, as if suspended, by the whims of the wind blown by the performer."
+    },
+    {
+      "publication": "The Tennessean",
+      "byline": null,
+      "date": "October 2023",
+      "url": "https://www.tennessean.com/story/entertainment/music/2023/10/15/music-city-hosts-international-chopin-piano-competition-brings-globally-decorated-pianists-to-nashvi/71133389007/",
+      "quote": "Finalist Kiron Atom Tellian, a 21-year-old from Austria, played with an <strong>incredible combination of sensitivity and taste</strong>. His Saturday performance was delicate and gentle, as he touched the keys with tender flutters and extreme precision."
+    },
+    {
+      "publication": "Weser Kurier",
+      "byline": "Gerd Klingeberg",
+      "date": "March 2022",
+      "url": "https://www.weser-kurier.de/bremen/kultur/pianist-kiron-atom-tellian-gastiert-im-sendesaal-in-bremen-doc7k6wamhvojl6muyi9ra",
+      "quote": "Tellian’s fingers flew about the keyboard, perfectly depicting the weightless elegance of the waltz, but also thunderous, emphatic and almost explosive exclamations… An extraordinary opportunity for Tellian to get lost in fluid, crystallized and sensitively emotional colors. Highlight of the evening was Franz Schubert’s “Wanderer Fantasy”: starting with a concise theme, impressfully presented by Tellian, to culminate in a ferocious finale which was rewarded with standing ovations."
+    },
+    {
+      "publication": "NDR Kultur",
+      "byline": null,
+      "date": "November 2021",
+      "url": "https://www.ndr.de/kultur/musik/klassik/Emmanuel-Tjeknavorian-begeistert-beim-Foyerkonzert-in-Greifswald,foyerkonzert664.html",
+      "quote": "Although the 19 year-old Kiron Atom Tellian stepped in to play this concert only a couple of days ago, the two musicians give an impression of having played together for decades… They concluded the evening’s concert with the Rondo Brillant by Franz Schubert. <strong>Devilish, virtuoso and simply: brilliant.</strong>"
+    },
+    {
+      "publication": "Badische Neueste Nachrichten",
+      "byline": null,
+      "date": "October 2021",
+      "url": null,
+      "quote": "The bravura and maturity of their artistry renders speechless… Tellian’s convincing rendition of Ravel’s “Gaspard de la nuit” — probably one of the most difficult works for piano overall — or his captivating and inspired performance of Chopin’s third piano sonata — one can only listen, enjoy and wish these young artists all the best for their future."
+    },
+    {
+      "publication": "Kronen Zeitung",
+      "byline": null,
+      "date": "August 2021",
+      "url": null,
+      "quote": "If one mentions the name Emmanuel Tjeknavorian (Violin) — Jeremias Fliedl (Violoncello) and Kiron Atom Tellian (Piano) should also be mentioned, as their performances are undoubtedly equal… What an allegro giusto! Their riveting performance was met with an incredibly long applause by the exuberant audience. There was no encore — this kind of emotional ending can not be improved upon."
+    },
+    {
+      "publication": "Mittelbayrische Zeitung",
+      "byline": null,
+      "date": "May 2019",
+      "url": null,
+      "quote": "Kiron Atom Tellian, which presented the breath-taking finale of the evening’s concert — with a fulminant rendition of the first and last movement of Chopin’s third piano sonata. His ability to play with incredibly nuanced colors and feelings, to connect virtuosity and intimate sensitivity, explosive drama, longing and singing melodies was extraordinary."
+    },
+    {
+      "publication": "New York Concert Review",
+      "byline": null,
+      "date": "October 2017",
+      "url": "https://nyconcertreview.com/reviews/the-fifth-tureck-international-bach-competition-for-young-pianists-presents-gala-winners-concert-in-review/",
+      "quote": "He was one of the day’s most interesting musicians, with an individual style that brought to mind some of the earlier Bach performances of Ivo Pogorelich. His Allemande, Courante and Sarabande all had an expressiveness one most associates with Romanticism… His Gigue was by contrast quite metrically straightforward, but a delight in its extremely fast and even execution, without losing the slightest detail. One looks forward to hearing this young man play again."
+    },
+    {
+      "publication": "Oberösterreichische Nachrichten",
+      "byline": null,
+      "date": "May 2017",
+      "url": null,
+      "quote": "Kiron Atom Tellian is undoubtedly one of the greatest and most talented pianists from Austria."
+    },
+    {
+      "publication": "Salzburger Nachrichten",
+      "byline": null,
+      "date": "June 2016",
+      "url": null,
+      "quote": "…experienced with countless and beautiful compositional techniques."
+    }
+  ]
+}

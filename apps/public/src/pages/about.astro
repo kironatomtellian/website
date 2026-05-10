@@ -1,0 +1,92 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import PressQuote from "../components/PressQuote.astro";
+import { withBase } from "../lib/url";
+import data from "../data/about.json";
+
+type Block =
+  | { kind: "para"; body: string }
+  | { kind: "quote"; publication: string; quote: string; date: string };
+
+const blocks = data.blocks as Block[];
+let paraIndex = 0;
+---
+
+<Layout title="Biography · Kiron Atom Tellian" bodyClass="page-about">
+  <PageHero
+    title={data.hero.title}
+    eyebrow={data.hero.eyebrow}
+    image={data.hero.image}
+    imageAlt={data.hero.imageAlt}
+  />
+
+  <article class="bio container">
+    {data.intro && (
+      <div class="bio__intro reveal">
+        <PressQuote
+          publication={data.intro.publication}
+          quote={data.intro.quote}
+          date={data.intro.date}
+          align="center"
+        />
+      </div>
+    )}
+
+    <div class="bio__body reading">
+      {blocks.map((b) => {
+        if (b.kind === "para") {
+          const isFirst = paraIndex === 0;
+          paraIndex++;
+          return (
+            <p class={`body reveal bio__p ${isFirst ? "dropcap" : ""}`}>{b.body}</p>
+          );
+        }
+        return (
+          <div class="bio__quote">
+            <PressQuote
+              publication={b.publication}
+              quote={b.quote}
+              date={b.date}
+              align="center"
+            />
+          </div>
+        );
+      })}
+    </div>
+
+    <p class="bio__cta reveal">
+      <a class="link-quiet" href={withBase("/press")}>
+        Read all press <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </article>
+</Layout>
+
+<style>
+  .bio {
+    padding-block: var(--section-y-tight) var(--section-y);
+  }
+
+  .bio__intro {
+    margin-bottom: var(--section-y-tight);
+    text-align: center;
+  }
+
+  .bio__body {
+    max-width: var(--reading-max);
+  }
+
+  .bio__p {
+    margin-bottom: var(--space-6);
+  }
+
+  .bio__quote {
+    margin-block: var(--space-12);
+  }
+
+  .bio__cta {
+    text-align: center;
+    margin-top: var(--space-16);
+  }
+</style>

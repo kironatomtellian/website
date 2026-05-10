@@ -1,0 +1,368 @@
+/*  Kiron Atom Tellian — CMS skin
+ *  Drop-in stylesheet for the existing /cms/ PHP admin. Loaded after
+ *  Bootstrap so it overrides Bootstrap variables / utilities used in
+ *  the existing markup (navbar-light, btn-secondary, container-fluid,
+ *  etc.). No HTML changes required.
+ *
+ *  Include in every CMS page's <head> after Bootstrap, e.g.:
+ *      <link rel="stylesheet" href="/cms/assets/css/cms.css">
+ */
+
+:root {
+  --paper: #f5f0e8;
+  --paper-soft: #fbf7f0;
+  --ink: #1a1714;
+  --ink-soft: #3a342d;
+  --accent: #8c6f47;
+  --accent-soft: #b89976;
+  --rule: rgba(26, 23, 20, 0.12);
+  --rule-strong: rgba(26, 23, 20, 0.24);
+  --muted: rgba(26, 23, 20, 0.6);
+  --danger: #a64b3b;
+
+  --serif: "adobe-caslon-pro", "Newsreader", "Sorts Mill Goudy", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-hover: 200ms;
+}
+
+body.cms {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.cms a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color var(--t-hover) ease, text-decoration-color var(--t-hover) ease;
+}
+
+body.cms a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Navbar */
+body.cms .navbar.bg-light,
+body.cms .navbar.navbar-light {
+  background: var(--paper-soft) !important;
+  border-bottom: 1px solid var(--rule);
+}
+
+body.cms .navbar-brand {
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--ink) !important;
+}
+
+body.cms .nav-link {
+  color: var(--ink-soft) !important;
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+}
+
+body.cms .nav-link:hover,
+body.cms .nav-link.active {
+  color: var(--accent) !important;
+}
+
+body.cms .dropdown-menu {
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(26, 23, 20, 0.08);
+  font-family: var(--serif);
+}
+
+body.cms .dropdown-item {
+  color: var(--ink-soft);
+}
+
+body.cms .dropdown-item:hover,
+body.cms .dropdown-item:focus {
+  background: var(--paper);
+  color: var(--accent);
+}
+
+/* Headings */
+body.cms h1,
+body.cms .display-5,
+body.cms .display-4,
+body.cms .display-3 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink) !important;
+}
+
+body.cms .calendar-title {
+  font-style: italic;
+  letter-spacing: -0.015em;
+}
+
+/* Buttons */
+body.cms .btn {
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+  border-radius: 2px;
+  border-width: 1px;
+  padding: 0.55rem 1.25rem;
+  transition: background var(--t-hover) ease,
+              color var(--t-hover) ease,
+              border-color var(--t-hover) ease,
+              transform var(--t-hover) var(--ease-out-expo);
+}
+
+body.cms .btn-primary,
+body.cms .btn-secondary {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+body.cms .btn-primary:hover,
+body.cms .btn-secondary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+
+body.cms .btn-light {
+  background: var(--paper-soft);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+body.cms .btn-light:hover {
+  background: var(--paper);
+  border-color: var(--ink);
+}
+
+body.cms .btn-danger,
+body.cms .btn-outline-danger {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+  font-style: italic;
+}
+
+body.cms .btn-danger:hover,
+body.cms .btn-outline-danger:hover {
+  background: var(--danger);
+  color: var(--paper);
+}
+
+body.cms .btn-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+body.cms .btn-link:hover {
+  color: var(--accent);
+}
+
+/* Forms */
+body.cms .form-control,
+body.cms .form-select,
+body.cms input[type="text"],
+body.cms input[type="email"],
+body.cms input[type="url"],
+body.cms input[type="date"],
+body.cms input[type="time"],
+body.cms textarea,
+body.cms select {
+  font-family: var(--serif);
+  font-size: 1rem;
+  background: var(--paper-soft);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: 0.55rem 0.75rem;
+  transition: border-color var(--t-hover) ease, box-shadow var(--t-hover) ease;
+}
+
+body.cms .form-control:focus,
+body.cms .form-select:focus,
+body.cms textarea:focus,
+body.cms select:focus {
+  outline: 0;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(140, 111, 71, 0.15);
+}
+
+body.cms label,
+body.cms .form-label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+  font-weight: 400;
+}
+
+body.cms .form-text {
+  color: var(--muted);
+}
+
+/* Cards / list rows */
+body.cms .card,
+body.cms .calendar-entry {
+  background: var(--paper-soft) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1rem 1.25rem;
+}
+
+body.cms .calendar-entry .event-date {
+  font-style: italic;
+  font-size: 1.125rem;
+  color: var(--accent);
+}
+
+body.cms .calendar-entry .event-program {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+body.cms .calendar-entry .event-location {
+  color: var(--muted);
+}
+
+/* Anchors / row dividers in the existing CMS calendar */
+body.cms [id^="anchor-"] {
+  border-top: 1px solid var(--rule);
+  padding-block: 0.5rem;
+}
+
+body.cms [id^="anchor-"] .row > .col-1 {
+  font-family: var(--serif);
+}
+
+body.cms [id^="anchor-"] [style*="cadetblue"] {
+  color: var(--muted) !important;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* TinyMCE container — neutralise its default chrome */
+body.cms .tox-tinymce {
+  border-color: var(--rule-strong) !important;
+  border-radius: 2px !important;
+}
+
+body.cms .tox .tox-toolbar,
+body.cms .tox .tox-toolbar__primary,
+body.cms .tox .tox-statusbar {
+  background: var(--paper-soft) !important;
+  border-color: var(--rule) !important;
+}
+
+body.cms .tox .tox-tbtn {
+  color: var(--ink) !important;
+}
+
+body.cms .tox .tox-tbtn:hover {
+  background: rgba(140, 111, 71, 0.08) !important;
+}
+
+body.cms .tox-edit-area__iframe {
+  background: var(--paper-soft) !important;
+}
+
+/* Page wrappers */
+body.cms .main {
+  padding-top: 74px;
+}
+
+body.cms .container,
+body.cms .container-fluid {
+  max-width: 1280px;
+}
+
+body.cms hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin-block: 1.5rem;
+}
+
+/* Publish-to-website button — added by the new publish.php endpoint.
+   Place anywhere in the CMS nav or page header with class="kat-publish". */
+body.cms .kat-publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: 2px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: background var(--t-hover) ease, transform var(--t-hover) var(--ease-out-expo);
+}
+
+body.cms .kat-publish:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+
+body.cms .kat-publish[disabled] {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+body.cms .kat-publish::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  display: inline-block;
+}
+
+body.cms .kat-publish-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2px;
+  font-style: italic;
+  font-size: 0.9375rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 250ms ease, transform 250ms var(--ease-out-expo);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+body.cms .kat-publish-toast[data-show="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.cms .kat-publish-toast[data-kind="error"] {
+  background: var(--danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.cms *,
+  body.cms *::before,
+  body.cms *::after {
+    transition: none !important;
+    transform: none !important;
+  }
+}
