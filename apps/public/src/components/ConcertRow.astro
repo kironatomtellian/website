@@ -1,0 +1,127 @@
+---
+import { type Concert, ensembleLabel } from "../lib/concert";
+
+export interface Props {
+  concert: Concert;
+  showTickets?: boolean;
+}
+const { concert, showTickets = true } = Astro.props;
+const label = ensembleLabel(concert);
+---
+
+<article class="concert-row">
+  <div class="concert-row__date">{concert.displayDate}</div>
+  <div class="concert-row__body">
+    <h3 class="concert-row__venue">{concert.venue}</h3>
+    {label && <p class="small muted italic concert-row__ensemble">{label}</p>}
+    <p class="concert-row__programme italic">{concert.programme}</p>
+    {concert.notes && <p class="small muted concert-row__notes">{concert.notes}</p>}
+  </div>
+  {showTickets && concert.ticketsUrl && (
+    <a class="concert-row__link" href={concert.ticketsUrl} target="_blank" rel="noopener">
+      Details &amp; tickets <span aria-hidden="true">→</span>
+    </a>
+  )}
+</article>
+
+<style>
+  .concert-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 10rem) 1fr auto;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--rule);
+    transition: padding-left var(--t-hover) var(--ease-out-expo);
+  }
+
+  .bg-deep .concert-row {
+    border-bottom-color: var(--rule-dark);
+  }
+
+  .concert-row:hover {
+    padding-left: var(--space-2);
+  }
+
+  .concert-row__date {
+    font-size: 0.9375rem;
+    letter-spacing: 0.01em;
+  }
+
+  .concert-row__body {
+    min-width: 0;
+  }
+
+  .concert-row__venue {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .concert-row__ensemble {
+    margin: 2px 0 0;
+    color: var(--accent);
+  }
+
+  .bg-deep .concert-row__ensemble {
+    color: var(--accent-soft);
+  }
+
+  .concert-row__programme {
+    margin: 4px 0 0;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .bg-deep .concert-row__programme {
+    color: var(--muted-light);
+  }
+
+  .concert-row__notes {
+    margin-top: 4px;
+  }
+
+  .concert-row__link {
+    font-size: 0.9375rem;
+    color: var(--accent);
+    white-space: nowrap;
+    position: relative;
+    align-self: center;
+  }
+
+  .bg-deep .concert-row__link {
+    color: var(--accent-soft);
+  }
+
+  .concert-row__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0.9em;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .concert-row__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 768px) {
+    .concert-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+    .concert-row:hover {
+      padding-left: 0;
+    }
+    .concert-row__link {
+      align-self: start;
+      margin-top: var(--space-1);
+    }
+  }
+</style>

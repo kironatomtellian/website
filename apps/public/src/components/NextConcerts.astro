@@ -1,30 +1,15 @@
 ---
 import { withBase } from "../lib/url";
+import { type Concert, ensembleLabel, daysUntil } from "../lib/concert";
 
-export interface Concert {
-  date: string;
-  displayDate: string;
-  venue: string;
-  programme: string;
-  ticketsUrl?: string;
-}
 export interface Props {
   concerts: Concert[];
   intro?: { publication: string; quote: string; date: string };
 }
 const { concerts, intro } = Astro.props;
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
 const featured = concerts[0];
 const rest = concerts.slice(1);
-
-const daysUntil = (iso: string): number => {
-  const d = new Date(iso);
-  d.setHours(0, 0, 0, 0);
-  return Math.round((d.getTime() - today.getTime()) / 86400000);
-};
 ---
 
 <section class="next-concerts bg-deep" aria-label="Upcoming concerts">
@@ -48,14 +33,19 @@ const daysUntil = (iso: string): number => {
     {featured && (
       <article class="featured reveal">
         <div class="featured__top">
-          <div>
+          <div class="featured__left">
             <p class="display-l-italic featured__date">{featured.displayDate}</p>
+            {ensembleLabel(featured) && (
+              <p class="small muted featured__ensemble">{ensembleLabel(featured)}</p>
+            )}
             <p class="h3 featured__programme">{featured.programme}</p>
           </div>
-          <div class="featured__count">
-            <span class="featured__count-num accent">{daysUntil(featured.date)}</span>
-            <span class="eyebrow muted">days</span>
-          </div>
+          {featured.date && (
+            <div class="featured__count">
+              <span class="featured__count-num accent">{daysUntil(featured.date)}</span>
+              <span class="eyebrow muted">days</span>
+            </div>
+          )}
         </div>
         <div class="featured__bottom">
           <p class="featured__venue">{featured.venue}</p>
@@ -72,9 +62,14 @@ const daysUntil = (iso: string): number => {
       <ul class="upcoming reveal-stagger">
         {rest.map((c) => (
           <li class="upcoming__row">
-            <span class="upcoming__date">{c.displayDate}</span>
-            <span class="upcoming__venue muted">{c.venue}</span>
-            <span class="upcoming__programme italic">{c.programme}</span>
+            <div class="upcoming__date">{c.displayDate}</div>
+            <div class="upcoming__body">
+              <div class="upcoming__venue">{c.venue}</div>
+              {ensembleLabel(c) && (
+                <div class="upcoming__ensemble small muted">{ensembleLabel(c)}</div>
+              )}
+              <div class="upcoming__programme italic">{c.programme}</div>
+            </div>
             {c.ticketsUrl && (
               <a class="upcoming__link" href={c.ticketsUrl} target="_blank" rel="noopener">
                 Tickets <span aria-hidden="true">→</span>
@@ -95,12 +90,12 @@ const daysUntil = (iso: string): number => {
 
 <style>
   .next-concerts {
-    padding-block: var(--space-32);
+    padding-block: var(--section-y);
   }
 
   .next-concerts__intro {
     max-width: 28ch;
-    margin: 0 auto var(--space-24);
+    margin: 0 auto var(--space-12);
     text-align: center;
   }
 
@@ -110,36 +105,46 @@ const daysUntil = (iso: string): number => {
 
   .next-concerts__header {
     text-align: center;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
   }
 
   .featured {
     border-top: 1px solid var(--rule-dark);
     border-bottom: 1px solid var(--rule-dark);
-    padding-block: var(--space-12);
-    max-width: 880px;
+    padding-block: var(--space-8);
+    max-width: 920px;
     margin-inline: auto;
-    margin-bottom: var(--space-16);
+    margin-bottom: var(--space-8);
   }
 
   .featured__top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: var(--space-8);
-    margin-bottom: var(--space-6);
+    gap: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  .featured__left {
+    min-width: 0;
   }
 
   .featured__date {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
     color: var(--ink-light);
+  }
+
+  .featured__ensemble {
+    margin: 0 0 var(--space-2);
+    color: var(--accent-soft);
+    font-style: italic;
   }
 
   .featured__programme {
     margin: 0;
     font-style: italic;
     font-weight: 400;
-    color: var(--accent-soft);
+    color: var(--ink-light);
   }
 
   .featured__count {
@@ -149,7 +154,7 @@ const daysUntil = (iso: string): number => {
 
   .featured__count-num {
     display: block;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2.25rem, 5vw, 4rem);
     font-style: italic;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -165,17 +170,17 @@ const daysUntil = (iso: string): number => {
 
   .featured__venue {
     margin: 0;
-    font-size: 1.0625rem;
+    font-size: 1rem;
   }
 
   .upcoming {
-    max-width: 880px;
+    max-width: 920px;
     margin-inline: auto;
   }
 
   .upcoming__row {
     display: grid;
-    grid-template-columns: minmax(8rem, 11rem) minmax(0, 1.2fr) minmax(0, 1.8fr) auto;
+    grid-template-columns: minmax(7rem, 9rem) 1fr auto;
     gap: var(--space-6);
     align-items: baseline;
     padding-block: var(--space-4);
@@ -188,17 +193,30 @@ const daysUntil = (iso: string): number => {
   }
 
   .upcoming__date {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     letter-spacing: 0.01em;
+    color: var(--ink-light);
+  }
+
+  .upcoming__body {
+    min-width: 0;
   }
 
   .upcoming__venue {
     font-size: 1rem;
+    color: var(--ink-light);
+  }
+
+  .upcoming__ensemble {
+    margin-top: 2px;
+    font-style: italic;
+    color: var(--accent-soft);
   }
 
   .upcoming__programme {
-    font-size: 1rem;
-    color: var(--ink-light);
+    margin-top: 2px;
+    font-size: 0.9375rem;
+    color: var(--muted-light);
   }
 
   .upcoming__link {
@@ -206,6 +224,7 @@ const daysUntil = (iso: string): number => {
     color: var(--accent-soft);
     white-space: nowrap;
     position: relative;
+    align-self: center;
   }
 
   .upcoming__link::after {
@@ -245,6 +264,9 @@ const daysUntil = (iso: string): number => {
     }
     .upcoming__row:hover {
       padding-left: 0;
+    }
+    .upcoming__date {
+      font-size: 0.875rem;
     }
   }
 </style>

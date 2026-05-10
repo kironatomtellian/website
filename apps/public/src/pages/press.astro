@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import PressQuote from "../components/PressQuote.astro";
+import { withBase } from "../lib/url";
+import data from "../data/press.json";
+---
+
+<Layout title="Press · Kiron Atom Tellian">
+  <PageHero
+    title={data.hero.title}
+    eyebrow={data.hero.eyebrow}
+    image={data.hero.image}
+    imageAlt={data.hero.imageAlt}
+  />
+
+  <section class="press container">
+    {data.quotes.map((q, i) => (
+      <>
+        <PressQuote
+          publication={q.publication}
+          byline={q.byline}
+          quote={q.quote}
+          date={q.date}
+          url={q.url}
+          align="center"
+        />
+        {i < data.quotes.length - 1 && i % 3 === 2 && <hr class="press__rule" />}
+      </>
+    ))}
+
+    <p class="press__cta reveal">
+      <a class="link-quiet" href={withBase("/about")}>
+        Read the biography <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .press {
+    padding-block: var(--section-y-tight) var(--section-y);
+  }
+
+  .press__rule {
+    width: 4rem;
+    margin: var(--space-12) auto;
+    border: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .press__cta {
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+</style>

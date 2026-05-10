@@ -3,7 +3,7 @@
     "title": "Kiron Atom Tellian",
     "subtitle": "Pianist · Composer",
     "image": "/img/hero-4_vor_dem_klavier.jpg",
-    "imageAlt": "Kiron Atom Tellian seated at a grand piano, photographed by Shervin Lainez."
+    "imageAlt": "Kiron Atom Tellian seated at a grand piano."
   },
   "pressCycle": [
     {
@@ -41,29 +41,6 @@
     "quote": "…experienced with countless and beautiful compositional techniques.",
     "date": "June 2016"
   },
-  "concerts": [
-    {
-      "date": "2026-05-21",
-      "displayDate": "May 21, 2026",
-      "venue": "Auditorium di Milano, Italy",
-      "programme": "Giacomo Rossini, Franz Liszt & Hector Berlioz",
-      "ticketsUrl": "https://sinfonicadimilano.org/it/eventi/2025-26/rossini-liszt-berlioz/1437"
-    },
-    {
-      "date": "2026-05-23",
-      "displayDate": "May 23, 2026",
-      "venue": "Auditorium di Milano, Italy",
-      "programme": "Giacomo Rossini, Franz Liszt & Hector Berlioz",
-      "ticketsUrl": "https://sinfonicadimilano.org/it/eventi/2025-26/rossini-liszt-berlioz/1438"
-    },
-    {
-      "date": "2026-05-27",
-      "displayDate": "May 27, 2026",
-      "venue": "Salzburg Großes Festspielhaus, Austria",
-      "programme": "Giacomo Rossini, Franz Liszt & Ludwig van Beethoven",
-      "ticketsUrl": "https://www.kulturvereinigung.com/de/Konzerte/Beethoven-7_e_1249"
-    }
-  ],
   "tertiaryImage": {
     "src": "/img/tertiary-10_vor_der_wand.jpg",
     "alt": "Kiron Atom Tellian standing against a wall."

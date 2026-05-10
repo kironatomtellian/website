@@ -1,0 +1,270 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import { withBase } from "../lib/url";
+import data from "../data/gallery.json";
+
+const photos = data.photos;
+---
+
+<Layout title="Gallery · Kiron Atom Tellian" bodyClass="page-gallery">
+  <PageHero title="Gallery" eyebrow="Photography" />
+
+  <section class="gallery container">
+    <div class="gallery__grid" data-gallery>
+      {photos.map((p, i) => (
+        <button
+          class="gallery__item"
+          type="button"
+          data-index={i}
+          aria-label={`Open ${p.alt}`}
+        >
+          <img
+            src={withBase(p.src)}
+            alt={p.alt}
+            loading={i < 4 ? "eager" : "lazy"}
+            decoding="async"
+            draggable="false"
+          />
+        </button>
+      ))}
+    </div>
+
+    {data.credit && <p class="small muted gallery__credit">{data.credit}</p>}
+  </section>
+
+  <div class="lightbox" data-lightbox aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox__close" type="button" data-lightbox-close aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 5 L19 19 M19 5 L5 19" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
+      </svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="Previous">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M20 4 L8 16 L20 28" stroke="currentColor" stroke-width="1.25" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="Next">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M12 4 L24 16 L12 28" stroke="currentColor" stroke-width="1.25" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" alt="" />
+      <figcaption class="lightbox__caption small muted-light"></figcaption>
+    </figure>
+    <p class="lightbox__counter small muted-light" data-lightbox-counter></p>
+  </div>
+</Layout>
+
+<style>
+  .gallery {
+    padding-block: var(--section-y-tight) var(--section-y);
+  }
+
+  .gallery__grid {
+    column-count: 3;
+    column-gap: var(--space-4);
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .gallery__item {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--space-4);
+    break-inside: avoid;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    background: var(--paper-deep);
+    cursor: zoom-in;
+  }
+
+  .gallery__item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 600ms var(--ease-out-expo),
+                opacity var(--t-hover) var(--ease-standard);
+  }
+
+  .gallery__item:hover img {
+    transform: scale(1.03);
+  }
+
+  .gallery__credit {
+    text-align: center;
+    margin-top: var(--space-12);
+  }
+
+  @media (max-width: 1024px) {
+    .gallery__grid { column-count: 2; }
+  }
+  @media (max-width: 640px) {
+    .gallery__grid { column-count: 1; }
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 12, 10, 0.92);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: var(--ink-light);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: var(--space-12) var(--space-8);
+  }
+
+  .lightbox[data-open="true"] {
+    display: flex;
+    animation: lightbox-fade 250ms var(--ease-standard);
+  }
+
+  @keyframes lightbox-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .lightbox__figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+    gap: var(--space-3);
+  }
+
+  .lightbox__img {
+    max-width: 90vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    animation: lightbox-zoom 400ms var(--ease-out-expo);
+  }
+
+  @keyframes lightbox-zoom {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .lightbox__caption {
+    text-align: center;
+    max-width: 60ch;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    color: var(--ink-light);
+    padding: var(--space-2);
+    transition: color var(--t-hover) var(--ease-standard);
+  }
+
+  .lightbox__close:hover { color: var(--accent-soft); }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-light);
+    padding: var(--space-3);
+    transition: color var(--t-hover) var(--ease-standard),
+                transform var(--t-hover) var(--ease-out-expo);
+  }
+
+  .lightbox__nav--prev { left: var(--space-4); }
+  .lightbox__nav--next { right: var(--space-4); }
+
+  .lightbox__nav:hover { color: var(--accent-soft); }
+  .lightbox__nav--prev:hover { transform: translateY(-50%) translateX(-3px); }
+  .lightbox__nav--next:hover { transform: translateY(-50%) translateX(3px); }
+
+  .lightbox__counter {
+    position: absolute;
+    bottom: var(--space-4);
+    left: 50%;
+    transform: translateX(-50%);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+  }
+
+  body:has(.lightbox[data-open="true"]) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox[data-open="true"],
+    .lightbox__img { animation: none; }
+  }
+</style>
+
+<script>
+  type Photo = { src: string; alt: string };
+  const dataEl = document.querySelector<HTMLElement>("[data-gallery]");
+  const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
+  if (dataEl && lightbox) {
+    const items = Array.from(dataEl.querySelectorAll<HTMLButtonElement>(".gallery__item"));
+    const photos: Photo[] = items.map((it) => ({
+      src: (it.querySelector("img") as HTMLImageElement).src,
+      alt: (it.querySelector("img") as HTMLImageElement).alt,
+    }));
+    const imgEl = lightbox.querySelector<HTMLImageElement>(".lightbox__img")!;
+    const captionEl = lightbox.querySelector<HTMLElement>(".lightbox__caption")!;
+    const counterEl = lightbox.querySelector<HTMLElement>("[data-lightbox-counter]")!;
+    let idx = 0;
+    let lastTrigger: HTMLElement | null = null;
+
+    const render = () => {
+      const p = photos[idx];
+      if (!p) return;
+      imgEl.src = p.src;
+      imgEl.alt = p.alt;
+      captionEl.textContent = p.alt;
+      counterEl.textContent = `${idx + 1} / ${photos.length}`;
+    };
+
+    const open = (i: number, trigger: HTMLElement) => {
+      idx = i;
+      lastTrigger = trigger;
+      render();
+      lightbox.setAttribute("data-open", "true");
+      lightbox.setAttribute("aria-hidden", "false");
+      (lightbox.querySelector<HTMLButtonElement>(".lightbox__close"))?.focus();
+    };
+
+    const close = () => {
+      lightbox.setAttribute("data-open", "false");
+      lightbox.setAttribute("aria-hidden", "true");
+      lastTrigger?.focus();
+    };
+
+    const next = () => { idx = (idx + 1) % photos.length; render(); };
+    const prev = () => { idx = (idx - 1 + photos.length) % photos.length; render(); };
+
+    items.forEach((it, i) => it.addEventListener("click", () => open(i, it)));
+
+    lightbox.querySelector("[data-lightbox-close]")?.addEventListener("click", close);
+    lightbox.querySelector("[data-lightbox-next]")?.addEventListener("click", next);
+    lightbox.querySelector("[data-lightbox-prev]")?.addEventListener("click", prev);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (lightbox.getAttribute("data-open") !== "true") return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
+    });
+  }
+</script>

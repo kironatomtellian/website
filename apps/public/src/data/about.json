@@ -1,0 +1,61 @@
+{
+  "hero": {
+    "title": "Biography",
+    "eyebrow": "Kiron Atom Tellian",
+    "image": "/img/about-hero.jpg",
+    "imageAlt": "Kiron Atom Tellian portrait."
+  },
+  "intro": {
+    "publication": "NDR Kultur",
+    "quote": "Devilish, virtuoso, and simply: brilliant.",
+    "date": "November 2021"
+  },
+  "blocks": [
+    {
+      "kind": "para",
+      "body": "Austrian pianist and composer Kiron Atom Tellian currently pursues his bachelor’s degree at The Juilliard School in New York, studying with Maestro Sergei Babayan. He is a proud recipient of the prestigious Kovner Fellowship. Born in Vienna, Tellian began his piano studies at the University for Music and Performing Arts Vienna (MDW) at the age of seven and made his orchestral debut at nine."
+    },
+    {
+      "kind": "quote",
+      "publication": "la Repubblica",
+      "quote": "Without resorting to ostentatious virtuosity, articulated phrases, accents, and lyrical lines with remarkable freedom.",
+      "date": "November 2024"
+    },
+    {
+      "kind": "para",
+      "body": "Tellian has won countless first prizes at international competitions for piano, chamber music, and composition across Austria, France, Germany, Luxembourg, the Netherlands, Italy, Slovakia, Russia, England, the USA, and Japan. In Fall 2024, he won the YCA Susan Wadsworth International Auditions, where he was awarded eight special prizes, including the Friends of Music Concerts Performance Award, the Hayden’s Ferry Chamber Music Series Prize, the Liliane Questel Recital Award, the Serge Rachmaninoff Foundation Prize, the Alexander Kasza-Kasser Concert Prize, the Paul A. Fish Memorial Prize, and the Stern Young Artist Development Award."
+    },
+    {
+      "kind": "para",
+      "body": "Other major accolades include first prize and the Haydn Prize at the 17th Ettlingen International Piano Competition in Germany, the grand prize and special awards at the X. Savshinsky International Music Competition in Saint Petersburg, and three first prizes at the Fifth Rosalyn Tureck International Bach Competition in New York. Additionally, he won the Grand Prize, the “Alexei Sultanov Memorial Discovery Prize,” and awards for best mazurka and best etude at the Nashville International Chopin Competition, followed by first prize at the Borderland Chopin International Competition."
+    },
+    {
+      "kind": "quote",
+      "publication": "The Tennessean",
+      "quote": "…an incredible combination of sensitivity and taste.",
+      "date": "October 2023"
+    },
+    {
+      "kind": "para",
+      "body": "Tellian’s compositions span solo, chamber, and orchestral works, with many receiving first prizes at composition competitions. This season, he has been commissioned to write an orchestral work, which will be premiered at the Vienna Musikverein."
+    },
+    {
+      "kind": "para",
+      "body": "This season, Tellian has performed at the Vienna Konzerthaus — where he will return for multiple engagements — the Viotti Festival, the Vienna Musikverein, and made his debut with the Orchestra Sinfonica di Milano, performing Chopin’s First Piano Concerto. He will also debut at Cultura Artística in São Paulo, Brazil, and perform with the El Paso Symphony."
+    },
+    {
+      "kind": "quote",
+      "publication": "Badische Neueste Nachrichten",
+      "quote": "The bravura and maturity of his playing render speechless.",
+      "date": "October 2021"
+    },
+    {
+      "kind": "para",
+      "body": "His past engagements include collaborations with Emmanuel Tjeknavorian in duo recitals at the Shoe Factory in Cyprus, the Festspiele Mecklenburg-Vorpommern in Germany (broadcast live on NDR), and the Viotti Festival in Italy. He has also performed at Kulturfest im Schloss Walpersdorf, the Konzerthaus Blaibach, the Vienna Konzerthaus, and with orchestras such as WKO Heilbronn. A special highlight was his invitation to the Verbier Festival, where he performed both solo and chamber music."
+    },
+    {
+      "kind": "para",
+      "body": "Looking ahead, Tellian will make his debut with the San Diego Symphony and has been invited by the Rachmaninov Foundation to perform at the historic Villa Senar. A major milestone in the coming season will be his solo recital debut at Carnegie Hall, marking another significant step in his rapidly rising career."
+    }
+  ]
+}
