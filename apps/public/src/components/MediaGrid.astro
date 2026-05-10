@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 export interface MediaItem {
   title: string;
   description: string;
@@ -33,7 +35,7 @@ const { items } = Astro.props;
           <div class="media-card__frame">
             <img
               class="media-card__img"
-              src={m.thumbnail}
+              src={withBase(m.thumbnail)}
               alt=""
               loading="lazy"
               decoding="async"
@@ -54,7 +56,7 @@ const { items } = Astro.props;
     </div>
 
     <p class="media-grid__cta reveal">
-      <a class="link-quiet" href="/media">
+      <a class="link-quiet" href={withBase("/media")}>
         All recordings <span aria-hidden="true">→</span>
       </a>
     </p>

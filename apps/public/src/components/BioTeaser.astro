@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 export interface Props {
   paragraphs: string[];
 }
@@ -13,7 +15,7 @@ const { paragraphs } = Astro.props;
         <p class={`body bio-teaser__p ${i === 0 ? "dropcap" : ""}`}>{p}</p>
       ))}
       <p class="bio-teaser__cta">
-        <a class="link-quiet" href="/about">
+        <a class="link-quiet" href={withBase("/about")}>
           Read full biography <span aria-hidden="true">→</span>
         </a>
       </p>

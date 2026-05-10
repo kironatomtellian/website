@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 export interface Photo {
   src: string;
   alt: string;
@@ -12,13 +14,13 @@ const doubled = [...photos, ...photos];
 ---
 
 <section class="photo-ticker bg-deep reveal" aria-label="Photo gallery preview">
-  <a class="photo-ticker__link" href="/gallery" aria-label="Open gallery">
+  <a class="photo-ticker__link" href={withBase("/gallery")} aria-label="Open gallery">
     <div class="photo-ticker__viewport" data-ticker>
       <ul class="photo-ticker__track" data-ticker-track>
         {doubled.map((p, i) => (
           <li class="photo-ticker__item" aria-hidden={i >= photos.length ? "true" : "false"}>
             <img
-              src={p.src}
+              src={withBase(p.src)}
               alt={i >= photos.length ? "" : p.alt}
               loading="lazy"
               decoding="async"
@@ -31,7 +33,7 @@ const doubled = [...photos, ...photos];
   </a>
   {credit && <p class="photo-ticker__credit small muted">{credit}</p>}
   <p class="photo-ticker__cta">
-    <a class="link-quiet" href="/gallery">
+    <a class="link-quiet" href={withBase("/gallery")}>
       All photos <span aria-hidden="true">→</span>
     </a>
   </p>

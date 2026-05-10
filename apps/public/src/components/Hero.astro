@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 export interface Props {
   title: string;
   subtitle: string;
@@ -12,7 +14,7 @@ const { title, subtitle, image, imageAlt } = Astro.props;
   <div class="hero__media">
     <img
       class="hero__img"
-      src={image}
+      src={withBase(image)}
       alt={imageAlt}
       width="2560"
       height="1707"

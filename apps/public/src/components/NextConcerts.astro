@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 export interface Concert {
   date: string;
   displayDate: string;
@@ -84,7 +86,7 @@ const daysUntil = (iso: string): number => {
     )}
 
     <p class="next-concerts__cta reveal">
-      <a class="link-quiet" href="/schedule">
+      <a class="link-quiet" href={withBase("/schedule")}>
         Full schedule <span aria-hidden="true">→</span>
       </a>
     </p>
