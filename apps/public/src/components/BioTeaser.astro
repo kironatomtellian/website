@@ -11,9 +11,11 @@ const { paragraphs } = Astro.props;
   <div class="container">
     <div class="bio-teaser__inner reading reveal-stagger">
       <p class="eyebrow accent">Biography</p>
-      {paragraphs.map((p, i) => (
-        <p class={`body bio-teaser__p ${i === 0 ? "dropcap" : ""}`}>{p}</p>
-      ))}
+      <div class="bio-teaser__cols">
+        {paragraphs.map((p, i) => (
+          <p class={`body bio-teaser__p ${i === 0 ? "dropcap" : ""}`}>{p}</p>
+        ))}
+      </div>
       <p class="bio-teaser__cta">
         <a class="link-quiet" href={withBase("/about")}>
           Read full biography <span aria-hidden="true">→</span>
@@ -46,6 +48,30 @@ const { paragraphs } = Astro.props;
   .bio-teaser__cta {
     text-align: center;
     margin-top: var(--space-8);
+  }
+
+  @media (min-width: 1200px) {
+    .bio-teaser__inner {
+      max-width: 1100px;
+      margin-inline: auto;
+    }
+    .bio-teaser__cols {
+      column-count: 2;
+      column-gap: var(--space-16);
+      column-rule: 1px solid var(--rule);
+    }
+    .bio-teaser__p {
+      break-inside: avoid-column;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .bio-teaser__inner {
+      max-width: 1320px;
+    }
+    .bio-teaser__cols {
+      column-gap: var(--space-20);
+    }
   }
 
   .link-quiet {
