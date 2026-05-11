@@ -43,7 +43,7 @@ const hasImage = Boolean(image);
   }
 
   .page-hero--media {
-    min-height: clamp(26rem, 70svh, 42rem);
+    min-height: clamp(36rem, 85svh, 56rem);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -51,6 +51,7 @@ const hasImage = Boolean(image);
     background: var(--paper-deep);
     padding-bottom: var(--space-16);
   }
+
 
   .page-hero--plain {
     background: var(--paper);
@@ -73,19 +74,10 @@ const hasImage = Boolean(image);
   .page-hero__veil {
     position: absolute;
     inset: 0;
-    /* Thin opaque cap exactly the height of the nav — masks the seam
-       between the bar and the image without darkening the face area
-       just below it. Photo then reads natural through the middle and
-       only darkens again at the very bottom to keep the eyebrow +
-       title legible. */
-    background: linear-gradient(
-      to bottom,
-      var(--paper-deep) 0,
-      var(--paper-deep) var(--nav-offset),
-      rgba(14, 12, 10, 0) calc(var(--nav-offset) + 1.5rem),
-      rgba(14, 12, 10, 0) 55%,
-      rgba(14, 12, 10, 0.8) 100%
-    );
+    /* Only the nav-height stripe is solid (kills the seam). Rest of
+       the photo is shown raw — no gradient. */
+    background: var(--paper-deep);
+    clip-path: inset(0 0 calc(100% - var(--nav-offset)) 0);
   }
 
   .page-hero__content {
@@ -100,13 +92,15 @@ const hasImage = Boolean(image);
     animation: page-hero-rise 700ms var(--ease-out-expo) 150ms forwards;
   }
 
-  /* On image heros, photos vary in brightness — accent gold ends up
-     muddy or invisible. Use the same cream the title uses so it reads
-     against any background, with a soft text-shadow against bright
-     spots. */
+  /* Without a gradient veil, the title + eyebrow rely on a soft
+     text-shadow to stay readable over any photo. */
   .page-hero--media .page-hero__eyebrow {
     color: var(--ink-light);
-    text-shadow: 0 1px 6px rgba(14, 12, 10, 0.55);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+  }
+
+  .page-hero--media .page-hero__title {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
   }
 
   .page-hero__title {
