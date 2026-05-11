@@ -3,11 +3,16 @@ import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
-import { type Concert, groupByYear } from "../lib/concert";
+import { type Concert } from "../lib/concert";
 import past from "../data/concerts-past.json";
 
 const concerts = past as Concert[];
-const grouped = groupByYear(concerts);
+
+// Column-by-column split so the left column reads top-to-bottom by date,
+// then the right column.
+const mid = Math.ceil(concerts.length / 2);
+const colLeft = concerts.slice(0, mid);
+const colRight = concerts.slice(mid);
 ---
 
 <Layout title="Previous events · Kiron Atom Tellian">
@@ -20,22 +25,13 @@ const grouped = groupByYear(concerts);
   />
 
   <section class="archive container">
-    {grouped.map((group) => (
-      <details class="archive__year" open>
-        <summary class="archive__summary">
-          <span class="display-l-italic accent archive__year-label">{group.year}</span>
-          <span class="archive__spacer"></span>
-          <span class="archive__chev" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 7 L10 12 L15 7" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-        </summary>
-        <div class="archive__rows">
-          {group.items.map((c) => <ConcertRow concert={c} showTickets={false} />)}
+    <div class="archive__columns reveal">
+      {[colLeft, colRight].map((col) => (
+        <div class="archive__column">
+          {col.map((c) => <ConcertRow concert={c} showTickets={false} />)}
         </div>
-      </details>
-    ))}
+      ))}
+    </div>
 
     <p class="archive__cta reveal">
       <a class="link-quiet" href={withBase("/schedule")}>
@@ -51,70 +47,27 @@ const grouped = groupByYear(concerts);
     max-width: 1080px;
   }
 
-  .archive__year {
-    border-top: 1px solid var(--rule);
-    padding-block: var(--space-4);
-  }
-
-  .archive__year:last-of-type {
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .archive__summary {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-4);
-    cursor: pointer;
-    list-style: none;
-    padding-block: var(--space-3);
-    transition: color var(--t-hover) var(--ease-standard);
-  }
-
-  .archive__summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .archive__summary:hover {
-    color: var(--accent);
-  }
-
-  .archive__year-label {
-    margin: 0;
-    flex-shrink: 0;
-  }
-
-  .archive__spacer {
-    flex: 1;
-  }
-
   @media (min-width: 1280px) {
     .archive {
       max-width: 1440px;
     }
-    .archive__rows {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 var(--space-12);
-    }
   }
 
-  .archive__chev {
-    transition: transform var(--t-hover) var(--ease-out-expo);
-    color: var(--muted);
-    line-height: 0;
-  }
-
-  .archive__year[open] .archive__chev {
-    transform: rotate(180deg);
-  }
-
-  .archive__rows {
-    margin-top: var(--space-3);
-    padding-bottom: var(--space-6);
+  .archive__columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--space-12);
   }
 
   .archive__cta {
     text-align: center;
     margin-top: var(--space-12);
+  }
+
+  @media (max-width: 768px) {
+    .archive__columns {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
   }
 </style>
