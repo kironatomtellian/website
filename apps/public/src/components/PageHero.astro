@@ -94,6 +94,12 @@ const hasImage = Boolean(image);
     animation: page-hero-rise 700ms var(--ease-out-expo) 150ms forwards;
   }
 
+  /* The dark --accent reads as muddy brown over a dark hero image,
+     so the eyebrow on media heros uses the lighter accent. */
+  .page-hero--media .page-hero__eyebrow {
+    color: var(--accent-soft);
+  }
+
   .page-hero__title {
     margin: 0;
     color: inherit;
