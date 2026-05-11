@@ -80,14 +80,15 @@
     }
   ],
   "gallery": [
-    { "src": "/img/gallery/01.jpg", "alt": "Kiron Atom Tellian, seated at the grand piano." },
+    { "src": "/img/gallery/01.jpg", "alt": "Kiron Atom Tellian, seated in front of the grand piano." },
     { "src": "/img/gallery/02.jpg", "alt": "Kiron Atom Tellian against an abstract painted wall." },
-    { "src": "/img/gallery/03.jpg", "alt": "Kiron Atom Tellian in a clawfoot bathtub, laughing." },
-    { "src": "/img/gallery/04.jpg", "alt": "Kiron Atom Tellian at the keyboard, head lowered." },
-    { "src": "/img/gallery/05.jpg", "alt": "Kiron Atom Tellian, blue cardigan, cool painted wall." },
-    { "src": "/img/gallery/06.jpg", "alt": "Kiron Atom Tellian, dark jacket, textured wall." },
-    { "src": "/img/gallery/07.jpg", "alt": "Kiron Atom Tellian, blue cardigan, painted wall." },
-    { "src": "/img/gallery/08.jpg", "alt": "Kiron Atom Tellian leaning back at the grand piano." }
+    { "src": "/img/gallery/03.jpg", "alt": "Kiron Atom Tellian lying on the keyboard, viewed from above." },
+    { "src": "/img/gallery/04.jpg", "alt": "Kiron Atom Tellian, blue cardigan, painted wall." },
+    { "src": "/img/gallery/05.jpg", "alt": "Kiron Atom Tellian in a clawfoot bathtub, laughing." },
+    { "src": "/img/gallery/06.jpg", "alt": "Kiron Atom Tellian, blue cardigan, cool painted wall." },
+    { "src": "/img/gallery/07.jpg", "alt": "Kiron Atom Tellian, white shirt, leaning back on the grand piano." },
+    { "src": "/img/gallery/08.jpg", "alt": "Kiron Atom Tellian, dark jacket, textured wall." },
+    { "src": "/img/gallery/09.jpg", "alt": "Kiron Atom Tellian, intimate portrait at the keyboard." }
   ],
   "photoCredit": "© Photos Shervin Lainez"
 }
