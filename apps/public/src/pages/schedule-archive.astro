@@ -25,7 +25,7 @@ const colRight = concerts.slice(mid);
   />
 
   <section class="archive container">
-    <div class="archive__columns reveal">
+    <div class="archive__columns">
       {[colLeft, colRight].map((col) => (
         <div class="archive__column">
           {col.map((c) => <ConcertRow concert={c} showTickets={false} />)}
@@ -59,7 +59,9 @@ const colRight = concerts.slice(mid);
     gap: 0;
   }
 
-  @media (min-width: 1100px) {
+  /* Two columns only kick in once each column is wide enough that a
+     typical concert entry stays within ~4 lines. */
+  @media (min-width: 1400px) {
     .archive__columns {
       grid-template-columns: 1fr 1fr;
       gap: 0 var(--space-12);

@@ -73,12 +73,16 @@ const hasImage = Boolean(image);
   .page-hero__veil {
     position: absolute;
     inset: 0;
+    /* First band matches the solid nav bg so there's no visible seam
+       under the nav. Then a heavier fade so the eyebrow + title at
+       the bottom always sit on a darkened area. */
     background: linear-gradient(
       to bottom,
-      rgba(14, 12, 10, 0.45) 0%,
-      rgba(14, 12, 10, 0.1) 35%,
-      rgba(14, 12, 10, 0.1) 65%,
-      rgba(14, 12, 10, 0.8) 100%
+      var(--paper-deep) 0,
+      var(--paper-deep) calc(var(--nav-offset) + 0.25rem),
+      rgba(14, 12, 10, 0.5) calc(var(--nav-offset) + 3rem),
+      rgba(14, 12, 10, 0.2) 50%,
+      rgba(14, 12, 10, 0.85) 100%
     );
   }
 
@@ -94,10 +98,13 @@ const hasImage = Boolean(image);
     animation: page-hero-rise 700ms var(--ease-out-expo) 150ms forwards;
   }
 
-  /* The dark --accent reads as muddy brown over a dark hero image,
-     so the eyebrow on media heros uses the lighter accent. */
+  /* On image heros, photos vary in brightness — accent gold ends up
+     muddy or invisible. Use the same cream the title uses so it reads
+     against any background, with a soft text-shadow against bright
+     spots. */
   .page-hero--media .page-hero__eyebrow {
-    color: var(--accent-soft);
+    color: var(--ink-light);
+    text-shadow: 0 1px 6px rgba(14, 12, 10, 0.55);
   }
 
   .page-hero__title {
