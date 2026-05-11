@@ -13,8 +13,8 @@ const label = ensembleLabel(concert);
   <div class="concert-row__date">{concert.displayDate}</div>
   <div class="concert-row__body">
     <h3 class="concert-row__venue">{concert.venue}</h3>
-    {label && <p class="small muted italic concert-row__ensemble">{label}</p>}
-    <p class="concert-row__programme italic">{concert.programme}</p>
+    {label && <p class="small muted concert-row__ensemble">{label}</p>}
+    <p class="concert-row__programme">{concert.programme}</p>
     {concert.notes && <p class="small muted concert-row__notes">{concert.notes}</p>}
   </div>
   {showTickets && concert.ticketsUrl && (
@@ -56,11 +56,11 @@ const label = ensembleLabel(concert);
     margin: 0;
     font-size: 1.125rem;
     font-weight: 400;
-    font-style: italic;
   }
 
   .concert-row__ensemble {
     margin: 2px 0 0;
+    font-style: normal;
     color: var(--accent);
   }
 

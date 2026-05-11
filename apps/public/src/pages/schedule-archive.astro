@@ -20,8 +20,8 @@ const grouped = groupByYear(concerts);
   />
 
   <section class="archive container">
-    {grouped.map((group, gi) => (
-      <details class="archive__year" open={gi === 0}>
+    {grouped.map((group) => (
+      <details class="archive__year" open>
         <summary class="archive__summary">
           <span class="display-l-italic accent archive__year-label">{group.year}</span>
           <span class="archive__spacer"></span>

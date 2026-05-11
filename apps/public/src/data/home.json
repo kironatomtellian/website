@@ -25,6 +25,36 @@
       "publication": "Badische Neueste Nachrichten",
       "quote": "The bravura and maturity of his playing render speechless.",
       "date": "October 2021"
+    },
+    {
+      "publication": "Les Arts-Chipels",
+      "quote": "One enters a state of weightlessness — following, as if suspended, by the whims of the wind blown by the performer.",
+      "date": "December 2023"
+    },
+    {
+      "publication": "Oberösterreichische Nachrichten",
+      "quote": "Undoubtedly one of the greatest and most talented pianists from Austria.",
+      "date": "May 2017"
+    },
+    {
+      "publication": "New York Concert Review",
+      "quote": "One of the day's most interesting musicians, with an individual style that brought to mind some of the earlier Bach performances of Ivo Pogorelich.",
+      "date": "October 2017"
+    },
+    {
+      "publication": "Weser Kurier",
+      "quote": "Tellian's fingers flew about the keyboard, perfectly depicting the weightless elegance of the waltz.",
+      "date": "March 2022"
+    },
+    {
+      "publication": "Kronen Zeitung",
+      "quote": "What an allegro giusto! Their riveting performance was met with an incredibly long applause.",
+      "date": "August 2021"
+    },
+    {
+      "publication": "Mittelbayrische Zeitung",
+      "quote": "His ability to connect virtuosity and intimate sensitivity, explosive drama, longing and singing melodies was extraordinary.",
+      "date": "May 2019"
     }
   ],
   "bio": [
@@ -41,6 +71,38 @@
     "quote": "…experienced with countless and beautiful compositional techniques.",
     "date": "June 2016"
   },
+  "pressGrid": [
+    {
+      "publication": "la Repubblica",
+      "quote": "Tellian dissected the athletic, 'Paganini-esque' score to extract its essence: the emotional and pianistic tone that had not existed before Chopin.",
+      "date": "November 2024"
+    },
+    {
+      "publication": "Les Arts-Chipels",
+      "quote": "Kiron Atom Tellian belongs to the rare breed of pianists who caress the piano, whose fingers lovingly glide over the keyboard, drawing out infinite nuances.",
+      "date": "December 2023"
+    },
+    {
+      "publication": "Weser Kurier",
+      "quote": "Starting with a concise theme, impressively presented by Tellian, to culminate in a ferocious finale which was rewarded with standing ovations.",
+      "date": "March 2022"
+    },
+    {
+      "publication": "New York Concert Review",
+      "quote": "His Allemande, Courante and Sarabande all had an expressiveness one most associates with Romanticism. One looks forward to hearing this young man play again.",
+      "date": "October 2017"
+    },
+    {
+      "publication": "Badische Neueste Nachrichten",
+      "quote": "Tellian's convincing rendition of Ravel's 'Gaspard de la nuit' — probably one of the most difficult works for piano overall — one can only listen, enjoy and wish these young artists all the best.",
+      "date": "October 2021"
+    },
+    {
+      "publication": "Mittelbayrische Zeitung",
+      "quote": "A fulminant rendition of Chopin's third piano sonata. His ability to play with incredibly nuanced colors and feelings, to connect virtuosity and intimate sensitivity, was extraordinary.",
+      "date": "May 2019"
+    }
+  ],
   "tertiaryImage": {
     "src": "/img/tertiary-10_vor_der_wand.jpg",
     "alt": "Kiron Atom Tellian standing against a wall."

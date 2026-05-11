@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
-import { type Concert, ensembleLabel, daysUntil } from "../lib/concert";
+import { type Concert, ensembleLabel, daysUntil, groupByMonth } from "../lib/concert";
 import upcoming from "../data/concerts-upcoming.json";
 
 const concerts = upcoming as Concert[];
@@ -11,15 +11,33 @@ const featured = concerts[0];
 const rest = concerts.slice(1);
 const featuredDays = featured?.date ? daysUntil(featured.date) : null;
 const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 10;
+const grouped = groupByMonth(rest);
+
+// Split items column-by-column for the desktop two-column layout: first
+// half goes down the left column, second half down the right. This keeps
+// strict chronological reading order within each column.
+type Entry =
+  | { kind: "month"; key: string; label: string }
+  | { kind: "concert"; key: string; concert: Concert };
+const entries: Entry[] = [];
+for (const g of grouped) {
+  entries.push({ kind: "month", key: `m-${g.key}`, label: g.label });
+  for (const c of g.items) {
+    entries.push({ kind: "concert", key: `c-${c.date}-${c.venue}`, concert: c });
+  }
+}
+const mid = Math.ceil(entries.length / 2);
+const colLeft = entries.slice(0, mid);
+const colRight = entries.slice(mid);
 ---
 
 <Layout title="Schedule · Kiron Atom Tellian">
   <PageHero
     title="Schedule"
     eyebrow="Selection of upcoming performances"
-    image="/img/schedule-hero.jpg"
-    imageAlt="Kiron Atom Tellian preparing for a performance."
-    imagePosition="35% 30%"
+    image="/img/hero-4_vor_dem_klavier.jpg"
+    imageAlt="Kiron Atom Tellian seated at a grand piano."
+    imagePosition="center 25%"
   />
 
   <section class="schedule container">
@@ -27,11 +45,11 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
       <article class="schedule__featured reveal">
         <div class="schedule__featured-top">
           <div>
-            <p class="display-l-italic schedule__featured-date">{featured.displayDate}</p>
+            <p class="display-l schedule__featured-date">{featured.displayDate}</p>
             {ensembleLabel(featured) && (
-              <p class="small accent schedule__featured-ensemble italic">{ensembleLabel(featured)}</p>
+              <p class="small accent schedule__featured-ensemble">{ensembleLabel(featured)}</p>
             )}
-            <p class="h2 schedule__featured-programme italic">{featured.programme}</p>
+            <p class="h2 schedule__featured-programme">{featured.programme}</p>
             <p class="schedule__featured-venue">{featured.venue}</p>
           </div>
           {showCount && (
@@ -51,12 +69,19 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
       </article>
     )}
 
-    {rest.length > 0 && (
-      <div class="schedule__group reveal">
-        <h2 class="eyebrow accent schedule__group-heading">Selection of upcoming performances</h2>
-        <div class="schedule__rows">
-          {rest.map((c) => <ConcertRow concert={c} />)}
-        </div>
+    {entries.length > 0 && (
+      <div class="schedule__columns reveal">
+        {[colLeft, colRight].map((col) => (
+          <div class="schedule__column">
+            {col.map((e) =>
+              e.kind === "month" ? (
+                <h2 class="display-l accent schedule__month">{e.label}</h2>
+              ) : (
+                <ConcertRow concert={e.concert} />
+              ),
+            )}
+          </div>
+        ))}
       </div>
     )}
 
@@ -74,19 +99,9 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
     max-width: 1080px;
   }
 
-  .schedule__group-heading {
-    text-align: center;
-    margin-bottom: var(--space-6);
-  }
-
   @media (min-width: 1280px) {
     .schedule {
       max-width: 1440px;
-    }
-    .schedule__rows {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 var(--space-12);
     }
   }
 
@@ -139,8 +154,23 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
     margin-top: var(--space-4);
   }
 
-  .schedule__group + .schedule__group {
-    margin-top: var(--space-12);
+  .schedule__columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--space-12);
+  }
+
+  .schedule__column > * + * {
+    margin-top: 0;
+  }
+
+  .schedule__month {
+    margin: var(--space-8) 0 var(--space-2);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+  }
+
+  .schedule__column > .schedule__month:first-child {
+    margin-top: 0;
   }
 
   .schedule__cta {
@@ -154,6 +184,10 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
     }
     .schedule__featured-count {
       text-align: left;
+    }
+    .schedule__columns {
+      grid-template-columns: 1fr;
+      gap: 0;
     }
   }
 </style>

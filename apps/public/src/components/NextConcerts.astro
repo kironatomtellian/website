@@ -36,7 +36,7 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
       <article class="featured reveal">
         <div class="featured__top">
           <div class="featured__left">
-            <p class="display-l-italic featured__date">{featured.displayDate}</p>
+            <p class="display-l featured__date">{featured.displayDate}</p>
             {ensembleLabel(featured) && (
               <p class="small muted featured__ensemble">{ensembleLabel(featured)}</p>
             )}
@@ -70,7 +70,7 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
               {ensembleLabel(c) && (
                 <div class="upcoming__ensemble small muted">{ensembleLabel(c)}</div>
               )}
-              <div class="upcoming__programme italic">{c.programme}</div>
+              <div class="upcoming__programme">{c.programme}</div>
             </div>
             {c.ticketsUrl && (
               <a class="upcoming__link" href={c.ticketsUrl} target="_blank" rel="noopener">
@@ -139,12 +139,10 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
   .featured__ensemble {
     margin: 0 0 var(--space-2);
     color: var(--accent-soft);
-    font-style: italic;
   }
 
   .featured__programme {
     margin: 0;
-    font-style: italic;
     font-weight: 400;
     color: var(--ink-light);
   }
@@ -223,13 +221,13 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
 
   .upcoming__ensemble {
     margin-top: 2px;
-    font-style: italic;
     color: var(--accent-soft);
   }
 
   .upcoming__programme {
     margin-top: 2px;
     font-size: 0.9375rem;
+    font-style: normal;
     color: var(--muted-light);
   }
 
