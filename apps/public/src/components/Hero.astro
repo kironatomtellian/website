@@ -69,15 +69,15 @@ const { title, subtitle, image, imageAlt } = Astro.props;
   .hero__veil {
     position: absolute;
     inset: 0;
-    /* First band stays fully opaque dark to match the solid nav bar
-       above, so the boundary between nav and hero image is invisible
-       (no horizontal seam on the home page). */
+    /* Big solid dark band at the top to swallow any seam between the
+       nav bar and the hero image, then a smooth fade. */
     background: linear-gradient(
       to bottom,
       var(--paper-deep) 0,
-      var(--paper-deep) calc(var(--nav-offset) + 0.25rem),
-      rgba(14, 12, 10, 0.55) calc(var(--nav-offset) + 3rem),
-      rgba(14, 12, 10, 0.15) 32%,
+      var(--paper-deep) calc(var(--nav-offset) + 1.5rem),
+      rgba(14, 12, 10, 0.85) calc(var(--nav-offset) + 4rem),
+      rgba(14, 12, 10, 0.4) calc(var(--nav-offset) + 7rem),
+      rgba(14, 12, 10, 0.15) 35%,
       rgba(14, 12, 10, 0.15) 60%,
       rgba(14, 12, 10, 0.85) 100%
     );

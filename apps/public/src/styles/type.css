@@ -73,6 +73,19 @@
   font-feature-settings: "lnum";
 }
 
+@media (max-width: 768px) {
+  .body {
+    font-size: 1.1875rem;
+    line-height: 1.6;
+  }
+  .small {
+    font-size: 0.9375rem;
+  }
+  .eyebrow {
+    font-size: 0.8125rem;
+  }
+}
+
 .muted {
   color: var(--muted);
 }
