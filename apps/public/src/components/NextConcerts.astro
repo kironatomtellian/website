@@ -110,8 +110,8 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
   .next-concerts__intros {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-10);
-    margin: 0 auto var(--space-12);
+    gap: var(--space-16);
+    margin: 0 auto var(--space-16);
     max-width: 1280px;
   }
 
@@ -300,17 +300,30 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
     .featured__count {
       text-align: left;
     }
+    .featured__venue {
+      font-size: 1.125rem;
+    }
 
     .upcoming__row {
       grid-template-columns: 1fr;
-      gap: var(--space-1);
-      padding-block: var(--space-3);
+      gap: var(--space-2);
+      padding-block: var(--space-6);
     }
     .upcoming__row:hover {
       padding-left: 0;
     }
     .upcoming__date {
-      font-size: 0.875rem;
+      font-size: 1rem;
+    }
+    .upcoming__venue {
+      font-size: 1.125rem;
+    }
+    .upcoming__ensemble,
+    .upcoming__programme {
+      font-size: 1rem;
+    }
+    .upcoming__link {
+      font-size: 1rem;
     }
   }
 </style>
