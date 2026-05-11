@@ -69,17 +69,10 @@ const { title, subtitle, image, imageAlt } = Astro.props;
   .hero__veil {
     position: absolute;
     inset: 0;
-    /* Thin opaque cap exactly the height of the nav — kills the seam
-       without darkening the face below. Photo reads naturally through
-       the middle, then darkens at the bottom for title legibility. */
-    background: linear-gradient(
-      to bottom,
-      var(--paper-deep) 0,
-      var(--paper-deep) var(--nav-offset),
-      rgba(14, 12, 10, 0) calc(var(--nav-offset) + 1.5rem),
-      rgba(14, 12, 10, 0) 55%,
-      rgba(14, 12, 10, 0.85) 100%
-    );
+    /* Only the nav-height stripe is solid (kills the seam). Rest of
+       the photo is shown raw — no gradient. */
+    background: var(--paper-deep);
+    clip-path: inset(0 0 calc(100% - var(--nav-offset)) 0);
   }
 
   .hero__content {
@@ -93,7 +86,9 @@ const { title, subtitle, image, imageAlt } = Astro.props;
     max-width: 18ch;
     margin-inline: auto;
     font-style: normal;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
   }
+
 
   .hero__title-line {
     display: inline-block;
@@ -108,6 +103,7 @@ const { title, subtitle, image, imageAlt } = Astro.props;
     opacity: 0;
     transform: translateY(12px);
     animation: hero-rise 700ms var(--ease-out-expo) 650ms forwards;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
   }
 
   .hero__scroll {
