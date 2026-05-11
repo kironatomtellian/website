@@ -58,6 +58,8 @@ const items = [
   }
 
   .site-nav__inner {
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -185,25 +187,51 @@ const items = [
   @media (max-width: 900px) {
     .site-nav__toggle { display: block; }
 
+    /* Full-screen black overlay anchored to the very top of the
+       viewport, sitting BEHIND the nav__inner (z-index: 1 vs 2) so
+       the brand and the hamburger-to-X stay tappable on top of the
+       overlay — no gap between the nav and the menu. */
     .site-nav__list {
       position: fixed;
-      top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
+      z-index: 1;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
       background: #000;
-      padding: var(--space-12) var(--gutter);
+      padding: calc(var(--nav-offset) + var(--space-10)) var(--gutter) var(--space-12);
       gap: var(--space-6);
-      transform: translateY(-100vh);
-      transition: transform 350ms var(--ease-out-expo);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 300ms var(--ease-standard),
+                  visibility 0s linear 300ms;
     }
 
     .site-nav[data-open="true"] .site-nav__list {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 300ms var(--ease-standard),
+                  visibility 0s linear 0s;
+    }
+
+    .site-nav__list li {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 450ms var(--ease-out-quart),
+                  transform 450ms var(--ease-out-quart);
+    }
+
+    .site-nav[data-open="true"] .site-nav__list li {
+      opacity: 1;
       transform: translateY(0);
     }
+
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(1) { transition-delay: 120ms; }
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(2) { transition-delay: 170ms; }
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(3) { transition-delay: 220ms; }
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(4) { transition-delay: 270ms; }
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(5) { transition-delay: 320ms; }
+    .site-nav[data-open="true"] .site-nav__list li:nth-child(6) { transition-delay: 370ms; }
 
     .site-nav__link {
       font-size: 1.5rem;
