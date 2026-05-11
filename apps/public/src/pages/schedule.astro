@@ -138,8 +138,15 @@ const colRight = rest.slice(mid);
 
   .schedule__columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--space-12);
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 1100px) {
+    .schedule__columns {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-12);
+    }
   }
 
   .schedule__column > * + * {
@@ -157,10 +164,6 @@ const colRight = rest.slice(mid);
     }
     .schedule__featured-count {
       text-align: left;
-    }
-    .schedule__columns {
-      grid-template-columns: 1fr;
-      gap: 0;
     }
   }
 </style>

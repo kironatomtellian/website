@@ -2,11 +2,17 @@
 import { withBase } from "../lib/url";
 import { type Concert, ensembleLabel, daysUntil } from "../lib/concert";
 
+interface Quote {
+  publication: string;
+  quote: string;
+  date: string;
+}
+
 export interface Props {
   concerts: Concert[];
-  intro?: { publication: string; quote: string; date: string };
+  intros?: Quote[];
 }
-const { concerts, intro } = Astro.props;
+const { concerts, intros = [] } = Astro.props;
 
 const featured = concerts[0];
 const rest = concerts.slice(1);
@@ -16,16 +22,22 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
 
 <section class="next-concerts bg-deep" aria-label="Upcoming concerts">
   <div class="container">
-    {intro && (
-      <figure class="next-concerts__intro reveal">
-        <p class="eyebrow accent">{intro.publication}</p>
-        <blockquote class="pull-quote">
-          <span class="accent">»</span>
-          <span class="italic">{intro.quote}</span>
-          <span class="accent">«</span>
-        </blockquote>
-        <figcaption class="small muted italic">{intro.date}</figcaption>
-      </figure>
+    {intros.length > 0 && (
+      <ul class="next-concerts__intros reveal-stagger">
+        {intros.map((q) => (
+          <li>
+            <figure class="next-concerts__intro">
+              <p class="eyebrow accent">{q.publication}</p>
+              <blockquote class="next-concerts__quote">
+                <span class="accent">»</span>
+                <span class="italic">{q.quote}</span>
+                <span class="accent">«</span>
+              </blockquote>
+              <figcaption class="small muted italic">{q.date}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
     )}
 
     <div class="next-concerts__header reveal">
@@ -95,14 +107,32 @@ const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 
     padding-block: var(--section-y);
   }
 
-  .next-concerts__intro {
-    max-width: 28ch;
+  .next-concerts__intros {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
     margin: 0 auto var(--space-12);
+    max-width: 1280px;
+  }
+
+  @media (min-width: 900px) {
+    .next-concerts__intros {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-12);
+      align-items: start;
+    }
+  }
+
+  .next-concerts__intro {
+    margin: 0;
     text-align: center;
   }
 
-  .next-concerts__intro .pull-quote {
-    margin-block: var(--space-2);
+  .next-concerts__quote {
+    font-style: italic;
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.45;
+    margin: var(--space-2) 0 var(--space-2);
   }
 
   .next-concerts__header {
