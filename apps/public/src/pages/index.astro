@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import PressCycle from "../components/PressCycle.astro";
-import PressGrid from "../components/PressGrid.astro";
 import BioTeaser from "../components/BioTeaser.astro";
 import FullBleedImage from "../components/FullBleedImage.astro";
 import NextConcerts from "../components/NextConcerts.astro";
@@ -29,9 +28,7 @@ const concerts = (upcoming as Concert[]).slice(0, 6);
 
   <FullBleedImage src={data.secondaryImage.src} alt={data.secondaryImage.alt} height="65vh" position="38% 25%" />
 
-  <PressGrid quotes={data.pressGrid} />
-
-  <NextConcerts concerts={concerts} intro={data.calendarQuote} />
+  <NextConcerts concerts={concerts} intros={data.nextConcertsQuotes} />
 
   <FullBleedImage src={data.tertiaryImage.src} alt={data.tertiaryImage.alt} height="65vh" position="22% 27%" />
 

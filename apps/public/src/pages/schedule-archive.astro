@@ -55,19 +55,19 @@ const colRight = concerts.slice(mid);
 
   .archive__columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--space-12);
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 1100px) {
+    .archive__columns {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-12);
+    }
   }
 
   .archive__cta {
     text-align: center;
     margin-top: var(--space-12);
-  }
-
-  @media (max-width: 768px) {
-    .archive__columns {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
   }
 </style>
