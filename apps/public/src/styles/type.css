@@ -101,7 +101,12 @@
   float: left;
   margin-right: 0.15em;
   margin-top: 0.05em;
+  padding-left: 0.1em;
   color: var(--ink);
+}
+
+.dropcap {
+  padding-left: 0.1em;
 }
 
 .bg-deep .dropcap::first-letter {

@@ -43,10 +43,11 @@ const { title, subtitle, image, imageAlt } = Astro.props;
     position: relative;
     min-height: 100svh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     overflow: hidden;
     padding-top: var(--nav-h);
+    padding-bottom: clamp(5rem, 14vh, 10rem);
     text-align: center;
   }
 
