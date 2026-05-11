@@ -1,23 +1,23 @@
 .display-xl {
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-size: clamp(3.75rem, 11vw, 9.5rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
 }
 
 .display-l {
   font-weight: 400;
-  font-size: clamp(2.25rem, 5vw, 4.25rem);
-  line-height: 1.05;
+  font-size: clamp(2.875rem, 6.5vw, 5.5rem);
+  line-height: 1.02;
   letter-spacing: -0.015em;
 }
 
 .display-l-italic {
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(2.25rem, 5vw, 4.25rem);
-  line-height: 1.05;
+  font-size: clamp(2.875rem, 6.5vw, 5.5rem);
+  line-height: 1.02;
   letter-spacing: -0.015em;
 }
 
@@ -36,21 +36,21 @@
 
 .h1 {
   font-weight: 400;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
 
 .h2 {
   font-weight: 600;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(1.875rem, 3.75vw, 2.875rem);
   line-height: 1.2;
   letter-spacing: -0.005em;
 }
 
 .h3 {
   font-weight: 600;
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
   line-height: 1.3;
 }
 
