@@ -53,13 +53,15 @@ const items = [
     z-index: 100;
     background: var(--paper-deep);
     color: var(--ink-light);
-    transition: border-color var(--t-hover) var(--ease-standard);
+    transition: border-color var(--t-hover) var(--ease-standard),
+                box-shadow var(--t-hover) var(--ease-standard);
     border-bottom: 1px solid transparent;
     padding-top: env(safe-area-inset-top, 0px);
   }
 
   .site-nav.is-scrolled {
     border-bottom-color: var(--rule-dark);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
   }
 
   .site-nav__inner {
@@ -105,8 +107,8 @@ const items = [
     position: relative;
     display: inline-block;
     font-size: 0.9375rem;
-    color: var(--ink-light);
     line-height: 1;
+    color: var(--ink-light);
     padding-top: 0.65rem;
     padding-bottom: 0.45rem;
     transition: color var(--t-hover) var(--ease-standard);
@@ -132,7 +134,7 @@ const items = [
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 4px;
+    bottom: -6px;
     height: 1px;
     background: var(--accent-soft);
     transform: scaleX(0);

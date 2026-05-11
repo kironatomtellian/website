@@ -31,9 +31,6 @@ jobs:
 
       - run: npm ci
 
-      - name: Generate placeholder images (skipped if real ones exist)
-        run: node tools/generate-placeholders.mjs
-
       - name: Build with Astro
         run: npm run build
 

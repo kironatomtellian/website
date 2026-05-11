@@ -15,7 +15,7 @@ export interface Props {
 const { items } = Astro.props;
 ---
 
-<section class="media-grid section" aria-label="Audio and video">
+<section class="media-grid" aria-label="Audio and video">
   <div class="container">
     <header class="media-grid__header reveal">
       <p class="eyebrow accent">Selected Recordings</p>
@@ -64,13 +64,17 @@ const { items } = Astro.props;
 </section>
 
 <style>
+  .media-grid {
+    padding-block: var(--section-y-tight);
+  }
+
   .media-grid__header {
     text-align: center;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
   }
 
   .media-grid__title {
-    margin-top: var(--space-3);
+    margin-top: var(--space-2);
   }
 
   .media-grid__items {

@@ -6,13 +6,9 @@ import mediaData from "../data/media.json";
 
 const items = mediaData.items;
 
-const thumbFor = (t: string | null): string => {
-  if (!t) return withBase("/img/media-placeholder.jpg");
-  // Snapshot paths like ./cms/uploads/images/XYZ.jpeg — the eventual
-  // production site serves those at /cms/uploads/... For now we host
-  // placeholders at /img/media-* until real images are committed.
-  const fname = t.split("/").pop() ?? "";
-  return withBase(`/img/media/${fname}`);
+const thumbFor = (m: { youtubeId?: string | null }): string => {
+  if (m.youtubeId) return `https://i.ytimg.com/vi/${m.youtubeId}/hqdefault.jpg`;
+  return withBase("/img/media-hero.jpg");
 };
 ---
 
@@ -22,6 +18,7 @@ const thumbFor = (t: string | null): string => {
     eyebrow="Media"
     image="/img/media-hero.jpg"
     imageAlt="Kiron Atom Tellian performing."
+    imagePosition="22% 22%"
   />
 
   <section class="media-page container">
@@ -39,7 +36,7 @@ const thumbFor = (t: string | null): string => {
             <div class="media-card__frame">
               <img
                 class="media-card__img"
-                src={thumbFor(m.thumbnail)}
+                src={thumbFor(m)}
                 alt=""
                 loading="lazy"
                 decoding="async"
@@ -79,6 +76,20 @@ const thumbFor = (t: string | null): string => {
     gap: var(--space-12) var(--space-8);
     max-width: 1200px;
     margin-inline: auto;
+  }
+
+  @media (min-width: 1280px) {
+    .media-page__grid {
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 1500px;
+    }
+  }
+
+  @media (min-width: 1700px) {
+    .media-page__grid {
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1800px;
+    }
   }
 
   .media-card {

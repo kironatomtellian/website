@@ -42,7 +42,7 @@
   --reading-max: 66ch;
   --site-max: 1440px;
 
-  --nav-h: 4rem;
-  --nav-h-scrolled: 3.5rem;
+  --nav-h: 3.25rem;
+  --nav-h-scrolled: 3rem;
   --nav-offset: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
 }

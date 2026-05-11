@@ -9,6 +9,8 @@ import upcoming from "../data/concerts-upcoming.json";
 const concerts = upcoming as Concert[];
 const featured = concerts[0];
 const rest = concerts.slice(1);
+const featuredDays = featured?.date ? daysUntil(featured.date) : null;
+const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 10;
 const grouped = groupByMonth(rest);
 
 // Split items column-by-column for the desktop two-column layout: first
@@ -32,9 +34,10 @@ const colRight = entries.slice(mid);
 <Layout title="Schedule · Kiron Atom Tellian">
   <PageHero
     title="Schedule"
-    eyebrow="Upcoming concerts"
+    eyebrow="Selection of upcoming performances"
     image="/img/hero-4_vor_dem_klavier.jpg"
     imageAlt="Kiron Atom Tellian seated at a grand piano."
+    imagePosition="center 25%"
   />
 
   <section class="schedule container">
@@ -49,10 +52,10 @@ const colRight = entries.slice(mid);
             <p class="h2 schedule__featured-programme">{featured.programme}</p>
             <p class="schedule__featured-venue">{featured.venue}</p>
           </div>
-          {featured.date && (
+          {showCount && (
             <div class="schedule__featured-count">
-              <span class="schedule__featured-count-num accent">{daysUntil(featured.date)}</span>
-              <span class="eyebrow muted">days</span>
+              <span class="schedule__featured-count-num accent">{featuredDays}</span>
+              <span class="eyebrow muted">{featuredDays === 1 ? "day" : "days"}</span>
             </div>
           )}
         </div>
@@ -66,19 +69,21 @@ const colRight = entries.slice(mid);
       </article>
     )}
 
-    <div class="schedule__columns reveal">
-      {[colLeft, colRight].map((col) => (
-        <div class="schedule__column">
-          {col.map((e) =>
-            e.kind === "month" ? (
-              <h2 class="display-l accent schedule__month">{e.label}</h2>
-            ) : (
-              <ConcertRow concert={e.concert} />
-            ),
-          )}
-        </div>
-      ))}
-    </div>
+    {entries.length > 0 && (
+      <div class="schedule__columns reveal">
+        {[colLeft, colRight].map((col) => (
+          <div class="schedule__column">
+            {col.map((e) =>
+              e.kind === "month" ? (
+                <h2 class="display-l accent schedule__month">{e.label}</h2>
+              ) : (
+                <ConcertRow concert={e.concert} />
+              ),
+            )}
+          </div>
+        ))}
+      </div>
+    )}
 
     <p class="schedule__cta reveal">
       <a class="link-quiet" href={withBase("/schedule-archive")}>
@@ -92,6 +97,12 @@ const colRight = entries.slice(mid);
   .schedule {
     padding-block: var(--section-y-tight) var(--section-y);
     max-width: 1080px;
+  }
+
+  @media (min-width: 1280px) {
+    .schedule {
+      max-width: 1440px;
+    }
   }
 
   .schedule__featured {
