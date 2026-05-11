@@ -53,12 +53,13 @@ const { quotes } = Astro.props;
 
   .press-cycle__inner {
     position: relative;
-    min-height: clamp(11rem, 22vh, 18rem);
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .press-cycle__quote {
-    position: absolute;
-    inset: 0;
+    grid-column: 1;
+    grid-row: 1;
     margin: 0;
     opacity: 0;
     transform: translateY(8px);
@@ -79,7 +80,7 @@ const { quotes } = Astro.props;
   }
 
   .press-cycle__text {
-    max-width: 24ch;
+    max-width: 44ch;
     margin-inline: auto;
     margin-bottom: var(--space-4);
     position: relative;
