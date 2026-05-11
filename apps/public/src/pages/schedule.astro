@@ -23,9 +23,9 @@ const colRight = rest.slice(mid);
   <PageHero
     title="Schedule"
     eyebrow="Selection of upcoming performances"
-    image="/img/hero-4_vor_dem_klavier.jpg"
-    imageAlt="Kiron Atom Tellian seated at a grand piano."
-    imagePosition="center 25%"
+    image="/img/schedule-hero.jpg"
+    imageAlt="Kiron Atom Tellian preparing for a performance."
+    imagePosition="35% 30%"
   />
 
   <section class="schedule container">
@@ -58,7 +58,7 @@ const colRight = rest.slice(mid);
     )}
 
     {rest.length > 0 && (
-      <div class="schedule__columns reveal">
+      <div class="schedule__columns">
         {[colLeft, colRight].map((col) => (
           <div class="schedule__column">
             {col.map((c) => <ConcertRow concert={c} />)}
@@ -142,7 +142,11 @@ const colRight = rest.slice(mid);
     gap: 0;
   }
 
-  @media (min-width: 1100px) {
+  /* Two columns only kick in once each column is wide enough that a
+     typical concert entry stays within ~4 lines (date / venue /
+     ensemble / programme). Below this, programmes wrap aggressively
+     and the layout looks cramped, so use one column instead. */
+  @media (min-width: 1400px) {
     .schedule__columns {
       grid-template-columns: 1fr 1fr;
       gap: 0 var(--space-12);

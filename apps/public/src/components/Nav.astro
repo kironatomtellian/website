@@ -52,27 +52,14 @@ const items = [
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
-    /* Opaque-enough dark to keep light text legible over bright page
-       heros (Gallery, Contact), but with a hint of blur+transparency
-       so the bar reads as part of the dark hero on the landing page
-       instead of a hard horizontal seam at the bottom of the nav. */
-    background: rgba(14, 12, 10, 0.86);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    backdrop-filter: blur(18px) saturate(160%);
+    background: var(--paper-deep);
     color: var(--ink-light);
-    transition: background var(--t-hover) var(--ease-standard),
-                box-shadow var(--t-hover) var(--ease-standard);
+    transition: box-shadow var(--t-hover) var(--ease-standard);
     padding-top: env(safe-area-inset-top, 0px);
   }
 
   .site-nav.is-scrolled {
-    background: rgba(14, 12, 10, 0.94);
     box-shadow: 0 1px 14px rgba(0, 0, 0, 0.28);
-  }
-
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .site-nav { background: rgba(14, 12, 10, 0.96); }
-    .site-nav.is-scrolled { background: var(--paper-deep); }
   }
 
   .site-nav__inner {

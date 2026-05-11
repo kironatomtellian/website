@@ -47,8 +47,14 @@ const { quotes } = Astro.props;
 
 <style>
   .press-cycle {
-    padding-block: var(--space-8) var(--space-6);
+    padding: var(--space-12) var(--gutter) var(--space-10);
     text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .press-cycle {
+      padding: var(--space-16) var(--gutter) var(--space-12);
+    }
   }
 
   .press-cycle__inner {
