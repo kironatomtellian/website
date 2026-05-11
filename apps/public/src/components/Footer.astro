@@ -32,21 +32,36 @@ import { withBase } from "../lib/url";
   </div>
 
   <div class="container site-footer__base">
-    <a
-      class="site-footer__link site-footer__yt"
-      href="https://www.youtube.com/channel/UCgh0E-zCipS0smDr9FKus6g"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="YouTube channel"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.5 29.5 0 0 0 1 12c-.02 1.85.12 3.7.46 5.52a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2c.32-1.82.46-3.67.46-5.52a29.5 29.5 0 0 0-.46-5.6Z"
-          fill="currentColor"
-        />
-        <path d="M9.75 15.5V8.5L15.5 12l-5.75 3.5Z" fill="var(--paper-deep)" />
-      </svg>
-    </a>
+    <div class="site-footer__social">
+      <a
+        class="site-footer__link site-footer__icon"
+        href="https://www.instagram.com/kironatomtellian/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram profile"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5" />
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" />
+          <circle cx="17.25" cy="6.75" r="1" fill="currentColor" />
+        </svg>
+      </a>
+      <a
+        class="site-footer__link site-footer__icon"
+        href="https://www.youtube.com/channel/UCgh0E-zCipS0smDr9FKus6g"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube channel"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.5 29.5 0 0 0 1 12c-.02 1.85.12 3.7.46 5.52a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2c.32-1.82.46-3.67.46-5.52a29.5 29.5 0 0 0-.46-5.6Z"
+            fill="currentColor"
+          />
+          <path d="M9.75 15.5V8.5L15.5 12l-5.75 3.5Z" fill="var(--paper-deep)" />
+        </svg>
+      </a>
+    </div>
     <p class="small muted">© {new Date().getFullYear()} Kiron Atom Tellian</p>
   </div>
 </footer>
@@ -113,16 +128,22 @@ import { withBase } from "../lib/url";
     border-top: 1px solid var(--rule-dark);
   }
 
-  .site-footer__yt {
+  .site-footer__social {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .site-footer__icon {
     color: var(--ink-light);
     line-height: 0;
   }
 
-  .site-footer__yt:hover {
+  .site-footer__icon:hover {
     color: var(--accent-soft);
   }
 
-  .site-footer__yt::after { display: none; }
+  .site-footer__icon::after { display: none; }
 
   @media (max-width: 768px) {
     .site-footer__inner {
