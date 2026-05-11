@@ -7,15 +7,24 @@ export interface Props {
   imageAlt?: string;
   eyebrow?: string;
   light?: boolean;
+  imagePosition?: string;
 }
-const { title, image, imageAlt = "", eyebrow, light = false } = Astro.props;
+const { title, image, imageAlt = "", eyebrow, light = false, imagePosition = "center 30%" } = Astro.props;
 const hasImage = Boolean(image);
 ---
 
 <header class={`page-hero ${hasImage ? "page-hero--media" : "page-hero--plain"} ${light ? "page-hero--light" : ""}`}>
   {hasImage && (
     <div class="page-hero__media">
-      <img class="page-hero__img" src={withBase(image!)} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
+      <img
+        class="page-hero__img"
+        src={withBase(image!)}
+        alt={imageAlt}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        style={`object-position: ${imagePosition};`}
+      />
       <div class="page-hero__veil" aria-hidden="true"></div>
     </div>
   )}

@@ -19,6 +19,7 @@ let paraIndex = 0;
     eyebrow={data.hero.eyebrow}
     image={data.hero.image}
     imageAlt={data.hero.imageAlt}
+    imagePosition="50% 22%"
   />
 
   <article class="bio container">
@@ -83,6 +84,30 @@ let paraIndex = 0;
 
   .bio__quote {
     margin-block: var(--space-12);
+  }
+
+  @media (min-width: 1200px) {
+    .bio__body {
+      max-width: 1100px;
+      margin-inline: auto;
+      column-count: 2;
+      column-gap: var(--space-16);
+      column-rule: 1px solid var(--rule);
+    }
+    .bio__p,
+    .bio__quote {
+      break-inside: avoid-column;
+    }
+    .bio__p:first-child {
+      column-span: none;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .bio__body {
+      max-width: 1320px;
+      column-gap: var(--space-20);
+    }
   }
 
   .bio__cta {

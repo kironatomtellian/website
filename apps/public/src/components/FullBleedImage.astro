@@ -5,12 +5,20 @@ export interface Props {
   src: string;
   alt: string;
   height?: string;
+  position?: string;
 }
-const { src, alt, height = "70vh" } = Astro.props;
+const { src, alt, height = "70vh", position = "center 30%" } = Astro.props;
 ---
 
 <section class="full-bleed reveal" aria-hidden={alt ? undefined : "true"}>
-  <img class="full-bleed__img" src={withBase(src)} alt={alt} style={`--h: ${height}`} loading="lazy" decoding="async" />
+  <img
+    class="full-bleed__img"
+    src={withBase(src)}
+    alt={alt}
+    style={`--h: ${height}; object-position: ${position};`}
+    loading="lazy"
+    decoding="async"
+  />
 </section>
 
 <style>
@@ -23,7 +31,6 @@ const { src, alt, height = "70vh" } = Astro.props;
     width: 100%;
     height: var(--h, 70vh);
     object-fit: cover;
-    object-position: center;
   }
 
   @media (max-width: 768px) {

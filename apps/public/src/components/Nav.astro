@@ -50,18 +50,25 @@ const items = [
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
-    background: color-mix(in oklab, var(--paper-deep) 30%, transparent);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
-    backdrop-filter: blur(12px) saturate(120%);
+    background: rgba(14, 12, 10, 0.18);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
     color: var(--ink-light);
     transition: background var(--t-hover) var(--ease-standard),
-                border-color var(--t-hover) var(--ease-standard);
-    border-bottom: 1px solid transparent;
+                border-color var(--t-hover) var(--ease-standard),
+                box-shadow var(--t-hover) var(--ease-standard);
+    border-bottom: 1px solid rgba(232, 221, 208, 0.08);
   }
 
   .site-nav.is-scrolled {
-    background: var(--paper-deep);
-    border-bottom-color: var(--rule-dark);
+    background: rgba(14, 12, 10, 0.32);
+    border-bottom-color: rgba(232, 221, 208, 0.14);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-nav { background: rgba(14, 12, 10, 0.85); }
+    .site-nav.is-scrolled { background: rgba(14, 12, 10, 0.95); }
   }
 
   .site-nav__inner {
@@ -70,6 +77,11 @@ const items = [
     justify-content: space-between;
     height: var(--nav-h);
     transition: height var(--t-hover) var(--ease-standard);
+  }
+
+  .site-nav__brand,
+  .site-nav__link {
+    transform: translateY(1px);
   }
 
   .site-nav.is-scrolled .site-nav__inner {
