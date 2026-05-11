@@ -26,6 +26,12 @@ const items = [
       <span class="site-nav__toggle-bar"></span>
     </button>
     <ul id="site-nav-list" class="site-nav__list">
+      <li class="site-nav__back-li">
+        <button class="site-nav__back" type="button" data-nav-close>
+          <span class="site-nav__back-arrow" aria-hidden="true">←</span>
+          <span>Back</span>
+        </button>
+      </li>
       {items.map((item) => (
         <li>
           <a
@@ -196,11 +202,12 @@ const items = [
       inset: 0;
       z-index: 1;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       background: #000;
-      padding: calc(var(--nav-offset) + var(--space-10)) var(--gutter) var(--space-12);
-      gap: var(--space-6);
+      padding: calc(var(--nav-offset) + var(--space-10)) var(--space-12) var(--space-16);
+      gap: var(--space-8);
       opacity: 0;
       visibility: hidden;
       transition: opacity 300ms var(--ease-standard),
@@ -234,7 +241,56 @@ const items = [
     .site-nav[data-open="true"] .site-nav__list li:nth-child(6) { transition-delay: 370ms; }
 
     .site-nav__link {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
+    }
+
+    .site-nav__back-li {
+      position: absolute;
+      top: calc(var(--nav-offset) + var(--space-3));
+      left: var(--gutter);
+      margin: 0;
+      /* don't pick up the link stagger */
+      opacity: 1;
+      transform: none;
+    }
+
+    .site-nav[data-open="true"] .site-nav__back-li {
+      opacity: 1;
+      transform: none;
+    }
+
+    .site-nav__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      background: none;
+      border: 0;
+      color: var(--ink-light);
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      padding: var(--space-2) var(--space-3);
+      cursor: pointer;
+      transition: color var(--t-hover) var(--ease-standard);
+    }
+
+    .site-nav__back:hover {
+      color: var(--accent-soft);
+    }
+
+    .site-nav__back-arrow {
+      font-size: 1.25em;
+      line-height: 1;
+    }
+  }
+
+  /* Hide the back button on desktop. */
+  .site-nav__back-li {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .site-nav__back-li {
+      display: block;
     }
   }
 </style>
@@ -244,17 +300,23 @@ const items = [
   const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
 
   if (nav && toggle) {
+    const closeMenu = () => {
+      nav.setAttribute("data-open", "false");
+      toggle.setAttribute("aria-expanded", "false");
+    };
+
     toggle.addEventListener("click", () => {
       const open = nav.getAttribute("data-open") === "true";
       nav.setAttribute("data-open", open ? "false" : "true");
       toggle.setAttribute("aria-expanded", open ? "false" : "true");
     });
 
+    nav.querySelectorAll<HTMLElement>("[data-nav-close]").forEach((el) => {
+      el.addEventListener("click", closeMenu);
+    });
+
     nav.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", () => {
-        nav.setAttribute("data-open", "false");
-        toggle.setAttribute("aria-expanded", "false");
-      });
+      a.addEventListener("click", closeMenu);
     });
   }
 

@@ -37,19 +37,19 @@ const hasImage = Boolean(image);
 <style>
   .page-hero {
     position: relative;
-    padding-top: calc(var(--nav-offset) + var(--space-8));
-    padding-bottom: var(--space-8);
+    padding-top: calc(var(--nav-offset) + var(--space-12));
+    padding-bottom: var(--space-12);
     overflow: hidden;
   }
 
   .page-hero--media {
-    min-height: clamp(20rem, 55svh, 32rem);
+    min-height: clamp(26rem, 70svh, 42rem);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     color: var(--ink-light);
     background: var(--paper-deep);
-    padding-bottom: var(--space-12);
+    padding-bottom: var(--space-16);
   }
 
   .page-hero--plain {
@@ -73,16 +73,18 @@ const hasImage = Boolean(image);
   .page-hero__veil {
     position: absolute;
     inset: 0;
-    /* First band matches the solid nav bg so there's no visible seam
-       under the nav. Then a heavier fade so the eyebrow + title at
-       the bottom always sit on a darkened area. */
+    /* Thin opaque cap exactly the height of the nav — masks the seam
+       between the bar and the image without darkening the face area
+       just below it. Photo then reads natural through the middle and
+       only darkens again at the very bottom to keep the eyebrow +
+       title legible. */
     background: linear-gradient(
       to bottom,
       var(--paper-deep) 0,
-      var(--paper-deep) calc(var(--nav-offset) + 0.25rem),
-      rgba(14, 12, 10, 0.5) calc(var(--nav-offset) + 3rem),
-      rgba(14, 12, 10, 0.2) 50%,
-      rgba(14, 12, 10, 0.85) 100%
+      var(--paper-deep) var(--nav-offset),
+      rgba(14, 12, 10, 0) calc(var(--nav-offset) + 1.5rem),
+      rgba(14, 12, 10, 0) 55%,
+      rgba(14, 12, 10, 0.8) 100%
     );
   }
 

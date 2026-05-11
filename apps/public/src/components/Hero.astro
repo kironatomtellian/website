@@ -69,16 +69,15 @@ const { title, subtitle, image, imageAlt } = Astro.props;
   .hero__veil {
     position: absolute;
     inset: 0;
-    /* Big solid dark band at the top to swallow any seam between the
-       nav bar and the hero image, then a smooth fade. */
+    /* Thin opaque cap exactly the height of the nav — kills the seam
+       without darkening the face below. Photo reads naturally through
+       the middle, then darkens at the bottom for title legibility. */
     background: linear-gradient(
       to bottom,
       var(--paper-deep) 0,
-      var(--paper-deep) calc(var(--nav-offset) + 1.5rem),
-      rgba(14, 12, 10, 0.85) calc(var(--nav-offset) + 4rem),
-      rgba(14, 12, 10, 0.4) calc(var(--nav-offset) + 7rem),
-      rgba(14, 12, 10, 0.15) 35%,
-      rgba(14, 12, 10, 0.15) 60%,
+      var(--paper-deep) var(--nav-offset),
+      rgba(14, 12, 10, 0) calc(var(--nav-offset) + 1.5rem),
+      rgba(14, 12, 10, 0) 55%,
       rgba(14, 12, 10, 0.85) 100%
     );
   }
