@@ -98,8 +98,9 @@ const items = [
   .site-nav__link {
     position: relative;
     font-size: 0.9375rem;
+    line-height: 1;
     color: var(--ink-light);
-    padding-block: 0.5rem;
+    padding-block: 0;
     transition: color var(--t-hover) var(--ease-standard);
   }
 
@@ -108,7 +109,7 @@ const items = [
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 4px;
+    bottom: -6px;
     height: 1px;
     background: var(--accent-soft);
     transform: scaleX(0);
