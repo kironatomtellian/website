@@ -23,7 +23,7 @@ const grouped = groupByYear(concerts);
       <details class="archive__year" open={gi === 0}>
         <summary class="archive__summary">
           <span class="display-l-italic accent archive__year-label">{group.year}</span>
-          <span class="archive__count small muted">{group.items.length} concerts</span>
+          <span class="archive__spacer"></span>
           <span class="archive__chev" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M5 7 L10 12 L15 7" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -82,8 +82,19 @@ const grouped = groupByYear(concerts);
     flex-shrink: 0;
   }
 
-  .archive__count {
+  .archive__spacer {
     flex: 1;
+  }
+
+  @media (min-width: 1280px) {
+    .archive {
+      max-width: 1440px;
+    }
+    .archive__rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-12);
+    }
   }
 
   .archive__chev {

@@ -8,6 +8,21 @@ export interface Props {
   align?: "left" | "center";
 }
 const { publication, quote, date, url, byline, align = "center" } = Astro.props;
+
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, "");
+
+function extractHighlight(raw: string): string {
+  const m = raw.match(/<strong>([\s\S]*?)<\/strong>/i);
+  if (m && m[1]) return stripTags(m[1]).trim();
+  const plain = stripTags(raw).trim();
+  const sentence = plain.match(/^[^.!?…]+[.!?…]/);
+  if (sentence) return sentence[0].trim();
+  return plain.length > 160 ? plain.slice(0, 160).trim() + "…" : plain;
+}
+
+const highlight = extractHighlight(quote);
+const fullPlain = stripTags(quote).trim();
+const hasFullBody = fullPlain.length > highlight.length + 8;
 ---
 
 <figure class={`pq pq--${align} reveal`}>
@@ -15,19 +30,22 @@ const { publication, quote, date, url, byline, align = "center" } = Astro.props;
     {url ? <a href={url} target="_blank" rel="noopener">{publication}</a> : publication}
     {byline && <span class="pq__byline muted"> · {byline}</span>}
   </p>
-  <blockquote class="pull-quote pq__text">
+  <blockquote class="pull-quote pull-quote--lg pq__highlight">
     <span class="pq__mark" aria-hidden="true">»</span>
-    <span class="pq__inner" set:html={quote} />
+    <span class="pq__inner">{highlight}</span>
     <span class="pq__mark pq__mark--end" aria-hidden="true">«</span>
   </blockquote>
+  {hasFullBody && (
+    <p class="small pq__full" set:html={quote} />
+  )}
   <figcaption class="small muted pq__date italic">{date}</figcaption>
 </figure>
 
 <style>
   .pq {
     margin: 0;
-    padding-block: var(--space-8);
-    max-width: 56ch;
+    padding-block: var(--space-6);
+    max-width: 62ch;
   }
 
   .pq--center {
@@ -66,22 +84,47 @@ const { publication, quote, date, url, byline, align = "center" } = Astro.props;
     font-style: italic;
   }
 
-  .pq__text {
+  .pq__highlight {
     margin: 0 0 var(--space-3);
+  }
+
+  .pq__full {
+    margin: 0 0 var(--space-2);
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .pq--center .pq__full {
+    margin-inline: auto;
+  }
+
+  .bg-deep .pq__full {
+    color: var(--muted-light);
+  }
+
+  .pq__full :global(strong) {
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .bg-deep .pq__full :global(strong) {
+    color: var(--ink-light);
   }
 
   .pq__mark {
     color: var(--accent-soft);
     font-style: italic;
-    font-size: 1.15em;
+    font-size: 1.05em;
     line-height: 1;
     vertical-align: -0.05em;
-    margin-right: 0.12em;
+    margin-right: 0.1em;
   }
 
   .pq__mark--end {
     margin-right: 0;
-    margin-left: 0.12em;
+    margin-left: 0.1em;
   }
 
   .pq__inner :global(strong) {

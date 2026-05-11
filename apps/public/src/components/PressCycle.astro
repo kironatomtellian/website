@@ -47,13 +47,13 @@ const { quotes } = Astro.props;
 
 <style>
   .press-cycle {
-    padding-block: var(--section-y) var(--section-y-tight);
+    padding-block: var(--section-y-tight);
     text-align: center;
   }
 
   .press-cycle__inner {
     position: relative;
-    min-height: clamp(11rem, 22vh, 18rem);
+    min-height: clamp(5.5rem, 9vh, 8rem);
   }
 
   .press-cycle__quote {
@@ -79,9 +79,9 @@ const { quotes } = Astro.props;
   }
 
   .press-cycle__text {
-    max-width: 24ch;
+    max-width: 42ch;
     margin-inline: auto;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
     position: relative;
   }
 
@@ -92,10 +92,10 @@ const { quotes } = Astro.props;
   .press-cycle__mark {
     color: var(--accent-soft);
     font-style: italic;
-    font-size: 1.2em;
+    font-size: 1.05em;
     line-height: 1;
     vertical-align: -0.05em;
-    margin-right: 0.15em;
+    margin-right: 0.12em;
   }
 
   .press-cycle__mark--end {

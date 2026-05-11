@@ -3,19 +3,20 @@ import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
-import { type Concert, ensembleLabel, daysUntil, groupByMonth } from "../lib/concert";
+import { type Concert, ensembleLabel, daysUntil } from "../lib/concert";
 import upcoming from "../data/concerts-upcoming.json";
 
 const concerts = upcoming as Concert[];
 const featured = concerts[0];
 const rest = concerts.slice(1);
-const grouped = groupByMonth(rest);
+const featuredDays = featured?.date ? daysUntil(featured.date) : null;
+const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 10;
 ---
 
 <Layout title="Schedule · Kiron Atom Tellian">
   <PageHero
     title="Schedule"
-    eyebrow="Upcoming concerts"
+    eyebrow="Selection of upcoming performances"
     image="/img/schedule-hero.jpg"
     imageAlt="Kiron Atom Tellian preparing for a performance."
   />
@@ -32,10 +33,10 @@ const grouped = groupByMonth(rest);
             <p class="h2 schedule__featured-programme italic">{featured.programme}</p>
             <p class="schedule__featured-venue">{featured.venue}</p>
           </div>
-          {featured.date && (
+          {showCount && (
             <div class="schedule__featured-count">
-              <span class="schedule__featured-count-num accent">{daysUntil(featured.date)}</span>
-              <span class="eyebrow muted">days</span>
+              <span class="schedule__featured-count-num accent">{featuredDays}</span>
+              <span class="eyebrow muted">{featuredDays === 1 ? "day" : "days"}</span>
             </div>
           )}
         </div>
@@ -49,14 +50,14 @@ const grouped = groupByMonth(rest);
       </article>
     )}
 
-    {grouped.map((group) => (
+    {rest.length > 0 && (
       <div class="schedule__group reveal">
-        <h2 class="display-l-italic accent schedule__month">{group.label}</h2>
+        <h2 class="eyebrow accent schedule__group-heading">Selection of upcoming performances</h2>
         <div class="schedule__rows">
-          {group.items.map((c) => <ConcertRow concert={c} />)}
+          {rest.map((c) => <ConcertRow concert={c} />)}
         </div>
       </div>
-    ))}
+    )}
 
     <p class="schedule__cta reveal">
       <a class="link-quiet" href={withBase("/schedule-archive")}>
@@ -70,6 +71,22 @@ const grouped = groupByMonth(rest);
   .schedule {
     padding-block: var(--section-y-tight) var(--section-y);
     max-width: 1080px;
+  }
+
+  .schedule__group-heading {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+
+  @media (min-width: 1280px) {
+    .schedule {
+      max-width: 1440px;
+    }
+    .schedule__rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--space-12);
+    }
   }
 
   .schedule__featured {
@@ -123,10 +140,6 @@ const grouped = groupByMonth(rest);
 
   .schedule__group + .schedule__group {
     margin-top: var(--space-12);
-  }
-
-  .schedule__month {
-    margin: 0 0 var(--space-3);
   }
 
   .schedule__cta {

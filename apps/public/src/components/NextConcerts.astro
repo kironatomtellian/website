@@ -10,6 +10,8 @@ const { concerts, intro } = Astro.props;
 
 const featured = concerts[0];
 const rest = concerts.slice(1);
+const featuredDays = featured?.date ? daysUntil(featured.date) : null;
+const showCount = featuredDays !== null && featuredDays >= 0 && featuredDays <= 10;
 ---
 
 <section class="next-concerts bg-deep" aria-label="Upcoming concerts">
@@ -40,10 +42,10 @@ const rest = concerts.slice(1);
             )}
             <p class="h3 featured__programme">{featured.programme}</p>
           </div>
-          {featured.date && (
+          {showCount && (
             <div class="featured__count">
-              <span class="featured__count-num accent">{daysUntil(featured.date)}</span>
-              <span class="eyebrow muted">days</span>
+              <span class="featured__count-num accent">{featuredDays}</span>
+              <span class="eyebrow muted">{featuredDays === 1 ? "day" : "days"}</span>
             </div>
           )}
         </div>
@@ -176,6 +178,18 @@ const rest = concerts.slice(1);
   .upcoming {
     max-width: 920px;
     margin-inline: auto;
+  }
+
+  @media (min-width: 1280px) {
+    .upcoming {
+      max-width: 1320px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-12);
+    }
+    .featured {
+      max-width: 1320px;
+    }
   }
 
   .upcoming__row {

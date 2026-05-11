@@ -57,7 +57,6 @@ When you're ready to flip from `github.io/website` to `kironatomtellian.com`:
 ```bash
 cd apps/public
 npm install
-node tools/generate-placeholders.mjs   # only the first time, or pass --force
 npm run dev                            # http://localhost:4321/website/
 ```
 

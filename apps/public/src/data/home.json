@@ -50,48 +50,44 @@
       "title": "Jeremias Fliedl & Kiron Atom Tellian at Elm Court",
       "description": "Duo Recital with Jeremias Fliedl at Elm Court in Butler, Pennsylvania.",
       "youtubeId": "a02HF7wXM6U",
-      "thumbnail": "/img/media-elm-court.jpg",
+      "thumbnail": "https://i.ytimg.com/vi/a02HF7wXM6U/hqdefault.jpg",
       "url": "https://youtu.be/a02HF7wXM6U?feature=shared",
       "source": "youtube"
-    },
-    {
-      "title": "Interview with The Violin Channel at Carnegie Hall",
-      "description": "Interview before sold-out debut at Zankel Hall at Carnegie Hall with The Violin Channel.",
-      "youtubeId": null,
-      "thumbnail": "/img/media-tvc-carnegie.jpg",
-      "url": "https://www.instagram.com/reel/DQXXI9zAHPV/?igsh=MXN1aGhzYTN5OXIyaQ==",
-      "source": "instagram"
     },
     {
       "title": "YCA Susan Wadsworth Auditions Winner’s Concert",
       "description": "Winner's Concert at the Gilder Lehrman Hall at the Morgan Library & Museum.",
       "youtubeId": "XJ-q2G6jPpE",
-      "thumbnail": "/img/media-yca-winners.jpg",
+      "thumbnail": "https://i.ytimg.com/vi/XJ-q2G6jPpE/hqdefault.jpg",
       "url": "https://www.youtube.com/live/XJ-q2G6jPpE?feature=shared",
       "source": "youtube"
     },
     {
-      "title": "YCA Susan Wadsworth Winner’s Announcement",
-      "description": "Kiron Atom Tellian wins the 2024 YCA Susan Wadsworth International Auditions and eight special prizes.",
-      "youtubeId": null,
-      "thumbnail": "/img/media-yca-announcement.jpg",
-      "url": "https://yca.org/2024-winners/",
-      "source": "external"
+      "title": "YCA Susan Wadsworth Final Round",
+      "description": "Final round of the 2024 YCA Susan Wadsworth International Auditions.",
+      "youtubeId": "qHo2ez-NLNA",
+      "thumbnail": "https://i.ytimg.com/vi/qHo2ez-NLNA/hqdefault.jpg",
+      "url": "https://www.youtube.com/live/qHo2ez-NLNA?t=6947&si=RuxPlYSoyXzokiJu",
+      "source": "youtube"
+    },
+    {
+      "title": "Kiron Atom Tellian — Prelude",
+      "description": "Part of a collection of Preludes for Piano.",
+      "youtubeId": "YWb6Dt8aqkE",
+      "thumbnail": "https://i.ytimg.com/vi/YWb6Dt8aqkE/hqdefault.jpg",
+      "url": "https://youtu.be/YWb6Dt8aqkE",
+      "source": "youtube"
     }
   ],
   "gallery": [
-    { "src": "/img/gallery-01.jpg", "alt": "Kiron Atom Tellian portrait 1" },
-    { "src": "/img/gallery-02.jpg", "alt": "Kiron Atom Tellian portrait 2" },
-    { "src": "/img/gallery-03.jpg", "alt": "Kiron Atom Tellian portrait 3" },
-    { "src": "/img/gallery-04.jpg", "alt": "Kiron Atom Tellian portrait 4" },
-    { "src": "/img/gallery-05.jpg", "alt": "Kiron Atom Tellian portrait 5" },
-    { "src": "/img/gallery-06.jpg", "alt": "Kiron Atom Tellian portrait 6" },
-    { "src": "/img/gallery-07.jpg", "alt": "Kiron Atom Tellian portrait 7" },
-    { "src": "/img/gallery-08.jpg", "alt": "Kiron Atom Tellian portrait 8" },
-    { "src": "/img/gallery-09.jpg", "alt": "Kiron Atom Tellian portrait 9" },
-    { "src": "/img/gallery-10.jpg", "alt": "Kiron Atom Tellian portrait 10" },
-    { "src": "/img/gallery-11.jpg", "alt": "Kiron Atom Tellian portrait 11" },
-    { "src": "/img/gallery-12.jpg", "alt": "Kiron Atom Tellian portrait 12" }
+    { "src": "/img/gallery/01.jpg", "alt": "Kiron Atom Tellian, seated at the grand piano." },
+    { "src": "/img/gallery/02.jpg", "alt": "Kiron Atom Tellian against an abstract painted wall." },
+    { "src": "/img/gallery/03.jpg", "alt": "Kiron Atom Tellian in a clawfoot bathtub, laughing." },
+    { "src": "/img/gallery/04.jpg", "alt": "Kiron Atom Tellian at the keyboard, head lowered." },
+    { "src": "/img/gallery/05.jpg", "alt": "Kiron Atom Tellian, blue cardigan, cool painted wall." },
+    { "src": "/img/gallery/06.jpg", "alt": "Kiron Atom Tellian, dark jacket, textured wall." },
+    { "src": "/img/gallery/07.jpg", "alt": "Kiron Atom Tellian, blue cardigan, painted wall." },
+    { "src": "/img/gallery/08.jpg", "alt": "Kiron Atom Tellian leaning back at the grand piano." }
   ],
   "photoCredit": "© Photos Shervin Lainez"
 }
