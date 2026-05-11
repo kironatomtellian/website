@@ -13,6 +13,7 @@
   --serif: "adobe-caslon-pro", "Newsreader", "Sorts Mill Goudy", "Cormorant Garamond", Georgia, "Times New Roman", serif;
 
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -43,4 +44,5 @@
 
   --nav-h: 4rem;
   --nav-h-scrolled: 3.5rem;
+  --nav-offset: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
 }

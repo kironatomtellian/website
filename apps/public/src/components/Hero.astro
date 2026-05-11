@@ -45,7 +45,7 @@ const { title, subtitle, image, imageAlt } = Astro.props;
     display: flex;
     align-items: flex-end;
     overflow: hidden;
-    padding-top: var(--nav-h);
+    padding-top: var(--nav-offset);
   }
 
   .hero__media {
@@ -84,6 +84,7 @@ const { title, subtitle, image, imageAlt } = Astro.props;
     margin: 0;
     color: var(--ink-light);
     max-width: 16ch;
+    font-style: normal;
   }
 
   .hero__title-line {

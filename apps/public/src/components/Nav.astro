@@ -55,6 +55,7 @@ const items = [
     color: var(--ink-light);
     transition: border-color var(--t-hover) var(--ease-standard);
     border-bottom: 1px solid transparent;
+    padding-top: env(safe-area-inset-top, 0px);
   }
 
   .site-nav.is-scrolled {
@@ -75,13 +76,17 @@ const items = [
   }
 
   .site-nav__brand {
-    font-style: italic;
+    font-style: normal;
     font-size: clamp(1.125rem, 2vw, 1.375rem);
     letter-spacing: -0.01em;
     color: var(--ink-light);
     line-height: 1;
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
+    /* Caslon puts its cap-to-baseline zone in the upper portion of the
+       line-box, so labels without descenders sit visibly above center.
+       Asymmetric padding nudges the visible glyph block down. */
+    padding-top: 0.22em;
+    padding-bottom: 0;
     transition: color var(--t-hover) var(--ease-standard);
   }
 
@@ -91,20 +96,35 @@ const items = [
 
   .site-nav__list {
     display: flex;
-    gap: clamp(1rem, 2.5vw, 2.25rem);
+    gap: clamp(0.875rem, 2vw, 2rem);
     align-items: center;
     line-height: 1;
   }
 
   .site-nav__link {
     position: relative;
-    display: inline-flex;
-    align-items: center;
+    display: inline-block;
     font-size: 0.9375rem;
     color: var(--ink-light);
     line-height: 1;
-    padding-block: 0.5rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.45rem;
     transition: color var(--t-hover) var(--ease-standard);
+  }
+
+  @supports (text-box-trim: trim-both) {
+    .site-nav__brand,
+    .site-nav__link {
+      text-box-trim: trim-both;
+      text-box-edge: cap alphabetic;
+    }
+    .site-nav__brand {
+      padding-top: 0;
+    }
+    .site-nav__link {
+      padding-top: 0.55rem;
+      padding-bottom: 0.55rem;
+    }
   }
 
   .site-nav__link::after {
@@ -167,12 +187,12 @@ const items = [
     white-space: nowrap; border: 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .site-nav__toggle { display: block; }
 
     .site-nav__list {
       position: fixed;
-      top: var(--nav-h);
+      top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
       left: 0;
       right: 0;
       flex-direction: column;
@@ -191,7 +211,6 @@ const items = [
 
     .site-nav__link {
       font-size: 1.25rem;
-      font-style: italic;
     }
   }
 </style>
