@@ -57,5 +57,10 @@
       "kind": "para",
       "body": "Looking ahead, Tellian will make his debut with the San Diego Symphony and has been invited by the Rachmaninov Foundation to perform at the historic Villa Senar. A major milestone in the coming season will be his solo recital debut at Carnegie Hall, marking another significant step in his rapidly rising career."
     }
-  ]
+  ],
+  "download": {
+    "label": "Download biography",
+    "file": "/files/kiron-atom-tellian-biography.pdf",
+    "note": "PDF · A4 · season 2026/27"
+  }
 }

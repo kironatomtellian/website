@@ -9,10 +9,8 @@ export interface Props {
 }
 const { title, subtitle, image, imageAlt } = Astro.props;
 
-// The name is centred, as on the live site; the last word is set in italic.
+// The name is centred, as on the live site, in one style.
 const words = title.trim().split(/\s+/);
-const last = words.pop() ?? "";
-const first = words.join(" ");
 ---
 
 <section class="hero" aria-label="Introduction">
@@ -31,8 +29,11 @@ const first = words.join(" ");
 
   <div class="container hero__content">
     <h1 class="display-xxl hero__title">
-      {first && <span class="hero__line">{first}</span>}{" "}
-      <span class="hero__line hero__line--last">{last}</span>
+      {words.map((w, i) => (
+        <>
+          <span class="hero__line" style={`animation-delay: ${200 + i * 140}ms`}>{w}</span>{" "}
+        </>
+      ))}
     </h1>
     <p class="mono hero__subtitle">{subtitle}</p>
   </div>
@@ -93,7 +94,11 @@ const first = words.join(" ");
 
   .hero__title {
     margin: 0;
-    font-size: clamp(3.5rem, 11vw, 11.25rem);
+    font-family: var(--name);
+    font-weight: 400;
+    font-size: clamp(3rem, 9vw, 9rem);
+    letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   .hero__line {
@@ -101,11 +106,6 @@ const first = words.join(" ");
     opacity: 0;
     transform: translateY(32px);
     animation: hero-rise 900ms var(--ease-out-expo) 200ms forwards;
-  }
-
-  .hero__line--last {
-    font-style: italic;
-    animation-delay: 360ms;
   }
 
   .hero__subtitle {

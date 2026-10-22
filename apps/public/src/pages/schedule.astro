@@ -4,28 +4,25 @@ import { withBase } from "../lib/url";
 import { cityOf, continentOf, countryOf, groupRuns, runLabel, whatOf as what, withLineOf as withLine } from "../lib/concert";
 import { upcomingConcerts, pastConcerts } from "../lib/season";
 
-// The page always shows the whole season, played and coming, so it never looks empty.
+// The page shows the whole career at a glance, then the season in detail.
 const year = new Date().getFullYear();
 const played = pastConcerts.filter((c) => c.date.startsWith(String(year))).reverse();
-const season = [...played, ...upcomingConcerts];
-const years = [...new Set(season.map((c) => c.date.slice(0, 4)))];
+const all = [...pastConcerts, ...upcomingConcerts];
+const firstYear = Number(all.reduce((m, c) => (c.date < m ? c.date : m), all[0].date).slice(0, 4));
+const lastYear = Number(all.reduce((m, c) => (c.date > m ? c.date : m), all[0].date).slice(0, 4));
 const stats = [
-  { n: season.length, label: `concerts in ${years.join(" and ")}` },
-  { n: new Set(season.map(cityOf)).size, label: "cities" },
-  { n: new Set(season.map(countryOf)).size, label: "countries" },
-  { n: new Set(season.map(continentOf)).size, label: "continents" },
+  { n: all.length, label: `concerts since ${firstYear}` },
+  { n: new Set(all.map((c) => c.venue)).size, label: "stages" },
+  { n: new Set(all.map(countryOf)).size, label: "countries" },
+  { n: new Set(all.map(continentOf)).size, label: "continents" },
 ];
 
-// One column per month from January of this year, one dot per concert.
-const months = Array.from({ length: 18 }, (_, i) => {
-  const d = new Date(Date.UTC(year, i, 1));
-  const key = d.toISOString().slice(0, 7);
-  return {
-    letter: d.toLocaleString("en", { month: "narrow", timeZone: "UTC" }),
-    year: d.getUTCMonth() === 0 ? String(d.getUTCFullYear()) : "",
-    played: played.filter((c) => c.date.startsWith(key)).length,
-    coming: upcomingConcerts.filter((c) => c.date.startsWith(key)).length,
-  };
+// One column per year, one dot per concert: grey played, red still to come.
+const years = Array.from({ length: lastYear - firstYear + 1 }, (_, i) => {
+  const y = String(firstYear + i);
+  const done = pastConcerts.filter((c) => c.date.startsWith(y)).length;
+  const coming = upcomingConcerts.filter((c) => c.date.startsWith(y)).length;
+  return { y, done, coming, total: done + coming, now: Number(y) === year };
 });
 
 ---
@@ -43,19 +40,19 @@ const months = Array.from({ length: 18 }, (_, i) => {
       ))}
     </dl>
 
-    <div class="schedule__timeline" aria-hidden="true" data-stagger>
-      {months.map((m) => (
-        <div class="schedule__month-col">
-          <div class="schedule__dots">
-            {Array.from({ length: m.played }, () => <span class="schedule__dot" />)}
-            {Array.from({ length: m.coming }, () => <span class="schedule__dot schedule__dot--coming" />)}
+    <div class="schedule__timeline" aria-label="Concerts per year" data-stagger>
+      {years.map((y) => (
+        <div class={`schedule__year-col ${y.now ? "is-now" : ""}`}>
+          <span class="schedule__year-n">{y.total}</span>
+          <div class="schedule__dots" aria-hidden="true">
+            {Array.from({ length: y.done }, () => <span class="schedule__dot" />)}
+            {Array.from({ length: y.coming }, () => <span class="schedule__dot schedule__dot--coming" />)}
           </div>
-          <span class="mono">{m.letter}</span>
-          <span class="mono schedule__year">{m.year}</span>
+          <span class="mono schedule__year">{y.y}</span>
         </div>
       ))}
     </div>
-    <p class="mono schedule__legend"><span class="schedule__legend-coming">●</span> Coming up <span>●</span> Played</p>
+    <p class="mono schedule__legend"><span>●</span> Played <span class="schedule__legend-coming">●</span> Coming up</p>
 
     <h2 class="mono schedule__label schedule__label--coming">Coming up</h2>
     <ol class="schedule__rows" data-stagger>
@@ -89,7 +86,7 @@ const months = Array.from({ length: 18 }, (_, i) => {
       </>
     )}
 
-    <a class="link-line schedule__past" href={withBase("/schedule-archive")}>All past concerts →</a>
+    <a class="link-line schedule__past" href={withBase("/schedule-archive")}>Past concerts →</a>
   </section>
 </Layout>
 
@@ -122,31 +119,44 @@ const months = Array.from({ length: 18 }, (_, i) => {
 
   .schedule__timeline {
     display: grid;
-    grid-template-columns: repeat(18, minmax(0, 1fr));
-    gap: 0.25rem;
-    padding: 1.75rem 0 1rem;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: end;
+    padding: var(--space-8) 0 var(--space-4);
     border-block: 1px solid var(--rule);
   }
 
-  .schedule__month-col {
+  .schedule__year-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.625rem;
-    font-size: 0.75rem;
+    gap: 0.75rem;
     color: var(--muted);
   }
 
-  .schedule__dots {
-    height: 4.625rem;
-    display: flex;
-    flex-direction: column-reverse;
-    flex-wrap: wrap-reverse;
-    align-content: center;
-    gap: 0.25rem;
+  .schedule__year-n {
+    font-family: var(--display);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--bone);
   }
 
-  /* Dots drop into place month by month. */
+  .schedule__year-col.is-now .schedule__year,
+  .schedule__year-col.is-now .schedule__year-n {
+    color: var(--vermilion);
+  }
+
+  /* Dots fill four to a row from the bottom, so each year reads as a bar. */
+  .schedule__dots {
+    display: grid;
+    grid-template-columns: repeat(4, 0.625rem);
+    gap: 0.3125rem;
+    direction: rtl;
+    transform: scaleY(-1);
+  }
+
+  /* Dots drop into place year by year. */
   :global(.motion) .schedule__timeline .schedule__dot {
     transform: scale(0);
     transition: transform 600ms var(--ease-out-expo);
@@ -175,8 +185,8 @@ const months = Array.from({ length: 18 }, (_, i) => {
   }
 
   .schedule__year {
-    min-height: 1em;
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
   }
 
   .schedule__legend {
@@ -279,7 +289,10 @@ const months = Array.from({ length: 18 }, (_, i) => {
     .schedule__date,
     .schedule__what { grid-column: 1 / -1; }
     .schedule__arrow { grid-row: 2; grid-column: 2; }
-    .schedule__timeline { gap: 0; }
-    .schedule__dot { width: 0.5rem; height: 0.5rem; }
+    .schedule__timeline { gap: 0.25rem; }
+    .schedule__dots { grid-template-columns: repeat(2, 0.4375rem); gap: 0.1875rem; }
+    .schedule__dot { width: 0.4375rem; height: 0.4375rem; }
+    .schedule__year-n { font-size: 1.25rem; }
+    .schedule__year { font-size: 0.5625rem; }
   }
 </style>

@@ -16,7 +16,8 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
     <span class="container next-band__inner">
       <span class="mono next-band__when"><b class="next-band__dot pulse" aria-hidden="true"></b><span data-days>{when}</span></span>
       <span class="next-band__what">
-        {ensembleLabel(concert) ?? "Concert"} · <em>{hallOf(concert)}</em> · {concert.displayDate}
+        {ensembleLabel(concert) ?? "Concert"} · {hallOf(concert)}
+        <span class="mono next-band__date">{concert.displayDate} · {cityOf(concert)}</span>
       </span>
       <span class="next-band__cta arrow-host">{concert.ticketsUrl ? "Details & tickets" : cityOf(concert)} <span aria-hidden="true">→</span></span>
     </span>
@@ -48,7 +49,7 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
     display: grid;
     grid-template-columns: 12.5rem minmax(0, 1fr) auto;
     gap: var(--space-6);
-    align-items: baseline;
+    align-items: center;
     padding-block: 1.5rem;
   }
 
@@ -59,6 +60,14 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
     margin-right: 0.625rem;
     border-radius: 50%;
     background: var(--black);
+  }
+
+  .next-band__date {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .next-band__what {

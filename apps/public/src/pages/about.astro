@@ -9,14 +9,13 @@ type Block =
   | { kind: "quote"; publication: string; quote: string; date: string };
 
 const blocks = data.blocks as Block[];
-const [first, ...restTitle] = data.hero.eyebrow.split(" ").reverse();
 ---
 
 <Layout title="Biography · Kiron Atom Tellian" bodyClass="page-about">
   <PageHero
     eyebrow={data.hero.title}
-    title={restTitle.reverse().join(" ")}
-    italic={first}
+    title={data.hero.eyebrow}
+    name
     image={data.hero.image}
     imageAlt={data.hero.imageAlt}
   />
@@ -30,7 +29,14 @@ const [first, ...restTitle] = data.hero.eyebrow.split(" ").reverse();
           <figcaption class="mono">{data.intro.publication} · {data.intro.date}</figcaption>
         </figure>
       )}
-      <a class="pill" href={withBase("/presenters")}>Short biographies for presenters →</a>
+      {data.download?.file && (
+        <a class="bio__dl" href={withBase(data.download.file)} download>
+          <span class="mono bio__dl-note">{data.download.note}</span>
+          <span class="bio__dl-label">{data.download.label}</span>
+          <span class="bio__dl-icon" aria-hidden="true">↓</span>
+        </a>
+      )}
+      <a class="link-line bio__kit" href={withBase("/presenters")}>Short versions for presenters →</a>
     </aside>
 
     <div class="bio__body">
@@ -93,6 +99,69 @@ const [first, ...restTitle] = data.hero.eyebrow.split(" ").reverse();
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
+  }
+
+  /* Download card: stays in view beside the text while reading. */
+  .bio__dl {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    align-items: end;
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--bone);
+    color: var(--black);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .bio__dl::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--vermilion);
+    transform: translateY(101%);
+    transition: transform 500ms var(--ease-out-expo);
+  }
+
+  .bio__dl:hover::before,
+  .bio__dl:focus-visible::before {
+    transform: none;
+  }
+
+  .bio__dl-note {
+    grid-column: 1 / -1;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bone-muted);
+    transition: color 300ms;
+  }
+
+  .bio__dl:hover .bio__dl-note {
+    color: var(--black);
+  }
+
+  .bio__dl-label {
+    font-family: var(--display);
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .bio__dl-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    transition: transform 500ms var(--ease-out-expo);
+  }
+
+  .bio__dl:hover .bio__dl-icon {
+    transform: translateY(4px);
+  }
+
+  .bio__kit {
+    font-size: 0.8125rem;
   }
 
   .bio__body {

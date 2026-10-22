@@ -11,6 +11,12 @@ export interface Props {
 }
 const { lead, others } = Astro.props;
 
+// Each small quote opens its review, or the press page when there is no link.
+import { withBase } from "../lib/url";
+import press from "../data/press.json";
+const linkFor = (q: Quote) =>
+  press.quotes.find((p) => p.publication === q.publication && p.date === q.date && p.url)?.url ?? withBase("/press");
+
 // One word of the lead quote can be set in italic vermilion.
 const parts = lead.emphasis ? lead.quote.split(lead.emphasis) : [lead.quote];
 ---
@@ -24,10 +30,10 @@ const parts = lead.emphasis ? lead.quote.split(lead.emphasis) : [lead.quote];
 
     <div class="press-feature__grid" data-stagger>
       {others.map((q) => (
-        <figure class="press-feature__item">
+        <a class="press-feature__item" href={linkFor(q)} target={linkFor(q).startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
           <blockquote>“{q.quote}”</blockquote>
-          <figcaption>{q.publication} · {q.date}</figcaption>
-        </figure>
+          <span class="press-feature__cap">{q.publication} · {q.date} <span class="press-feature__arrow" aria-hidden="true">→</span></span>
+        </a>
       ))}
     </div>
   </div>
@@ -65,16 +71,33 @@ const parts = lead.emphasis ? lead.quote.split(lead.emphasis) : [lead.quote];
   }
 
   .press-feature__item {
+    display: block;
     margin: 0;
+    transition: color 200ms;
+  }
+
+  .press-feature__item:hover {
+    color: var(--vermilion-deep);
+  }
+
+  .press-feature__arrow {
+    display: inline-block;
+    transition: transform 400ms var(--ease-out-expo);
+  }
+
+  .press-feature__item:hover .press-feature__arrow {
+    transform: translateX(6px);
   }
 
   .press-feature__item blockquote {
+    margin: 0;
     font-family: var(--display);
     font-size: 1.625rem;
     line-height: 1.2;
   }
 
-  .press-feature__item figcaption {
+  .press-feature__cap {
+    display: block;
     margin-top: var(--space-4);
     font-size: 0.875rem;
     color: var(--bone-muted);

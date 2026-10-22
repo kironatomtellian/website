@@ -29,6 +29,8 @@
   --sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --serif: var(--display);
+  /* The name alone is set in Caslon, as on the original site, in one roman style. */
+  --name: "Libre Caslon Display", "adobe-caslon-pro", Georgia, serif;
 
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);

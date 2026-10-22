@@ -16,7 +16,7 @@ photos.forEach((p, i) => {
 ---
 
 <Layout title="Gallery · Kiron Atom Tellian" bodyClass="page-gallery">
-  <PageHero title="Gallery" eyebrow="Photography" aside={`Photos Shervin Lainez · <a href="${withBase("/presenters")}">Print resolution for presenters →</a>`} />
+  <PageHero title="Gallery" eyebrow="Photography" />
 
   <section class="gallery container">
     <div class="gallery__grid" data-gallery>
@@ -46,6 +46,11 @@ photos.forEach((p, i) => {
         </div>
       ))}
     </div>
+
+    <p class="mono gallery__credit" data-fade>
+      <span>{data.credit}</span>
+      <a href={withBase("/presenters")}>Print resolution for presenters →</a>
+    </p>
 
   </section>
 
@@ -116,6 +121,16 @@ photos.forEach((p, i) => {
   }
 
   .gallery__credit {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
     text-align: center;
     margin-top: var(--space-12);
   }

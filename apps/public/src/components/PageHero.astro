@@ -11,8 +11,10 @@ export interface Props {
   eyebrow?: string;
   /** Right-hand note on plain heroes, e.g. a photo credit. */
   aside?: string;
+  /** The title is the artist's name: set in the name face. */
+  name?: boolean;
 }
-const { title, italic, image, imageAlt = "", imagePosition = "50% 30%", eyebrow, aside } = Astro.props;
+const { title, italic, image, imageAlt = "", imagePosition = "50% 30%", eyebrow, aside, name = false } = Astro.props;
 const words = [...title.split(/\s+/).filter(Boolean).map((w) => ({ w, it: false })), ...(italic ? italic.split(/\s+/).map((w) => ({ w, it: true })) : [])];
 ---
 
@@ -26,7 +28,7 @@ const words = [...title.split(/\s+/).filter(Boolean).map((w) => ({ w, it: false 
   <div class="container page-hero__content">
     <div>
       {eyebrow && <p class="mono page-hero__eyebrow">{eyebrow}</p>}
-      <h1 class="page-hero__title">
+      <h1 class={`page-hero__title ${name ? "page-hero__title--name" : ""}`}>
         {words.map(({ w, it }, i) => (
           <>
             <span class="page-hero__w"><span style={`--i: ${i}`} class={it ? "page-hero__it" : ""}>{w}</span></span>{" "}
@@ -101,6 +103,13 @@ const words = [...title.split(/\s+/).filter(Boolean).map((w) => ({ w, it: false 
     font-size: clamp(4rem, 10vw, 10rem);
     line-height: 0.88;
     letter-spacing: -0.035em;
+  }
+
+  .page-hero__title--name {
+    font-family: var(--name);
+    font-size: clamp(3rem, 8vw, 8rem);
+    letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   /* Each word rises out of its own mask on load. */

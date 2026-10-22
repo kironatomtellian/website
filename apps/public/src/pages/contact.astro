@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import { withBase } from "../lib/url";
 import data from "../data/contact.json";
 
-const [first, ...rest] = data.agency.split(" ").reverse();
 ---
 
 <Layout title="Contact · Kiron Atom Tellian">
@@ -13,7 +12,7 @@ const [first, ...rest] = data.agency.split(" ").reverse();
     </div>
     <div class="contact__body">
       <p class="mono contact__label" data-fade>{data.label}</p>
-      <h1 class="contact__title" data-split>{rest.reverse().join(" ")} <em>{first}</em></h1>
+      <h1 class="contact__title" data-split>{data.agency}</h1>
       <div data-stagger>
         {data.people.map((p) => (
           <div class="contact__person">
@@ -38,13 +37,12 @@ const [first, ...rest] = data.agency.split(" ").reverse();
   .contact {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    min-height: 100svh;
   }
 
   .contact__media {
     position: relative;
     overflow: hidden;
-    min-height: 40rem;
+    min-height: 34rem;
   }
 
   .contact__media img {
@@ -59,8 +57,8 @@ const [first, ...rest] = data.agency.split(" ").reverse();
   .contact__body {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
-    padding: calc(var(--nav-h) + var(--space-24)) var(--gutter) var(--space-24);
+    padding: calc(var(--nav-h) + var(--space-12)) var(--gutter) var(--space-12);
+    gap: var(--space-4);
   }
 
   .contact__label {
@@ -76,7 +74,7 @@ const [first, ...rest] = data.agency.split(" ").reverse();
   }
 
   .contact__title {
-    margin: 0 0 var(--space-8);
+    margin: 0 0 var(--space-4);
     font-family: var(--display);
     font-weight: 400;
     font-size: clamp(3.5rem, 7vw, 7rem);
@@ -88,7 +86,7 @@ const [first, ...rest] = data.agency.split(" ").reverse();
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    padding-block: var(--space-8);
+    padding-block: var(--space-6);
     border-top: 1px solid var(--rule);
   }
 
@@ -121,7 +119,7 @@ const [first, ...rest] = data.agency.split(" ").reverse();
   }
 
   .contact__imprint {
-    margin-top: var(--space-12);
+    margin-top: var(--space-8);
     max-width: 36rem;
     font-size: 0.875rem;
     line-height: 1.6;

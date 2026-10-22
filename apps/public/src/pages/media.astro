@@ -23,11 +23,16 @@ const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
       {items.map((m, i) => {
         const k = kind(m.url, m.youtubeId);
         return (
-          <li class={`media__item ${i === 0 ? "media__item--wide" : ""}`} data-fade style={`transition-delay: ${(i % 3) * 90}ms`}>
+          <li class="media__item" data-fade style={`transition-delay: ${(i % 3) * 90}ms`}>
             <a class="media__link" href={m.url ?? "#"} target="_blank" rel="noopener noreferrer" data-cursor={k === "Video" ? "Play" : "Open"}>
               {thumb(m.thumbnail) ? (
                 <span class="media__frame" data-tilt>
                   <img src={thumb(m.thumbnail)} alt="" loading={i < 3 ? "eager" : "lazy"} decoding="async" />
+                  {k === "Video" && (
+                    <span class="media__play" aria-hidden="true">
+                      <svg width="22" height="24" viewBox="0 0 26 30"><path d="M3 2 L24 15 L3 28 Z" fill="currentColor" /></svg>
+                    </span>
+                  )}
                 </span>
               ) : (
                 <span class="media__frame media__frame--text">{m.title.includes("Harrison") ? "HarrisonParrott" : m.title}</span>
@@ -60,10 +65,6 @@ const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
     gap: var(--space-16) var(--space-8);
   }
 
-  .media__item--wide {
-    grid-column: span 2;
-  }
-
   .media__link {
     display: flex;
     flex-direction: column;
@@ -82,12 +83,36 @@ const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1);
-    transition: filter 600ms var(--ease-out-expo), transform 700ms var(--ease-out-expo);
+    transition: transform 700ms var(--ease-out-expo);
   }
 
-  .media__link:hover .media__frame img {
-    filter: grayscale(0);
+  /* One play button for every video, over a light veil that quiets any
+     button already printed on the thumbnail. */
+  .media__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11, 11, 11, 0.28);
+    color: var(--black);
+    transition: background 400ms var(--ease-out-expo);
+  }
+
+  .media__play svg {
+    box-sizing: content-box;
+    padding: 1.25rem 1.125rem 1.25rem 1.375rem;
+    border-radius: 50%;
+    background: var(--vermilion);
+    transition: transform 500ms var(--ease-out-expo);
+  }
+
+  .media__link:hover .media__play {
+    background: rgba(11, 11, 11, 0.1);
+  }
+
+  .media__link:hover .media__play svg {
+    transform: scale(1.12);
   }
 
   .media__frame--text {
@@ -113,10 +138,6 @@ const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
     font-size: 1.625rem;
     line-height: 1.1;
     transition: color 200ms;
-  }
-
-  .media__item--wide .media__title {
-    font-size: 2.5rem;
   }
 
   .media__link:hover .media__title {
@@ -155,6 +176,5 @@ const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
 
   @media (max-width: 640px) {
     .media__grid { grid-template-columns: 1fr; }
-    .media__item--wide { grid-column: auto; }
   }
 </style>

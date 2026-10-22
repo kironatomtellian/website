@@ -83,7 +83,7 @@ function initReveals() {
   document.querySelectorAll<HTMLElement>("[data-split]").forEach(splitWords);
   document.querySelectorAll<HTMLElement>("[data-stagger]").forEach(indexChildren);
   document.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
-    el.dataset.count ??= el.textContent?.trim() ?? "0";
+    el.dataset.count ||= el.textContent?.trim() || "0";
     el.textContent = "0";
   });
   document

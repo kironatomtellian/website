@@ -143,7 +143,12 @@ export function runLabel(runIn: Concert[]): { days: string; sub: string } {
   return { days: `${month} ${days}`, sub: run.length > 1 ? `${year} · ${run.length} concerts` : year };
 }
 
-const COUNTRY_FIX: Record<string, string> = { AT: "Austria", Salzburg: "Austria", NY: "USA", "New York": "USA", Florida: "USA" };
+const COUNTRY_FIX: Record<string, string> = {
+  AT: "Austria", Salzburg: "Austria", "Lower Austria": "Austria", "Konzerthaus Vienna": "Austria",
+  "Musikverein Vienna": "Austria", "Schloss Rothschild - Kristallsaal": "Austria", "Amtsstraße 24-2": "Austria",
+  NY: "USA", "New York": "USA", Florida: "USA", Texas: "USA", Arizona: "USA", "New Jersey": "USA",
+  Pennsylvania: "USA", "San Diego": "USA", Brasil: "Brazil", "The Netherlands": "Netherlands",
+};
 const CONTINENT: Record<string, string> = { USA: "Americas", Colombia: "Americas", Brazil: "Americas", Israel: "Asia" };
 
 /** Country, read off the end of the venue ("NY" and "Florida" count as USA). */
