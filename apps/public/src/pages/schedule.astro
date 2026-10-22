@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { withBase } from "../lib/url";
 import { cityOf, ensembleLabel, groupByMonth, hallOf, regionOf } from "../lib/concert";
-import { upcomingConcerts } from "../lib/season";
+import { upcomingConcerts, recentConcerts } from "../lib/season";
 
 const grouped = groupByMonth(upcomingConcerts);
 const weekday = (iso: string) =>
@@ -61,7 +61,30 @@ const country = (venue: string) => venue.split(",").pop()?.trim() ?? "";
       </div>
     ))}
 
-    <a class="link-line schedule__past" href={withBase("/schedule-archive")}>Past concerts →</a>
+    {recentConcerts.length > 0 && (
+      <div class="schedule__group schedule__group--past">
+        <h2 class="mono schedule__month">Recently played</h2>
+        {[...recentConcerts].reverse().map((c) => (
+          <article class="schedule__row schedule__row--past" data-region={regionOf(c)}>
+            <div class="schedule__day">
+              <span class="schedule__num">{c.date.slice(8, 10)}</span>
+              <span class="mono schedule__wd">{c.displayDate}</span>
+            </div>
+            <div class="schedule__where">
+              <span class="schedule__city">{cityOf(c)}</span>
+              <span class="schedule__muted">{hallOf(c)} · {country(c.venue)}</span>
+            </div>
+            <div class="schedule__what">
+              <span>{c.programme === "To be announced" ? ensembleLabel(c) ?? "Recital" : c.programme}</span>
+              {c.programme !== "To be announced" && ensembleLabel(c) && <span class="schedule__muted">{ensembleLabel(c)}</span>}
+            </div>
+            <div class="schedule__actions"></div>
+          </article>
+        ))}
+      </div>
+    )}
+
+    <a class="link-line schedule__past" href={withBase("/schedule-archive")}>All past concerts →</a>
   </section>
 </Layout>
 
@@ -85,6 +108,14 @@ const country = (venue: string) => venue.split(",").pop()?.trim() ?? "";
 </script>
 
 <style>
+  .schedule__row--past {
+    color: var(--muted);
+  }
+  .schedule__row--past .schedule__city,
+  .schedule__row--past .schedule__num {
+    opacity: 0.7;
+  }
+
   .schedule {
     padding-block: calc(var(--nav-h) + var(--space-16)) var(--section-y);
   }

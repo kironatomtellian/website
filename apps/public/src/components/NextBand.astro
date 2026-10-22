@@ -7,7 +7,8 @@ export interface Props {
 }
 const { concert } = Astro.props;
 const days = concert ? daysUntil(concert.date) : 0;
-const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : `In ${days} days`;
+// A long gap reads as a quiet season, so the count only shows inside a month.
+const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In ${days} days` : "Next concert";
 ---
 
 {concert && (
@@ -29,7 +30,7 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : `In ${days} days`;
     const t = new Date();
     t.setHours(0, 0, 0, 0);
     const n = Math.round((d.getTime() - t.getTime()) / 86400000);
-    if (n >= 0) out.textContent = n === 0 ? "Today" : n === 1 ? "Tomorrow" : `In ${n} days`;
+    if (n >= 0) out.textContent = n === 0 ? "Today" : n === 1 ? "Tomorrow" : n <= 30 ? `In ${n} days` : "Next concert";
   }
 </script>
 

@@ -1,26 +1,36 @@
 ---
 import { withBase } from "../lib/url";
-import { type Concert, cityOf, ensembleLabel } from "../lib/concert";
+import { type Concert, cityOf, ensembleLabel, hallOf } from "../lib/concert";
 
 export interface Props {
   concerts: Concert[];
+  /** Concerts already played, oldest first. Shown above a "Now" line so the board never looks empty. */
+  recent?: Concert[];
   total: number;
   title?: string;
   intro?: string;
 }
-const { concerts, total, title = "Season", intro } = Astro.props;
+const { concerts, recent = [], total, title = "Season", intro } = Astro.props;
 
 // Consecutive nights at the same hall become one row: "01 + 03.04.27".
 type Row = { first: Concert; dates: Concert[] };
-const rows: Row[] = [];
-for (const c of concerts) {
-  const prev = rows[rows.length - 1];
-  if (prev && prev.first.venue === c.venue && prev.first.programme === c.programme) {
-    prev.dates.push(c);
-  } else {
-    rows.push({ first: c, dates: [c] });
+const group = (list: Concert[]) => {
+  const rows: Row[] = [];
+  for (const c of list) {
+    const prev = rows[rows.length - 1];
+    if (prev && prev.first.venue === c.venue && prev.first.programme === c.programme) {
+      prev.dates.push(c);
+    } else {
+      rows.push({ first: c, dates: [c] });
+    }
   }
-}
+  return rows;
+};
+const pastRows = group(recent);
+const rows = group(concerts);
+const what = (c: Concert) =>
+  c.programme === "To be announced" ? ensembleLabel(c) ?? "Programme to be announced" : c.programme;
+const withLine = (c: Concert) => (c.programme === "To be announced" ? c.venue : ensembleLabel(c));
 
 const fmt = (iso: string) => {
   const [y, m, d] = iso.split("-");
@@ -41,14 +51,30 @@ const dateLabel = (r: Row) => {
   </div>
 
   <ol class="season__rows">
+    {pastRows.map((r) => (
+      <li>
+        <div class="season__row season__row--past">
+          <span class="season__date">{dateLabel(r)}<span class="season__played">Played</span></span>
+          <span class="season__city">{cityOf(r.first)}</span>
+          <span class="season__what">
+            {r.first.programme === "To be announced" ? ensembleLabel(r.first) ?? "Recital" : r.first.programme}
+            <span class="season__with">{r.first.programme === "To be announced" ? hallOf(r.first) : ensembleLabel(r.first)}</span>
+          </span>
+          <span class="season__arrow" aria-hidden="true"></span>
+        </div>
+      </li>
+    ))}
+    {pastRows.length > 0 && (
+      <li class="season__now" aria-hidden="true"><span class="mono">Now</span></li>
+    )}
     {rows.map((r) => (
       <li>
         <a class="season__row" href={r.first.ticketsUrl ?? withBase("/schedule")}>
           <span class="season__date">{dateLabel(r)}</span>
           <span class="season__city">{cityOf(r.first)}</span>
           <span class="season__what">
-            {r.first.programme === "To be announced" ? ensembleLabel(r.first) ?? "Programme to be announced" : r.first.programme}
-            <span class="season__with">{r.first.programme === "To be announced" ? r.first.venue : ensembleLabel(r.first)}</span>
+            {what(r.first)}
+            <span class="season__with">{withLine(r.first)}</span>
           </span>
           <span class="season__arrow" aria-hidden="true">→</span>
         </a>
@@ -136,6 +162,45 @@ const dateLabel = (r: Row) => {
 
   .season__arrow {
     font-size: 1.25rem;
+  }
+
+  .season__row--past {
+    color: var(--muted);
+  }
+
+  .season__row--past:hover {
+    padding-left: 0;
+  }
+
+  .season__row--past .season__city {
+    opacity: 0.7;
+  }
+
+  .season__played {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .season__now {
+    position: relative;
+    height: 0;
+    border-top: 1px solid var(--accent);
+    margin-top: -1px;
+  }
+
+  .season__now span {
+    position: absolute;
+    top: -0.7rem;
+    left: 0;
+    padding-right: var(--space-3);
+    background: var(--paper);
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .season__all {

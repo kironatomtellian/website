@@ -2,16 +2,20 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import NextBand from "../components/NextBand.astro";
-import SeasonBoard from "../components/SeasonBoard.astro";
 import PressFeature from "../components/PressFeature.astro";
+import SeasonBoard from "../components/SeasonBoard.astro";
+import FullBleedImage from "../components/FullBleedImage.astro";
+import PressCycle from "../components/PressCycle.astro";
 import BioTeaser from "../components/BioTeaser.astro";
 import MediaGrid from "../components/MediaGrid.astro";
 import PhotoTicker from "../components/PhotoTicker.astro";
 import data from "../data/home.json";
-import { upcomingConcerts } from "../lib/season";
+import { upcomingConcerts, recentConcerts } from "../lib/season";
 
+// Same order as the live site: quotes, next concerts, photo, more press,
+// biography, photo, recordings, gallery.
 const next = upcomingConcerts[0];
-const board = upcomingConcerts.slice(1, 11);
+const board = upcomingConcerts.slice(0, 10);
 ---
 
 <Layout title="Kiron Atom Tellian — Pianist · Composer">
@@ -24,18 +28,25 @@ const board = upcomingConcerts.slice(1, 11);
 
   <NextBand concert={next} />
 
+  <PressFeature lead={data.pressFeature.lead} others={data.pressFeature.others} />
+
   <SeasonBoard
     concerts={board}
+    recent={recentConcerts}
     total={upcomingConcerts.length}
-    title="Season <em>26/27</em>"
+    title="Concerts"
     intro={data.seasonIntro}
   />
 
-  <PressFeature lead={data.pressFeature.lead} others={data.pressFeature.others} />
+  <FullBleedImage src={data.secondaryImage.src} alt={data.secondaryImage.alt} />
 
-  <MediaGrid items={data.media} />
+  <PressCycle quotes={data.pressCycle} />
 
   <BioTeaser paragraphs={data.bio} />
+
+  <FullBleedImage src={data.tertiaryImage.src} alt={data.tertiaryImage.alt} />
+
+  <MediaGrid items={data.media} />
 
   <PhotoTicker photos={data.gallery} credit={data.photoCredit} />
 </Layout>

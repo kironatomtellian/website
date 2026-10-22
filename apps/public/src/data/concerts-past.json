@@ -9,7 +9,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "São Paulo"
   },
   {
     "date": "2026-07-18",
@@ -21,7 +22,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Honest Brook"
   },
   {
     "date": "2026-06-19",
@@ -33,7 +35,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Prein an der Rax"
   },
   {
     "date": "2026-06-07",
@@ -45,7 +48,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Waidhofen"
   },
   {
     "date": "2026-06-02",
@@ -57,7 +61,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Graz"
   },
   {
     "date": "2026-06-01",
@@ -69,7 +74,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Graz"
   },
   {
     "date": "2026-05-29",
@@ -81,7 +87,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Salzburg"
   },
   {
     "date": "2026-05-28",
@@ -93,7 +100,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Salzburg"
   },
   {
     "date": "2026-05-27",
@@ -105,7 +113,8 @@
     "orchestra": null,
     "conductor": null,
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Salzburg"
   },
   {
     "date": "2026-05-23",
@@ -117,7 +126,8 @@
     "orchestra": "Orchestra Sinfonica di Milano",
     "conductor": "Emmanuel Tjeknavorian",
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Milan"
   },
   {
     "date": "2026-05-21",
@@ -129,7 +139,8 @@
     "orchestra": "Orchestra Sinfonica di Milano",
     "conductor": "Emmanuel Tjeknavorian",
     "chamberPartners": [],
-    "notes": null
+    "notes": null,
+    "city": "Milan"
   },
   {
     "date": "2026-03-01",

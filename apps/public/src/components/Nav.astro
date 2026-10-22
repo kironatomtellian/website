@@ -5,10 +5,12 @@ import { cityOf } from "../lib/concert";
 
 const items = [
   { href: "/schedule", label: "Schedule" },
-  { href: "/media", label: "Listen" },
   { href: "/about", label: "Biography" },
   { href: "/press", label: "Press" },
-  { href: "/presenters", label: "Presenters" },
+  { href: "/schedule-archive", label: "Past Concerts" },
+  { href: "/media", label: "Media" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const next = upcomingConcerts[0];
@@ -39,7 +41,7 @@ const nextLabel = next
             href={withBase(item.href)}
             aria-current={
               Astro.url.pathname === withBase(item.href) ||
-              (item.href !== "/" && Astro.url.pathname.startsWith(withBase(item.href)))
+              (item.href !== "/" && Astro.url.pathname.startsWith(withBase(item.href) + "/"))
                 ? "page"
                 : undefined
             }
