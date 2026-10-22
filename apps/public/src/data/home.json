@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "Kiron Atom Tellian",
-    "subtitle": "Pianist · Composer",
+    "subtitle": "Pianist / Composer",
     "image": "/img/hero-4_vor_dem_klavier.jpg",
     "imageAlt": "Kiron Atom Tellian seated at a grand piano."
   },
@@ -49,7 +49,7 @@
       "title": "Jeremias Fliedl & Kiron Atom Tellian at Elm Court",
       "description": "Duo Recital with Jeremias Fliedl at Elm Court in Butler, Pennsylvania.",
       "youtubeId": "a02HF7wXM6U",
-      "thumbnail": "/img/media-elm-court.jpg",
+      "thumbnail": "/img/media/01.jpg",
       "url": "https://youtu.be/a02HF7wXM6U?feature=shared",
       "source": "youtube"
     },
@@ -57,7 +57,7 @@
       "title": "Interview with The Violin Channel at Carnegie Hall",
       "description": "Interview before sold-out debut at Zankel Hall at Carnegie Hall with The Violin Channel.",
       "youtubeId": null,
-      "thumbnail": "/img/media-tvc-carnegie.jpg",
+      "thumbnail": "/img/media/02.jpg",
       "url": "https://www.instagram.com/reel/DQXXI9zAHPV/?igsh=MXN1aGhzYTN5OXIyaQ==",
       "source": "instagram"
     },

@@ -9,8 +9,8 @@ export interface Props {
 const { src, alt, height = "70vh" } = Astro.props;
 ---
 
-<section class="full-bleed reveal" aria-hidden={alt ? undefined : "true"}>
-  <img class="full-bleed__img" src={withBase(src)} alt={alt} style={`--h: ${height}`} loading="lazy" decoding="async" />
+<section class="full-bleed" aria-hidden={alt ? undefined : "true"}>
+  <img class="full-bleed__img" data-parallax="0.12" src={withBase(src)} alt={alt} style={`--h: ${height}`} loading="lazy" decoding="async" />
 </section>
 
 <style>

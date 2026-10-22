@@ -1,33 +1,30 @@
 ---
 import { withBase } from "../lib/url";
+import contact from "../data/contact.json";
 ---
 
 <footer class="site-footer bg-bone">
   <div class="container site-footer__inner">
-    <a class="site-footer__book" href={withBase("/presenters")}>Book a <em>concert</em> <span aria-hidden="true">→</span></a>
+    <a class="site-footer__book" href={withBase("/contact")} data-split>Get in <em>touch</em> <span class="site-footer__arrow" aria-hidden="true" data-magnet="0.4">→</span></a>
 
-    <div class="site-footer__contacts">
-      <div>
-        <p class="mono site-footer__label">General management</p>
-        <p class="site-footer__name">Sabine Frank</p>
-        <a class="site-footer__link" href="mailto:sabine.frank@harrisonparrott.de">sabine.frank@harrisonparrott.de</a>
-        <p>+49 89 679710455</p>
-      </div>
-      <div>
-        <p class="mono site-footer__label">HarrisonParrott GmbH</p>
-        <p class="site-footer__name">Sofie Grimm</p>
-        <a class="site-footer__link" href="mailto:sofie.grimm@harrisonparrott.de">sofie.grimm@harrisonparrott.de</a>
-        <p>+49 1512 2123539</p>
-      </div>
+    <div class="site-footer__contacts" data-stagger>
+      {contact.people.map((p, i) => (
+        <div>
+          <p class="mono site-footer__label">{i === 0 ? contact.label : contact.agency}</p>
+          <p class="site-footer__name">{p.name}</p>
+          <a class="site-footer__link" href={`mailto:${p.email}`}>{p.email}</a>
+          <p>{i === 0 ? p.phone : p.mobile}</p>
+        </div>
+      ))}
     </div>
   </div>
 
   <div class="container site-footer__base">
     <p>© {new Date().getFullYear()} Kiron Atom Tellian · Photos Shervin Lainez</p>
     <p class="site-footer__social">
-      <a href="https://www.instagram.com/kironatomtellian/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="https://www.youtube.com/channel/UCgh0E-zCipS0smDr9FKus6g" target="_blank" rel="noopener noreferrer">YouTube</a>
-      <a href={withBase("/contact")}>Imprint</a>
+      <a href={contact.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+      <a href={withBase("/presenters")}>For presenters</a>
+      <a href={withBase("/contact#imprint")}>Imprint</a>
     </p>
   </div>
 </footer>

@@ -13,11 +13,13 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
 
 {concert && (
   <a class="next-band" href={concert.ticketsUrl ?? withBase("/schedule")} data-next-date={concert.date}>
-    <span class="mono next-band__when" data-days>{when}</span>
-    <span class="next-band__what">
-      {ensembleLabel(concert) ?? "Concert"} · <em>{hallOf(concert)}</em> · {concert.displayDate}
+    <span class="container next-band__inner">
+      <span class="mono next-band__when"><b class="next-band__dot pulse" aria-hidden="true"></b><span data-days>{when}</span></span>
+      <span class="next-band__what">
+        {ensembleLabel(concert) ?? "Concert"} · <em>{hallOf(concert)}</em> · {concert.displayDate}
+      </span>
+      <span class="next-band__cta arrow-host">{concert.ticketsUrl ? "Details & tickets" : cityOf(concert)} <span aria-hidden="true">→</span></span>
     </span>
-    <span class="next-band__cta">{concert.ticketsUrl ? "Details & tickets" : cityOf(concert)} <span aria-hidden="true">→</span></span>
   </a>
 )}
 
@@ -36,24 +38,37 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
 
 <style>
   .next-band {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-4) var(--space-8);
+    display: block;
     background: var(--vermilion);
     color: var(--black);
-    padding: 1.375rem var(--gutter);
+  }
+
+  /* Same first column as the concerts board below, so the band lines up with it. */
+  .next-band__inner {
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr) auto;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: 1.5rem;
+  }
+
+  .next-band__dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.625rem;
+    border-radius: 50%;
+    background: var(--black);
   }
 
   .next-band__what {
-    flex: 1 1 26rem;
     font-family: var(--display);
     font-size: clamp(1.625rem, 3vw, 2.5rem);
     line-height: 1.1;
   }
 
   .next-band__cta {
+    white-space: nowrap;
     font-size: 0.9375rem;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -62,5 +77,8 @@ const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : days <= 30 ? `In $
   .next-band:hover .next-band__cta {
     text-decoration: underline;
     text-underline-offset: 4px;
+  }
+  @media (max-width: 768px) {
+    .next-band__inner { grid-template-columns: 1fr; gap: var(--space-2); }
   }
 </style>

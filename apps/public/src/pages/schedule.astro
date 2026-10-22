@@ -1,236 +1,285 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { withBase } from "../lib/url";
-import { cityOf, ensembleLabel, groupByMonth, hallOf, regionOf } from "../lib/concert";
-import { upcomingConcerts, recentConcerts } from "../lib/season";
+import { cityOf, continentOf, countryOf, groupRuns, runLabel, whatOf as what, withLineOf as withLine } from "../lib/concert";
+import { upcomingConcerts, pastConcerts } from "../lib/season";
 
-const grouped = groupByMonth(upcomingConcerts);
-const weekday = (iso: string) =>
-  new Date(iso + "T12:00:00Z").toLocaleString("en", { weekday: "short", timeZone: "UTC" }).toUpperCase();
-const country = (venue: string) => venue.split(",").pop()?.trim() ?? "";
+// The page always shows the whole season, played and coming, so it never looks empty.
+const year = new Date().getFullYear();
+const played = pastConcerts.filter((c) => c.date.startsWith(String(year))).reverse();
+const season = [...played, ...upcomingConcerts];
+const years = [...new Set(season.map((c) => c.date.slice(0, 4)))];
+const stats = [
+  { n: season.length, label: `concerts in ${years.join(" and ")}` },
+  { n: new Set(season.map(cityOf)).size, label: "cities" },
+  { n: new Set(season.map(countryOf)).size, label: "countries" },
+  { n: new Set(season.map(continentOf)).size, label: "continents" },
+];
+
+// One column per month from January of this year, one dot per concert.
+const months = Array.from({ length: 18 }, (_, i) => {
+  const d = new Date(Date.UTC(year, i, 1));
+  const key = d.toISOString().slice(0, 7);
+  return {
+    letter: d.toLocaleString("en", { month: "narrow", timeZone: "UTC" }),
+    year: d.getUTCMonth() === 0 ? String(d.getUTCFullYear()) : "",
+    played: played.filter((c) => c.date.startsWith(key)).length,
+    coming: upcomingConcerts.filter((c) => c.date.startsWith(key)).length,
+  };
+});
+
 ---
 
 <Layout title="Schedule · Kiron Atom Tellian">
   <section class="schedule container">
-    <div class="schedule__head">
-      <h1 class="display-xxl schedule__title">Schedule</h1>
-      <div class="schedule__tools">
-        <div class="schedule__filters" role="group" aria-label="Filter by region" data-filters>
-          <button class="pill" type="button" aria-pressed="true" data-region="all">All dates</button>
-          <button class="pill" type="button" aria-pressed="false" data-region="europe">Europe</button>
-          <button class="pill" type="button" aria-pressed="false" data-region="americas">Americas</button>
+    <h1 class="display-xxl schedule__title" data-split>Schedule</h1>
+
+    <dl class="schedule__stats" data-stagger>
+      {stats.map((s) => (
+        <div>
+          <dt class="schedule__stat-n" data-count>{s.n}</dt>
+          <dd class="schedule__stat-l">{s.label}</dd>
         </div>
-        <a class="mono schedule__ics" href={withBase("/schedule.ics")}>Subscribe in your calendar (.ics) ↗</a>
-      </div>
+      ))}
+    </dl>
+
+    <div class="schedule__timeline" aria-hidden="true" data-stagger>
+      {months.map((m) => (
+        <div class="schedule__month-col">
+          <div class="schedule__dots">
+            {Array.from({ length: m.played }, () => <span class="schedule__dot" />)}
+            {Array.from({ length: m.coming }, () => <span class="schedule__dot schedule__dot--coming" />)}
+          </div>
+          <span class="mono">{m.letter}</span>
+          <span class="mono schedule__year">{m.year}</span>
+        </div>
+      ))}
     </div>
+    <p class="mono schedule__legend"><span class="schedule__legend-coming">●</span> Coming up <span>●</span> Played</p>
 
-    {grouped.map((group) => (
-      <div class="schedule__group" data-group>
-        <h2 class="mono schedule__month">{group.label}</h2>
-        {group.items.map((c) => (
-          <article class="schedule__row" data-region={regionOf(c)}>
-            <div class="schedule__day">
-              <span class="schedule__num">{c.date.slice(8, 10)}</span>
-              <span class="mono schedule__wd">{weekday(c.date)}</span>
-            </div>
-            <div class="schedule__where">
-              <span class="schedule__city">{cityOf(c)}</span>
-              <span class="schedule__muted">{hallOf(c)} · {country(c.venue)}</span>
-            </div>
-            <div class="schedule__what">
-              {c.programme === "To be announced" ? (
-                <>
-                  <span>{ensembleLabel(c) ?? "Concert"}</span>
-                  <span class="schedule__muted">Programme to be announced</span>
-                </>
-              ) : (
-                <>
-                  <span>{c.programme}</span>
-                  {ensembleLabel(c) && <span class="schedule__muted">{ensembleLabel(c)}</span>}
-                </>
-              )}
-            </div>
-            <div class="schedule__actions">
-              {c.ticketsUrl && (
-                <a class="pill pill--solid" href={c.ticketsUrl} target="_blank" rel="noopener">Tickets</a>
-              )}
-              <a class="pill" href={withBase(`/schedule.ics#${c.date}`)} download>+ Calendar</a>
-            </div>
-          </article>
-        ))}
-      </div>
-    ))}
+    <h2 class="mono schedule__label schedule__label--coming">Coming up</h2>
+    <ol class="schedule__rows" data-stagger>
+      {groupRuns(upcomingConcerts).map((r) => (
+        <li>
+          <a class="schedule__row row-sweep" href={r[0].ticketsUrl ?? withBase("/contact")} target={r[0].ticketsUrl ? "_blank" : undefined} rel="noopener noreferrer">
+            <span class="schedule__date">{runLabel(r).days}<span class="schedule__sub">{runLabel(r).sub}</span></span>
+            <span class="schedule__city">{cityOf(r[0])}</span>
+            <span class="schedule__what">{what(r[0])}<span class="schedule__sub">{withLine(r[0])}</span></span>
+            <span class="schedule__arrow arrow-slide" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
 
-    {recentConcerts.length > 0 && (
-      <div class="schedule__group schedule__group--past">
-        <h2 class="mono schedule__month">Recently played</h2>
-        {[...recentConcerts].reverse().map((c) => (
-          <article class="schedule__row schedule__row--past" data-region={regionOf(c)}>
-            <div class="schedule__day">
-              <span class="schedule__num">{c.date.slice(8, 10)}</span>
-              <span class="mono schedule__wd">{c.displayDate}</span>
-            </div>
-            <div class="schedule__where">
-              <span class="schedule__city">{cityOf(c)}</span>
-              <span class="schedule__muted">{hallOf(c)} · {country(c.venue)}</span>
-            </div>
-            <div class="schedule__what">
-              <span>{c.programme === "To be announced" ? ensembleLabel(c) ?? "Recital" : c.programme}</span>
-              {c.programme !== "To be announced" && ensembleLabel(c) && <span class="schedule__muted">{ensembleLabel(c)}</span>}
-            </div>
-            <div class="schedule__actions"></div>
-          </article>
-        ))}
-      </div>
+    {played.length > 0 && (
+      <>
+        <h2 class="mono schedule__label">Played in {year}</h2>
+        <ol class="schedule__rows" data-stagger>
+          {groupRuns([...played].reverse()).map((r) => (
+            <li>
+              <div class="schedule__row schedule__row--past">
+                <span class="schedule__date">{runLabel(r).days}<span class="schedule__sub">{runLabel(r).sub}</span></span>
+                <span class="schedule__city">{cityOf(r[0])}</span>
+                <span class="schedule__what">{what(r[0])}<span class="schedule__sub">{withLine(r[0])}</span></span>
+                <span class="schedule__arrow" aria-hidden="true"></span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </>
     )}
 
     <a class="link-line schedule__past" href={withBase("/schedule-archive")}>All past concerts →</a>
   </section>
 </Layout>
 
-<script>
-  const root = document.querySelector<HTMLElement>("[data-filters]");
-  root?.addEventListener("click", (e) => {
-    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-region]");
-    if (!btn) return;
-    const region = btn.dataset.region;
-    root.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-    document.querySelectorAll<HTMLElement>("[data-group]").forEach((g) => {
-      let shown = 0;
-      g.querySelectorAll<HTMLElement>(".schedule__row").forEach((row) => {
-        const on = region === "all" || row.dataset.region === region;
-        row.hidden = !on;
-        if (on) shown++;
-      });
-      g.hidden = shown === 0;
-    });
-  });
-</script>
-
 <style>
-  .schedule__row--past {
-    color: var(--muted);
-  }
-  .schedule__row--past .schedule__city,
-  .schedule__row--past .schedule__num {
-    opacity: 0.7;
-  }
-
   .schedule {
     padding-block: calc(var(--nav-h) + var(--space-16)) var(--section-y);
   }
 
-  .schedule__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--space-8);
-    margin-bottom: var(--space-12);
-  }
-
   .schedule__title {
-    margin: 0;
+    margin: 0 0 var(--space-12);
   }
 
-  .schedule__tools {
+  .schedule__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(12.5rem, 40%), 1fr));
+    gap: var(--space-8);
+    margin: 0 0 var(--space-12);
+  }
+
+  .schedule__stat-n {
+    font-family: var(--display);
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    line-height: 0.9;
+  }
+
+  .schedule__stat-l {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+  }
+
+  .schedule__timeline {
+    display: grid;
+    grid-template-columns: repeat(18, minmax(0, 1fr));
+    gap: 0.25rem;
+    padding: 1.75rem 0 1rem;
+    border-block: 1px solid var(--rule);
+  }
+
+  .schedule__month-col {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: var(--space-4);
-  }
-
-  .schedule__filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .schedule__filters .pill[aria-pressed="true"] {
-    background: var(--vermilion);
-    border-color: var(--vermilion);
-    color: var(--black);
-  }
-
-  .schedule__ics {
+    align-items: center;
+    gap: 0.625rem;
     font-size: 0.75rem;
-    color: #c9c3b8;
+    color: var(--muted);
   }
 
-  .schedule__month {
-    margin: 0;
-    padding: var(--space-12) 0 var(--space-3);
+  .schedule__dots {
+    height: 4.625rem;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap-reverse;
+    align-content: center;
+    gap: 0.25rem;
+  }
+
+  /* Dots drop into place month by month. */
+  :global(.motion) .schedule__timeline .schedule__dot {
+    transform: scale(0);
+    transition: transform 600ms var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * 80ms + 300ms);
+  }
+
+  :global(.motion) .schedule__timeline.is-in .schedule__dot {
+    transform: none;
+  }
+
+  .schedule__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .schedule__dot--coming,
+  .schedule__legend-coming {
+    background: var(--vermilion);
+  }
+
+  .schedule__legend-coming {
+    background: none;
     color: var(--vermilion);
-    border-bottom: 1px solid var(--rule);
   }
 
+  .schedule__year {
+    min-height: 1em;
+    font-size: 0.6875rem;
+  }
+
+  .schedule__legend {
+    margin: 0.875rem 0 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .schedule__legend span + span {
+    margin-left: var(--space-4);
+  }
+
+  .schedule__label {
+    margin: var(--space-20) 0 var(--space-6);
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .schedule__label--coming {
+    color: var(--vermilion);
+  }
+
+  .schedule__rows {
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Same columns as the concerts board on the home page. */
   .schedule__row {
     display: grid;
-    grid-template-columns: 5.5rem minmax(0, 1.4fr) minmax(0, 2fr) minmax(0, 1.3fr);
+    grid-template-columns: 12.5rem minmax(0, 2.2fr) minmax(0, 2.6fr) 1.5rem;
     gap: var(--space-6);
     align-items: start;
     padding-block: 1.75rem;
     border-bottom: 1px solid var(--rule);
   }
 
-  .schedule__day,
-  .schedule__where,
-  .schedule__what {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-  }
-
-  .schedule__num {
-    font-family: var(--display);
-    font-size: 3.5rem;
-    line-height: 0.9;
-  }
-
-  .schedule__wd,
-  .schedule__muted {
+  .schedule__row--past {
     color: var(--muted);
   }
 
-  .schedule__wd {
-    font-size: 0.75rem;
+  a.schedule__row:hover .schedule__arrow {
+    color: var(--accent);
+  }
+
+  .schedule__date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding-top: 0.375rem;
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+  }
+
+  .schedule__sub {
+    display: block;
+    font-family: var(--sans, inherit);
+    font-size: 0.8125rem;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  .schedule__what .schedule__sub {
+    margin-top: 0.25rem;
+    font-size: 1rem;
   }
 
   .schedule__city {
     font-family: var(--display);
-    font-size: 2.25rem;
+    font-size: clamp(1.875rem, 3.4vw, 3.25rem);
     line-height: 1;
   }
 
+  .schedule__row--past .schedule__city {
+    opacity: 0.7;
+  }
+
   .schedule__what {
-    font-size: 1.125rem;
-    line-height: 1.4;
+    padding-top: 0.25rem;
+    line-height: 1.45;
   }
 
-  .schedule__what .schedule__muted {
-    font-size: 0.9375rem;
-  }
-
-  .schedule__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    justify-content: flex-end;
+  .schedule__arrow {
+    font-size: 1.25rem;
   }
 
   .schedule__past {
     margin-top: var(--space-12);
   }
 
-  @media (max-width: 900px) {
-    .schedule__tools { align-items: flex-start; }
+  @media (max-width: 768px) {
     .schedule__row {
-      grid-template-columns: 4.5rem minmax(0, 1fr);
+      grid-template-columns: 1fr auto;
+      gap: var(--space-2) var(--space-4);
     }
-    .schedule__what,
-    .schedule__actions {
-      grid-column: 2;
-      justify-content: flex-start;
-    }
+    .schedule__date,
+    .schedule__what { grid-column: 1 / -1; }
+    .schedule__arrow { grid-row: 2; grid-column: 2; }
+    .schedule__timeline { gap: 0; }
+    .schedule__dot { width: 0.5rem; height: 0.5rem; }
   }
 </style>

@@ -1,0 +1,12 @@
+{
+  "label": "General management",
+  "agency": "HarrisonParrott GmbH",
+  "people": [
+    { "name": "Sabine Frank", "email": "sabine.frank@harrisonparrott.de", "phone": "+49 89 679710455", "mobile": "+49 172 8977992" },
+    { "name": "Sofie Grimm", "email": "sofie.grimm@harrisonparrott.de", "phone": "+49 679710432", "mobile": "+49 1512 2123539" }
+  ],
+  "image": "/img/tertiary-10_vor_der_wand.jpg",
+  "imageAlt": "Kiron Atom Tellian standing against a wall.",
+  "imprint": "Information in accordance with applicable disclosure law. Personal data and the legal Impressum are maintained by the site owner. For press, licensing, or rights inquiries please contact management above. Photographs by Shervin Lainez, used by permission.",
+  "youtube": "https://www.youtube.com/channel/UCgh0E-zCipS0smDr9FKus6g"
+}

@@ -53,7 +53,7 @@ const nextLabel = next
     </ul>
     {nextLabel && (
       <a class="site-nav__next mono" href={withBase("/schedule")}>
-        <span class="site-nav__dot" aria-hidden="true"></span>{nextLabel}
+        <span class="site-nav__dot pulse" aria-hidden="true"></span>{nextLabel}
       </a>
     )}
   </div>
@@ -69,11 +69,26 @@ const nextLabel = next
     backdrop-filter: blur(12px) saturate(120%);
     color: var(--ink-light);
     transition: background var(--t-hover) var(--ease-standard),
-                border-color var(--t-hover) var(--ease-standard);
+                border-color var(--t-hover) var(--ease-standard),
+                transform 500ms var(--ease-out-expo);
     border-bottom: 1px solid transparent;
+    animation: nav-in 900ms var(--ease-out-expo) 150ms both;
   }
 
-  :global(body.bg-bone) .site-nav {
+  .site-nav.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  @keyframes nav-in {
+    from { transform: translateY(-100%); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-nav { animation: none; }
+  }
+
+  :global(body.bg-bone) .site-nav,
+  :global(body.nav-solid) .site-nav {
     background: var(--black);
   }
 

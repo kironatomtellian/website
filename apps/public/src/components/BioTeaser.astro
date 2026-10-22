@@ -3,88 +3,69 @@ import { withBase } from "../lib/url";
 
 export interface Props {
   paragraphs: string[];
+  image?: string;
 }
-const { paragraphs } = Astro.props;
+const { paragraphs, image = "/img/about-hero.jpg" } = Astro.props;
 ---
 
-<section class="bio-teaser" id="bio-teaser" aria-label="Biography excerpt">
-  <div class="container">
-    <div class="bio-teaser__inner reading reveal-stagger">
-      <p class="eyebrow accent">Biography</p>
-      {paragraphs.map((p, i) => (
-        <p class={`body bio-teaser__p ${i === 0 ? "dropcap" : ""}`}>{p}</p>
-      ))}
-      <p class="bio-teaser__cta">
-        <a class="link-quiet" href={withBase("/about")}>
-          Read full biography <span aria-hidden="true">→</span>
-        </a>
-      </p>
+<section class="bio-teaser container" id="bio-teaser" aria-labelledby="bio-teaser-h">
+  <div class="bio-teaser__media" data-wipe data-tilt>
+    <img src={withBase(image)} alt="Kiron Atom Tellian by a factory window" loading="lazy" decoding="async" />
+  </div>
+  <div class="bio-teaser__text">
+    <h2 id="bio-teaser-h" class="bio-teaser__title" data-split>Biography</h2>
+    <div data-stagger>
+      {paragraphs.map((p) => <p class="bio-teaser__p">{p}</p>)}
+      <a class="link-line bio-teaser__cta" href={withBase("/about")}>Read full biography →</a>
     </div>
   </div>
 </section>
 
 <style>
   .bio-teaser {
-    padding-block: var(--section-y-tight) var(--section-y);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+    padding-block: var(--section-y);
   }
 
-  .bio-teaser__inner {
-    text-align: left;
+  .bio-teaser__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
   }
 
-  .bio-teaser__inner > .eyebrow {
-    text-align: center;
-    margin-bottom: var(--space-8);
+  .bio-teaser__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% 30%;
+    filter: grayscale(1);
+  }
+
+  .bio-teaser__title {
+    margin: 0 0 var(--space-8);
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(3rem, 7vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
   }
 
   .bio-teaser__p {
+    margin: 0 0 var(--space-6);
+    max-width: 60ch;
     font-size: 1.1875rem;
-    line-height: 1.7;
-    margin-bottom: var(--space-6);
+    line-height: 1.6;
+    color: #d6d1c7;
   }
 
   .bio-teaser__cta {
-    text-align: center;
-    margin-top: var(--space-8);
+    display: inline-block;
+    margin-top: var(--space-4);
   }
 
-  .link-quiet {
-    position: relative;
-    font-style: italic;
-    color: var(--ink);
-    transition: color var(--t-hover) var(--ease-standard);
-  }
-
-  .link-quiet::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 1.25em;
-    bottom: -2px;
-    height: 1px;
-    background: var(--accent);
-    transform: scaleX(0.4);
-    transform-origin: left center;
-    transition: transform var(--t-hover) var(--ease-out-expo);
-  }
-
-  .link-quiet:hover {
-    color: var(--accent);
-  }
-
-  .link-quiet:hover::after {
-    transform: scaleX(1);
-  }
-
-  .bg-deep .link-quiet {
-    color: var(--ink-light);
-  }
-
-  .bg-deep .link-quiet:hover {
-    color: var(--accent-soft);
-  }
-
-  .bg-deep .link-quiet::after {
-    background: var(--accent-soft);
+  @media (max-width: 900px) {
+    .bio-teaser { grid-template-columns: 1fr; }
   }
 </style>

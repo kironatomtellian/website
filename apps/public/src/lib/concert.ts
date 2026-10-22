@@ -121,3 +121,48 @@ export function splitByDate(
     past: unique.filter((c) => c.date < today).sort((a, b) => b.date.localeCompare(a.date)),
   };
 }
+
+/** Consecutive nights with the same hall and programme, shown as one row. */
+export function groupRuns(concerts: Concert[]): Concert[][] {
+  const runs: Concert[][] = [];
+  for (const c of concerts) {
+    const prev = runs[runs.length - 1];
+    if (prev && prev[0].venue === c.venue && prev[0].programme === c.programme) prev.push(c);
+    else runs.push([c]);
+  }
+  return runs;
+}
+
+/** "APR 1 + 3" over "2027 · 2 concerts", so a run never reads as one date. */
+export function runLabel(runIn: Concert[]): { days: string; sub: string } {
+  const run = [...runIn].sort((a, b) => a.date.localeCompare(b.date));
+  const first = run[0].date;
+  const month = new Date(first + "T12:00:00Z").toLocaleString("en", { month: "short", timeZone: "UTC" }).toUpperCase();
+  const days = run.map((c) => String(Number(c.date.slice(8, 10)))).join(" + ");
+  const year = first.slice(0, 4);
+  return { days: `${month} ${days}`, sub: run.length > 1 ? `${year} · ${run.length} concerts` : year };
+}
+
+const COUNTRY_FIX: Record<string, string> = { AT: "Austria", Salzburg: "Austria", NY: "USA", "New York": "USA", Florida: "USA" };
+const CONTINENT: Record<string, string> = { USA: "Americas", Colombia: "Americas", Brazil: "Americas", Israel: "Asia" };
+
+/** Country, read off the end of the venue ("NY" and "Florida" count as USA). */
+export function countryOf(c: Concert): string {
+  const tail = c.venue.split(",").pop()?.trim() ?? "";
+  return COUNTRY_FIX[tail] ?? tail;
+}
+
+/** Continent for the schedule counts: the Americas count as one, anything unlisted as Europe. */
+export function continentOf(c: Concert): string {
+  return CONTINENT[countryOf(c)] ?? "Europe";
+}
+
+/** Main line of a concert row: the programme, or the kind of concert while it is still open. */
+export function whatOf(c: Concert): string {
+  return c.programme === "To be announced" || !c.programme ? ensembleLabel(c) ?? "Programme to be announced" : c.programme;
+}
+
+/** Second line of a concert row: who with, else the hall. */
+export function withLineOf(c: Concert): string {
+  return c.programme === "To be announced" ? hallOf(c) : ensembleLabel(c) ?? hallOf(c);
+}

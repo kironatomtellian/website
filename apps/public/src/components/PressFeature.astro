@@ -17,12 +17,12 @@ const parts = lead.emphasis ? lead.quote.split(lead.emphasis) : [lead.quote];
 
 <section class="press-feature bg-bone" aria-label="Press">
   <div class="container press-feature__inner">
-    <p class="mono press-feature__source">{lead.publication} · {lead.date}</p>
-    <blockquote class="press-feature__lead">
+    <p class="mono press-feature__source" data-fade>{lead.publication} · {lead.date}</p>
+    <blockquote class="press-feature__lead" data-split>
       “{parts[0]}{lead.emphasis && parts.length > 1 && <em>{lead.emphasis}</em>}{parts.length > 1 && parts[1]}”
     </blockquote>
 
-    <div class="press-feature__grid">
+    <div class="press-feature__grid" data-stagger>
       {others.map((q) => (
         <figure class="press-feature__item">
           <blockquote>“{q.quote}”</blockquote>

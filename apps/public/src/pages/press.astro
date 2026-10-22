@@ -1,57 +1,135 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHero from "../components/PageHero.astro";
-import PressQuote from "../components/PressQuote.astro";
 import { withBase } from "../lib/url";
 import data from "../data/press.json";
+
+const lead = data.lead;
+const [before, after] = lead.emphasis ? lead.quote.split(lead.emphasis) : [lead.quote, ""];
+const quotes = data.quotes;
+const names = [...new Set(quotes.map((q) => q.publication))];
 ---
 
-<Layout title="Press · Kiron Atom Tellian">
-  <PageHero
-    title={data.hero.title}
-    eyebrow={data.hero.eyebrow}
-    image={data.hero.image}
-    imageAlt={data.hero.imageAlt}
-  />
+<Layout title="Press · Kiron Atom Tellian" bodyClass="nav-solid">
+  <section class="press-lead bg-bone">
+    <div class="container">
+      <p class="mono press-lead__src" data-fade>Press · {lead.publication} · {lead.date}</p>
+      <h1 class="press-lead__quote" data-split>
+        “{before}{lead.emphasis && <em>{lead.emphasis}</em>}{after}”
+      </h1>
+    </div>
+    <div class="marquee press-lead__marquee" aria-hidden="true">
+      {[0, 1].map(() => (
+        <div class="marquee__track">
+          {names.map((n) => <span>{n}</span>)}
+        </div>
+      ))}
+    </div>
+  </section>
 
   <section class="press container">
-    {data.quotes.map((q, i) => (
-      <>
-        <PressQuote
-          publication={q.publication}
-          byline={q.byline}
-          quote={q.quote}
-          date={q.date}
-          url={q.url}
-          align="center"
-        />
-        {i < data.quotes.length - 1 && i % 3 === 2 && <hr class="press__rule" />}
-      </>
-    ))}
-
-    <p class="press__cta reveal">
-      <a class="link-quiet" href={withBase("/about")}>
-        Read the biography <span aria-hidden="true">→</span>
-      </a>
-    </p>
+    <div class="press__grid">
+      {quotes.map((q, i) => (
+        <figure class={`press__card ${q.quote.length < 120 ? "press__card--short" : ""}`} data-fade style={`transition-delay: ${(i % 3) * 90}ms`}>
+          <blockquote>“{q.quote}”</blockquote>
+          <figcaption class="mono">
+            {q.url ? <a href={q.url} target="_blank" rel="noopener noreferrer">{q.publication} ↗</a> : q.publication}
+            {q.byline && <> · {q.byline}</>} · {q.date}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <a class="link-line press__more" href={withBase("/about")}>Read the biography →</a>
   </section>
 </Layout>
 
 <style>
+  .press-lead {
+    padding: calc(var(--nav-h) + var(--space-24)) 0 0;
+    overflow: hidden;
+  }
+
+  .press-lead__src {
+    margin: 0 0 var(--space-8);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bone-muted);
+  }
+
+  .press-lead__quote {
+    margin: 0;
+    max-width: 18ch;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 7vw, 7rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+
+  .press-lead__quote em {
+    color: var(--vermilion-deep);
+  }
+
+  .press-lead__marquee {
+    margin-top: var(--space-24);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--bone-rule);
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    color: var(--bone-muted);
+    --marquee-t: 60s;
+  }
+
   .press {
-    padding-block: var(--section-y-tight) var(--section-y);
+    padding-block: var(--space-24) var(--section-y);
   }
 
-  .press__rule {
-    width: 4rem;
-    margin: var(--space-12) auto;
-    border: 0;
-    height: 1px;
-    background: var(--rule);
+  .press__grid {
+    columns: 3 20rem;
+    column-gap: var(--space-6);
   }
 
-  .press__cta {
-    text-align: center;
+  .press__card {
+    break-inside: avoid;
+    margin: 0 0 var(--space-6);
+    padding: var(--space-8);
+    background: #151413;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    transition: background 400ms var(--ease-out-expo), transform 600ms var(--ease-out-expo);
+  }
+
+  .press__card:hover {
+    background: #1d1b19;
+    transform: translateY(-4px);
+  }
+
+  .press__card blockquote {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 1.375rem;
+    line-height: 1.25;
+  }
+
+  .press__card--short blockquote {
+    font-size: 2rem;
+    line-height: 1.08;
+  }
+
+  .press__card figcaption {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .press__card a:hover {
+    color: var(--vermilion);
+  }
+
+  .press__more {
     margin-top: var(--space-12);
   }
 </style>

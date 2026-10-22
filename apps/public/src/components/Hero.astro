@@ -16,6 +16,7 @@ const first = words.join(" ");
 ---
 
 <section class="hero" aria-label="Introduction">
+  <div class="hero__media" data-parallax="0.25">
   <img
     class="hero__img"
     src={withBase(image)}
@@ -25,6 +26,7 @@ const first = words.join(" ");
     fetchpriority="high"
     decoding="async"
   />
+  </div>
   <div class="hero__veil" aria-hidden="true"></div>
 
   <div class="container hero__content">
@@ -34,6 +36,7 @@ const first = words.join(" ");
     </h1>
     <p class="mono hero__subtitle">{subtitle}</p>
   </div>
+  <span class="hero__cue" aria-hidden="true"><i></i></span>
 </section>
 
 <style>
@@ -45,6 +48,11 @@ const first = words.join(" ");
     overflow: hidden;
     background: var(--black);
     color: var(--bone);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
   }
 
   .hero__img {
@@ -108,6 +116,31 @@ const first = words.join(" ");
     animation: hero-rise 700ms var(--ease-out-expo) 700ms forwards;
   }
 
+  /* A thin line that keeps falling, so the hero invites a scroll. */
+  .hero__cue {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    z-index: 1;
+    width: 1px;
+    height: var(--space-8);
+    overflow: hidden;
+    background: rgba(239, 235, 227, 0.2);
+  }
+
+  .hero__cue i {
+    position: absolute;
+    inset: 0;
+    background: var(--vermilion);
+    animation: hero-cue 2.4s var(--ease-in-out) 1.4s infinite;
+    transform: translateY(-100%);
+  }
+
+  @keyframes hero-cue {
+    0% { transform: translateY(-100%); }
+    60%, 100% { transform: translateY(100%); }
+  }
+
   @keyframes hero-zoom {
     to { transform: scale(1); }
   }
@@ -125,5 +158,6 @@ const first = words.join(" ");
     .hero__img { animation: none; transform: none; }
     .hero__line,
     .hero__subtitle { animation: none; opacity: 1; transform: none; }
+    .hero__cue { display: none; }
   }
 </style>

@@ -6,207 +6,155 @@ import mediaData from "../data/media.json";
 
 const items = mediaData.items;
 
-const thumbFor = (t: string | null): string => {
-  if (!t) return withBase("/img/media-placeholder.jpg");
-  // Snapshot paths like ./cms/uploads/images/XYZ.jpeg — the eventual
-  // production site serves those at /cms/uploads/... For now we host
-  // placeholders at /img/media-* until real images are committed.
-  const fname = t.split("/").pop() ?? "";
-  return withBase(`/img/media/${fname}`);
+const kind = (url: string | null, yt: string | null) => {
+  if (yt || url?.includes("youtu")) return "Video";
+  if (url?.includes("oe1.orf")) return "Radio";
+  if (url?.includes("orf") || url?.includes("instagram")) return "Interview";
+  return "Article";
 };
+const thumb = (t: string | null) => (t?.startsWith("/") ? withBase(t) : t);
 ---
 
 <Layout title="Media · Kiron Atom Tellian">
-  <PageHero
-    title="Audio & Video"
-    eyebrow="Media"
-    image="/img/media-hero.jpg"
-    imageAlt="Kiron Atom Tellian performing."
-  />
+  <PageHero title="Audio &" italic="Video" eyebrow="Media" image="/img/media-hero.jpg" imageAlt="" imagePosition="50% 40%" />
 
-  <section class="media-page container">
-    <ul class="media-page__grid">
-      {items.map((m) => (
-        <li class="media-page__item reveal">
-          <a
-            class="media-card"
-            href={m.url ?? "#"}
-            target={m.url ? "_blank" : undefined}
-            rel="noopener noreferrer"
-            aria-label={m.url ? `Open ${m.title} in new tab` : m.title}
-            data-yt-id={m.youtubeId ?? ""}
-          >
-            <div class="media-card__frame">
-              <img
-                class="media-card__img"
-                src={thumbFor(m.thumbnail)}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width="1280"
-                height="720"
-              />
-              <div class="media-card__overlay" aria-hidden="true">
-                <svg viewBox="0 0 64 64" width="44" height="44" fill="none">
-                  <circle cx="32" cy="32" r="31" stroke="currentColor" stroke-width="1" />
-                  <path d="M26 22 L44 32 L26 42 Z" fill="currentColor" />
-                </svg>
-              </div>
-            </div>
-            <h2 class="h3 media-card__title">{m.title}</h2>
-            <p class="small muted media-card__desc">{m.description}</p>
+  <section class="media container">
+    <ul class="media__grid">
+      {items.map((m, i) => {
+        const k = kind(m.url, m.youtubeId);
+        return (
+          <li class={`media__item ${i === 0 ? "media__item--wide" : ""}`} data-fade style={`transition-delay: ${(i % 3) * 90}ms`}>
+            <a class="media__link" href={m.url ?? "#"} target="_blank" rel="noopener noreferrer" data-cursor={k === "Video" ? "Play" : "Open"}>
+              {thumb(m.thumbnail) ? (
+                <span class="media__frame" data-tilt>
+                  <img src={thumb(m.thumbnail)} alt="" loading={i < 3 ? "eager" : "lazy"} decoding="async" />
+                </span>
+              ) : (
+                <span class="media__frame media__frame--text">{m.title.includes("Harrison") ? "HarrisonParrott" : m.title}</span>
+              )}
+              <span class="mono media__kind">{k}</span>
+              <span class="media__title">{m.title}</span>
+            </a>
+            {m.description && <p class="media__desc">{m.description}</p>}
             {m.details && (
-              <details class="media-card__details" onclick="event.stopPropagation()">
-                <summary class="small accent">Programme</summary>
-                <div class="small muted media-card__details-body">{m.details}</div>
+              <details class="media__details">
+                <summary class="mono">Programme</summary>
+                <p>{m.details}</p>
               </details>
             )}
-          </a>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   </section>
 </Layout>
 
 <style>
-  .media-page {
-    padding-block: var(--section-y-tight) var(--section-y);
+  .media {
+    padding-block: var(--space-24) var(--section-y);
   }
 
-  .media-page__grid {
+  .media__grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-12) var(--space-8);
-    max-width: 1200px;
-    margin-inline: auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-16) var(--space-8);
   }
 
-  .media-card {
-    display: block;
-    color: var(--ink);
+  .media__item--wide {
+    grid-column: span 2;
   }
 
-  .media-card__frame {
+  .media__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .media__frame {
     position: relative;
-    overflow: hidden;
-    background: var(--paper-deep);
+    display: block;
     aspect-ratio: 16 / 9;
-    margin-bottom: var(--space-4);
+    overflow: hidden;
+    background: #1a1a1a;
   }
 
-  .media-card__img {
+  .media__frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 700ms var(--ease-out-expo);
+    filter: grayscale(1);
+    transition: filter 600ms var(--ease-out-expo), transform 700ms var(--ease-out-expo);
   }
 
-  .media-card__overlay {
-    position: absolute;
-    inset: 0;
+  .media__link:hover .media__frame img {
+    filter: grayscale(0);
+  }
+
+  .media__frame--text {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink-light);
-    background: linear-gradient(to bottom, rgba(14,12,10,0) 50%, rgba(14,12,10,0.35) 100%);
-    opacity: 0;
-    transition: opacity var(--t-hover) var(--ease-standard);
+    align-items: flex-end;
+    padding: var(--space-6);
+    background: var(--vermilion);
+    color: var(--black);
+    font-family: var(--display);
+    font-size: 2.125rem;
+    line-height: 1;
   }
 
-  .media-card:hover .media-card__overlay,
-  .media-card:focus-visible .media-card__overlay {
-    opacity: 1;
+  .media__kind {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
-  .media-card:hover .media-card__img,
-  .media-card:focus-visible .media-card__img {
-    transform: scale(1.03);
+  .media__title {
+    font-family: var(--display);
+    font-size: 1.625rem;
+    line-height: 1.1;
+    transition: color 200ms;
   }
 
-  .media-card__title {
-    margin: 0 0 var(--space-2);
-    font-style: italic;
-    font-weight: 400;
-    transition: color var(--t-hover) var(--ease-standard);
+  .media__item--wide .media__title {
+    font-size: 2.5rem;
   }
 
-  .media-card:hover .media-card__title {
-    color: var(--accent);
+  .media__link:hover .media__title {
+    color: var(--vermilion);
   }
 
-  .media-card__desc {
-    margin: 0 0 var(--space-2);
+  .media__desc {
+    margin: 0.5rem 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--muted);
   }
 
-  .media-card__details {
-    margin-top: var(--space-2);
+  .media__details {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--muted);
   }
 
-  .media-card__details summary {
+  .media__details summary {
     cursor: pointer;
-    list-style: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4em;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--vermilion);
   }
 
-  .media-card__details summary::-webkit-details-marker { display: none; }
-
-  .media-card__details summary::after {
-    content: "+";
-    transition: transform var(--t-hover) var(--ease-out-expo);
-    display: inline-block;
+  .media__details p {
+    margin: 0.5rem 0 0;
+    white-space: pre-line;
   }
 
-  .media-card__details[open] summary::after {
-    content: "−";
+  @media (max-width: 1000px) {
+    .media__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
-  .media-card__details-body {
-    margin-top: var(--space-2);
-    line-height: 1.6;
-  }
-
-  @media (max-width: 768px) {
-    .media-page__grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-12);
-    }
+  @media (max-width: 640px) {
+    .media__grid { grid-template-columns: 1fr; }
+    .media__item--wide { grid-column: auto; }
   }
 </style>
-
-<script>
-  const cards = document.querySelectorAll<HTMLAnchorElement>(".media-card[data-yt-id]");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isTouch = window.matchMedia("(hover: none)").matches;
-  if (!reduceMotion && !isTouch) {
-    cards.forEach((card) => {
-      const ytId = card.getAttribute("data-yt-id");
-      if (!ytId) return;
-      const img = card.querySelector<HTMLImageElement>(".media-card__img");
-      if (!img) return;
-      const original = img.src;
-      const frames = [
-        `https://i.ytimg.com/vi/${ytId}/1.jpg`,
-        `https://i.ytimg.com/vi/${ytId}/2.jpg`,
-        `https://i.ytimg.com/vi/${ytId}/3.jpg`,
-      ];
-      frames.forEach((src) => { const i = new Image(); i.src = src; });
-      let timer: number | null = null;
-      let i = 0;
-      card.addEventListener("mouseenter", () => {
-        if (timer !== null) return;
-        timer = window.setInterval(() => {
-          i = (i + 1) % frames.length;
-          img.src = frames[i] ?? original;
-        }, 700);
-      });
-      card.addEventListener("mouseleave", () => {
-        if (timer !== null) window.clearInterval(timer);
-        timer = null;
-        i = 0;
-        img.src = original;
-      });
-    });
-  }
-</script>

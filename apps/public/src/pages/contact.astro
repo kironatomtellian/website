@@ -1,49 +1,34 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHero from "../components/PageHero.astro";
+import { withBase } from "../lib/url";
+import data from "../data/contact.json";
+
+const [first, ...rest] = data.agency.split(" ").reverse();
 ---
 
 <Layout title="Contact · Kiron Atom Tellian">
-  <PageHero title="Contact" eyebrow="Imprint" />
-
-  <section class="contact container">
-    <div class="reading contact__inner">
-      <div class="reveal contact__block">
-        <p class="eyebrow accent">Management</p>
-        <p class="body italic">Kiron Atom Tellian is represented worldwide by Young Concert Artists.</p>
-        <p class="body">
-          Christina Baker<br />
-          <a class="link-quiet" href="mailto:christina@yca.org">christina@yca.org</a><br />
-          <span class="small muted">+1 (212) 307-6670</span>
-        </p>
-        <p class="body">
-          Mic Herring<br />
-          <a class="link-quiet" href="mailto:mic@yca.org">mic@yca.org</a><br />
-          <span class="small muted">+1 (212) 307-6668</span>
-        </p>
+  <section class="contact">
+    <div class="contact__media" data-wipe>
+      <img src={withBase(data.image)} alt={data.imageAlt} data-parallax="0.08" />
+    </div>
+    <div class="contact__body">
+      <p class="mono contact__label" data-fade>{data.label}</p>
+      <h1 class="contact__title" data-split>{rest.reverse().join(" ")} <em>{first}</em></h1>
+      <div data-stagger>
+        {data.people.map((p) => (
+          <div class="contact__person">
+            <span class="contact__name">{p.name}</span>
+            <a class="contact__mail" href={`mailto:${p.email}`}>{p.email}</a>
+            <span class="mono contact__tel">
+              <a href={`tel:${p.phone.replace(/\s/g, "")}`}>T {p.phone}</a> · <a href={`tel:${p.mobile.replace(/\s/g, "")}`}>M {p.mobile}</a>
+            </span>
+          </div>
+        ))}
       </div>
-
-      <hr class="contact__rule" />
-
-      <div class="reveal contact__block">
-        <p class="eyebrow accent">Direct</p>
-        <p class="body">
-          <a class="link-quiet" href="mailto:kiron@kironatomtellian.com">
-            kiron@kironatomtellian.com
-          </a>
-        </p>
-      </div>
-
-      <hr class="contact__rule" />
-
-      <div class="reveal contact__block">
-        <p class="eyebrow accent">Imprint</p>
-        <p class="small muted">
-          Information in accordance with applicable disclosure law. Personal
-          data and the legal Impressum are maintained by the site owner. For
-          press, licensing, or rights inquiries please contact management
-          above. Photographs by Shervin Lainez, used by permission.
-        </p>
+      <a class="link-line contact__presenters" href={withBase("/presenters")}>Biographies and photos for presenters →</a>
+      <div class="contact__imprint" id="imprint" data-fade>
+        <p class="mono contact__label contact__label--muted">Imprint</p>
+        <p>{data.imprint}</p>
       </div>
     </div>
   </section>
@@ -51,26 +36,105 @@ import PageHero from "../components/PageHero.astro";
 
 <style>
   .contact {
-    padding-block: var(--section-y-tight) var(--section-y);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    min-height: 100svh;
   }
 
-  .contact__inner {
-    max-width: 56ch;
+  .contact__media {
+    position: relative;
+    overflow: hidden;
+    min-height: 40rem;
   }
 
-  .contact__block {
-    margin-block: var(--space-6);
+  .contact__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
   }
 
-  .contact__block p + p {
-    margin-top: var(--space-3);
+  .contact__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: calc(var(--nav-h) + var(--space-24)) var(--gutter) var(--space-24);
   }
 
-  .contact__rule {
-    margin-block: var(--space-8);
-    width: 4rem;
-    border: 0;
-    height: 1px;
-    background: var(--rule);
+  .contact__label {
+    margin: 0;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--vermilion);
+  }
+
+  .contact__label--muted {
+    color: var(--muted);
+  }
+
+  .contact__title {
+    margin: 0 0 var(--space-8);
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+  }
+
+  .contact__person {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--rule);
+  }
+
+  .contact__name {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 4.4vw, 4rem);
+    line-height: 1;
+  }
+
+  .contact__mail {
+    align-self: flex-start;
+    font-size: 1.25rem;
+    background: linear-gradient(var(--vermilion), var(--vermilion)) left bottom / 100% 1px no-repeat;
+    transition: background-size 500ms var(--ease-out-expo), color 200ms;
+  }
+
+  .contact__mail:hover {
+    color: var(--vermilion);
+    background-size: 0 1px;
+  }
+
+  .contact__tel {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .contact__presenters {
+    align-self: flex-start;
+    margin-top: var(--space-4);
+  }
+
+  .contact__imprint {
+    margin-top: var(--space-12);
+    max-width: 36rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .contact__imprint p {
+    margin: var(--space-2) 0 0;
+  }
+
+  @media (max-width: 900px) {
+    .contact { grid-template-columns: 1fr; }
+    .contact__media { min-height: 28rem; }
+    .contact__body { padding-top: var(--space-16); }
   }
 </style>

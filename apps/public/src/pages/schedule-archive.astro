@@ -1,108 +1,164 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
-import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
-import { type Concert, groupByYear } from "../lib/concert";
-import { pastConcerts as past } from "../lib/season";
+import { cityOf, groupByYear, groupRuns, runLabel, whatOf, withLineOf } from "../lib/concert";
+import { pastConcerts } from "../lib/season";
 
-const concerts = past as Concert[];
-const grouped = groupByYear(concerts);
+const years = groupByYear(pastConcerts);
+const first = years[years.length - 1]?.year;
 ---
 
-<Layout title="Previous events · Kiron Atom Tellian">
+<Layout title="Past concerts · Kiron Atom Tellian">
   <PageHero
-    title="Previous events"
-    eyebrow="Archive"
+    eyebrow="Past concerts"
+    title={`${pastConcerts.length} concerts,`}
+    italic={`since ${first}`}
     image="/img/archive-hero.jpg"
-    imageAlt="Kiron Atom Tellian, hands at the keyboard."
+    imageAlt=""
+    imagePosition="50% 25%"
   />
 
-  <section class="archive container">
-    {grouped.map((group, gi) => (
-      <details class="archive__year" open={gi === 0}>
-        <summary class="archive__summary">
-          <span class="display-l-italic accent archive__year-label">{group.year}</span>
-          <span class="archive__count small muted">{group.items.length} concerts</span>
-          <span class="archive__chev" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 7 L10 12 L15 7" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-        </summary>
-        <div class="archive__rows">
-          {group.items.map((c) => <ConcertRow concert={c} showTickets={false} />)}
-        </div>
-      </details>
-    ))}
+  <nav class="archive-years container" aria-label="Years" data-stagger>
+    {years.map((y) => <a class="mono" href={`#y${y.year}`}>{y.year}</a>)}
+  </nav>
 
-    <p class="archive__cta reveal">
-      <a class="link-quiet" href={withBase("/schedule")}>
-        Upcoming concerts <span aria-hidden="true">→</span>
-      </a>
-    </p>
+  <section class="archive container">
+    {years.map((y) => (
+      <div class="archive__year" id={`y${y.year}`}>
+        <div class="archive__head">
+          <div class="archive__year-n" data-split>{y.year}</div>
+          <div class="archive__count">{y.items.length} concerts</div>
+        </div>
+        <ol class="archive__rows" data-stagger>
+          {groupRuns(y.items).map((r) => (
+            <li class="archive__row">
+              <span class="archive__date">{runLabel(r).days}<span class="archive__sub">{runLabel(r).sub}</span></span>
+              <span class="archive__city">{cityOf(r[0])}</span>
+              <span class="archive__what">{whatOf(r[0])}<span class="archive__sub">{withLineOf(r[0])}</span></span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))}
+    <a class="link-line archive__cta" href={withBase("/schedule")}>Upcoming concerts →</a>
   </section>
 </Layout>
 
 <style>
+  .archive-years {
+    position: sticky;
+    top: var(--nav-h-scrolled);
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-4);
+    background: var(--black);
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+  }
+
+  .archive-years a {
+    color: var(--muted);
+    transition: color 200ms;
+  }
+
+  .archive-years a:hover {
+    color: var(--vermilion);
+  }
+
   .archive {
-    padding-block: var(--section-y-tight) var(--section-y);
-    max-width: 1080px;
+    padding-block: var(--space-8) var(--section-y);
   }
 
   .archive__year {
-    border-top: 1px solid var(--rule);
-    padding-block: var(--space-4);
+    display: grid;
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+    gap: var(--space-6);
+    margin-top: var(--space-20);
+    scroll-margin-top: calc(var(--nav-h) + 4rem);
   }
 
-  .archive__year:last-of-type {
-    border-bottom: 1px solid var(--rule);
+  .archive__head {
+    position: sticky;
+    top: calc(var(--nav-h) + 4rem);
+    align-self: start;
   }
 
-  .archive__summary {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-4);
-    cursor: pointer;
-    list-style: none;
-    padding-block: var(--space-3);
-    transition: color var(--t-hover) var(--ease-standard);
-  }
-
-  .archive__summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .archive__summary:hover {
-    color: var(--accent);
-  }
-
-  .archive__year-label {
-    margin: 0;
-    flex-shrink: 0;
+  .archive__year-n {
+    font-family: var(--display);
+    font-size: 4.5rem;
+    line-height: 0.9;
+    color: var(--vermilion);
   }
 
   .archive__count {
-    flex: 1;
-  }
-
-  .archive__chev {
-    transition: transform var(--t-hover) var(--ease-out-expo);
+    margin-top: var(--space-2);
+    font-size: 0.875rem;
     color: var(--muted);
-    line-height: 0;
-  }
-
-  .archive__year[open] .archive__chev {
-    transform: rotate(180deg);
   }
 
   .archive__rows {
-    margin-top: var(--space-3);
-    padding-bottom: var(--space-6);
+    border-top: 1px solid var(--rule);
+  }
+
+  .archive__row {
+    display: grid;
+    grid-template-columns: 8.75rem minmax(0, 1.6fr) minmax(0, 2.6fr);
+    gap: var(--space-6);
+    align-items: start;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    transition: background 300ms;
+  }
+
+  .archive__row:hover {
+    background: rgba(239, 235, 227, 0.03);
+  }
+
+  .archive__date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding-top: 0.375rem;
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+  }
+
+  .archive__sub {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  .archive__what .archive__sub {
+    font-size: 0.9375rem;
+  }
+
+  .archive__city {
+    font-family: var(--display);
+    font-size: clamp(1.625rem, 2.6vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .archive__what {
+    padding-top: 0.25rem;
+    line-height: 1.45;
   }
 
   .archive__cta {
-    text-align: center;
-    margin-top: var(--space-12);
+    margin-top: var(--space-16);
+  }
+
+  @media (max-width: 900px) {
+    .archive__year { grid-template-columns: 1fr; }
+    .archive__head { position: static; }
+    .archive__row { grid-template-columns: 1fr; gap: var(--space-2); }
   }
 </style>

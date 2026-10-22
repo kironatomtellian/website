@@ -71,3 +71,231 @@
     animation: none;
   }
 }
+
+/*
+ * Motion layer, driven by src/scripts/motion.ts. Hidden start states only
+ * apply under html.motion, which the layout sets when scripts run and the
+ * visitor has not asked for reduced motion, so content never stays hidden.
+ */
+
+/* Words of a heading rise out of a mask, one after another. */
+.motion [data-split] .split-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.motion [data-split] .split-w > span {
+  display: inline-block;
+  transform: translateY(105%);
+  transition: transform 1000ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+.motion [data-split].is-in .split-w > span {
+  transform: translateY(0);
+}
+
+/* Children fade up in sequence. */
+.motion [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 800ms var(--ease-out-expo), transform 900ms var(--ease-out-expo);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.motion [data-stagger].is-in > * {
+  opacity: 1;
+  transform: none;
+}
+
+.motion [data-fade] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 900ms var(--ease-out-expo), transform 900ms var(--ease-out-expo);
+}
+
+.motion [data-fade].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Image frames open from the bottom while the photo settles. */
+.motion [data-wipe] {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1300ms var(--ease-out-expo);
+}
+
+.motion [data-wipe] img {
+  transform: scale(1.18);
+  transition: transform 1600ms var(--ease-out-expo);
+}
+
+.motion [data-wipe].is-in {
+  clip-path: inset(0 0 0 0);
+}
+
+.motion [data-wipe].is-in img {
+  transform: scale(1);
+}
+
+/* Lines draw across. */
+.motion [data-draw] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1400ms var(--ease-out-expo);
+}
+
+.motion [data-draw].is-in {
+  transform: scaleX(1);
+}
+
+[data-parallax] {
+  will-change: transform;
+}
+
+/* Reading progress, a thin vermilion line under the nav. */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 101;
+  height: 2px;
+  background: var(--vermilion);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* Round label that follows the pointer over media and photos. */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.cursor-dot span {
+  position: absolute;
+  left: -2.75rem;
+  top: -2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: var(--vermilion);
+  color: var(--black);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: scale(0);
+  transition: transform 350ms var(--ease-out-expo);
+}
+
+.cursor-dot.is-on span {
+  transform: scale(1);
+}
+
+/* Rows: a vermilion rule sweeps in under the hovered row. */
+.row-sweep {
+  position: relative;
+}
+
+.row-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--vermilion);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 600ms var(--ease-out-expo);
+}
+
+.row-sweep:hover::after,
+.row-sweep:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.row-sweep .arrow-slide {
+  display: inline-block;
+  transition: transform 400ms var(--ease-out-expo), color 200ms;
+}
+
+.row-sweep:hover .arrow-slide {
+  transform: translateX(8px);
+  color: var(--vermilion);
+}
+
+/* A slow pulse on "live" dots. */
+.pulse {
+  position: relative;
+}
+
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: pulse 2.2s var(--ease-out-expo) infinite;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* Endless horizontal ticker. */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 3rem;
+  padding-right: 3rem;
+  animation: marquee var(--marquee-t, 40s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to { transform: translateX(-100%); }
+}
+
+[data-magnet] {
+  display: inline-block;
+  transition: transform 500ms var(--ease-out-expo);
+}
+
+[data-tilt] {
+  overflow: hidden;
+}
+
+[data-tilt] img {
+  transition: transform 700ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track,
+  .pulse::after {
+    animation: none;
+  }
+  .scroll-progress,
+  .cursor-dot {
+    display: none;
+  }
+}

@@ -5,19 +5,32 @@ import { withBase } from "../lib/url";
 import data from "../data/gallery.json";
 
 const photos = data.photos;
+// Three columns filled shortest-first, so the grid ends level.
+const cols: { p: (typeof photos)[number]; i: number }[][] = [[], [], []];
+const heights = [0, 0, 0];
+photos.forEach((p, i) => {
+  const c = heights.indexOf(Math.min(...heights));
+  cols[c].push({ p, i });
+  heights[c] += p.height / p.width;
+});
 ---
 
 <Layout title="Gallery · Kiron Atom Tellian" bodyClass="page-gallery">
-  <PageHero title="Gallery" eyebrow="Photography" />
+  <PageHero title="Gallery" eyebrow="Photography" aside={`Photos Shervin Lainez · <a href="${withBase("/presenters")}">Print resolution for presenters →</a>`} />
 
   <section class="gallery container">
     <div class="gallery__grid" data-gallery>
-      {photos.map((p, i) => (
+      {cols.map((col) => (
+        <div class="gallery__col">
+        {col.map(({ p, i }) => (
         <button
           class="gallery__item"
           type="button"
           data-index={i}
           aria-label={`Open ${p.alt}`}
+          data-cursor="View"
+          data-wipe
+          style={`transition-delay: ${(i % 3) * 120}ms`}
         >
           <img
             src={withBase(p.src)}
@@ -25,12 +38,15 @@ const photos = data.photos;
             loading={i < 4 ? "eager" : "lazy"}
             decoding="async"
             draggable="false"
+            width={p.width}
+            height={p.height}
           />
         </button>
+        ))}
+        </div>
       ))}
     </div>
 
-    {data.credit && <p class="small muted gallery__credit">{data.credit}</p>}
   </section>
 
   <div class="lightbox" data-lightbox aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image viewer">
@@ -59,14 +75,14 @@ const photos = data.photos;
 
 <style>
   .gallery {
-    padding-block: var(--section-y-tight) var(--section-y);
+    padding-block: var(--space-8) var(--section-y);
   }
 
   .gallery__grid {
-    column-count: 3;
-    column-gap: var(--space-4);
-    max-width: 1200px;
-    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    align-items: start;
   }
 
   .gallery__item {
@@ -79,6 +95,7 @@ const photos = data.photos;
     padding: 0;
     background: var(--paper-deep);
     cursor: zoom-in;
+    color: inherit;
   }
 
   .gallery__item img {
@@ -89,8 +106,13 @@ const photos = data.photos;
                 opacity var(--t-hover) var(--ease-standard);
   }
 
+  .gallery__item img {
+    filter: grayscale(0.15);
+  }
+
   .gallery__item:hover img {
-    transform: scale(1.03);
+    transform: scale(1.05) !important;
+    filter: none;
   }
 
   .gallery__credit {
@@ -98,11 +120,8 @@ const photos = data.photos;
     margin-top: var(--space-12);
   }
 
-  @media (max-width: 1024px) {
-    .gallery__grid { column-count: 2; }
-  }
   @media (max-width: 640px) {
-    .gallery__grid { column-count: 1; }
+    .gallery__grid { grid-template-columns: 1fr; }
   }
 
   /* Lightbox */
@@ -212,7 +231,9 @@ const photos = data.photos;
   const dataEl = document.querySelector<HTMLElement>("[data-gallery]");
   const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
   if (dataEl && lightbox) {
-    const items = Array.from(dataEl.querySelectorAll<HTMLButtonElement>(".gallery__item"));
+    const items = Array.from(dataEl.querySelectorAll<HTMLButtonElement>(".gallery__item")).sort(
+      (a, b) => Number(a.dataset.index) - Number(b.dataset.index),
+    );
     const photos: Photo[] = items.map((it) => ({
       src: (it.querySelector("img") as HTMLImageElement).src,
       alt: (it.querySelector("img") as HTMLImageElement).alt,
