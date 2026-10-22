@@ -7,13 +7,13 @@ import data from "../data/presenters.json";
 <Layout title="For presenters · Kiron Atom Tellian" bodyClass="bg-bone">
   <div class="kit container">
     <div class="kit__head">
-      <h1 class="display-xxl kit__title">For <em>presenters</em></h1>
-      <p class="kit__intro">{data.intro}</p>
+      <h1 class="display-xxl kit__title" data-split>For <em>presenters</em></h1>
+      <p class="kit__intro" data-fade>{data.intro}</p>
     </div>
 
     <section class="kit__section" aria-labelledby="kit-bios">
       <h2 id="kit-bios" class="display-l kit__h">Biographies</h2>
-      <div class="kit__cards">
+      <div class="kit__cards" data-stagger>
         {data.bios.map((b, i) => (
           <div class="kit__card">
             <p class="mono kit__label">{b.label}</p>
@@ -36,7 +36,7 @@ import data from "../data/presenters.json";
         <h2 id="kit-photos" class="display-l kit__h">Photos</h2>
         <p>Credit {data.photoCredit}. Free for concert promotion.</p>
       </div>
-      <div class="kit__photos">
+      <div class="kit__photos" data-stagger>
         {data.photos.map((p) => (
           <figure>
             <a href={withBase(p.src)} download>
