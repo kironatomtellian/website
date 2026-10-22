@@ -6,6 +6,7 @@ export interface ChamberPartner {
 export interface Concert {
   date: string;
   displayDate: string;
+  city?: string | null;
   venue: string;
   programme: string;
   ticketsUrl?: string | null;
@@ -74,4 +75,49 @@ export function groupByYear(concerts: Concert[]): Array<{ year: string; items: C
   return Array.from(groups.entries())
     .sort((a, b) => b[0].localeCompare(a[0]))
     .map(([year, items]) => ({ year, items }));
+}
+
+const AMERICAS = ["USA", "Colombia", "Brazil", "Mexico", "Canada", "Argentina", "Chile", "NY", "Florida"];
+
+/** Large display name for a concert: its city, else the first part of the venue. */
+export function cityOf(c: Concert): string {
+  if (c.city) return c.city;
+  return c.venue.split(",")[0].trim();
+}
+
+/** "europe" or "americas", read off the country at the end of the venue. */
+export function regionOf(c: Concert): "europe" | "americas" {
+  const tail = c.venue.split(",").pop()?.trim() ?? "";
+  return AMERICAS.some((a) => tail.includes(a)) ? "americas" : "europe";
+}
+
+/** Hall name without the country suffix. */
+export function hallOf(c: Concert): string {
+  const parts = c.venue.split(",").map((p) => p.trim());
+  return parts.length > 1 ? parts.slice(0, -1).join(", ") : parts[0];
+}
+
+/**
+ * Upcoming vs past is decided by the build date, not by which JSON file an
+ * entry sits in, so a concert moves to the archive on the next build after it
+ * happened, without anyone editing the files.
+ */
+export function splitByDate(
+  upcoming: Concert[],
+  past: Concert[],
+  now: Date = new Date(),
+): { upcoming: Concert[]; past: Concert[] } {
+  const today = now.toISOString().slice(0, 10);
+  const all = [...upcoming, ...past].filter((c) => c.date);
+  const seen = new Set<string>();
+  const unique = all.filter((c) => {
+    const key = `${c.date}|${c.venue}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  return {
+    upcoming: unique.filter((c) => c.date >= today).sort((a, b) => a.date.localeCompare(b.date)),
+    past: unique.filter((c) => c.date < today).sort((a, b) => b.date.localeCompare(a.date)),
+  };
 }

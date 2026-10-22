@@ -1,0 +1,154 @@
+---
+import { withBase } from "../lib/url";
+import { type Concert, cityOf, ensembleLabel } from "../lib/concert";
+
+export interface Props {
+  concerts: Concert[];
+  total: number;
+  title?: string;
+  intro?: string;
+}
+const { concerts, total, title = "Season", intro } = Astro.props;
+
+// Consecutive nights at the same hall become one row: "01 + 03.04.27".
+type Row = { first: Concert; dates: Concert[] };
+const rows: Row[] = [];
+for (const c of concerts) {
+  const prev = rows[rows.length - 1];
+  if (prev && prev.first.venue === c.venue && prev.first.programme === c.programme) {
+    prev.dates.push(c);
+  } else {
+    rows.push({ first: c, dates: [c] });
+  }
+}
+
+const fmt = (iso: string) => {
+  const [y, m, d] = iso.split("-");
+  return `${d}.${m}.${y.slice(2)}`;
+};
+const dateLabel = (r: Row) => {
+  if (r.dates.length === 1) return fmt(r.first.date);
+  const days = r.dates.map((c) => c.date.slice(8, 10));
+  const tail = fmt(r.dates[r.dates.length - 1].date).slice(2);
+  return r.dates.length === 2 ? `${days[0]} + ${days[1]}${tail}` : `${days[0]}–${days[days.length - 1]}${tail}`;
+};
+---
+
+<section class="season container" aria-labelledby="season-title">
+  <div class="season__head">
+    <h2 id="season-title" class="display-xl season__title" set:html={title} />
+    {intro && <p class="season__intro">{intro}</p>}
+  </div>
+
+  <ol class="season__rows">
+    {rows.map((r) => (
+      <li>
+        <a class="season__row" href={r.first.ticketsUrl ?? withBase("/schedule")}>
+          <span class="season__date">{dateLabel(r)}</span>
+          <span class="season__city">{cityOf(r.first)}</span>
+          <span class="season__what">
+            {r.first.programme === "To be announced" ? ensembleLabel(r.first) ?? "Programme to be announced" : r.first.programme}
+            <span class="season__with">{r.first.programme === "To be announced" ? r.first.venue : ensembleLabel(r.first)}</span>
+          </span>
+          <span class="season__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+
+  <a class="link-line season__all" href={withBase("/schedule")}>Full season · {total} dates →</a>
+</section>
+
+<style>
+  .season {
+    padding-block: var(--section-y) var(--space-20);
+  }
+
+  .season__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+  }
+
+  .season__title {
+    margin: 0;
+  }
+
+  .season__title :global(em) {
+    font-style: italic;
+  }
+
+  .season__intro {
+    max-width: 22rem;
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+
+  .season__rows {
+    border-top: 1px solid var(--rule);
+  }
+
+  .season__row {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 1fr) minmax(0, 2.2fr) minmax(0, 2.6fr) auto;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--rule);
+    transition: padding-left var(--t-hover) var(--ease-out-expo);
+  }
+
+  .season__row:hover {
+    padding-left: var(--space-2);
+  }
+
+  .season__row:hover .season__arrow {
+    color: var(--accent);
+  }
+
+  .season__date {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .season__city {
+    font-family: var(--display);
+    font-size: clamp(1.875rem, 3.4vw, 3.25rem);
+    line-height: 1;
+  }
+
+  .season__what {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    line-height: 1.45;
+  }
+
+  .season__with {
+    color: var(--muted);
+  }
+
+  .season__arrow {
+    font-size: 1.25rem;
+  }
+
+  .season__all {
+    margin-top: var(--space-8);
+  }
+
+  @media (max-width: 768px) {
+    .season__row {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-2) var(--space-4);
+    }
+    .season__date { grid-column: 1 / -1; }
+    .season__what { grid-column: 1 / -1; }
+    .season__arrow { grid-row: 2; grid-column: 2; }
+  }
+</style>

@@ -1,9 +1,24 @@
-.display-xl {
-  font-style: italic;
+.display-xxl,
+.display-xl,
+.display-l,
+.display-l-italic,
+.pull-quote,
+.h1 {
+  font-family: var(--display);
+}
+
+.display-xxl {
   font-weight: 400;
-  font-size: clamp(3rem, 9vw, 7.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: clamp(4rem, 13vw, 13rem);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+}
+
+.display-xl {
+  font-weight: 400;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
 }
 
 .display-l {
@@ -60,12 +75,12 @@
 }
 
 .eyebrow {
-  font-weight: 600;
+  font-family: var(--mono);
+  font-weight: 400;
   font-size: 0.75rem;
   line-height: 1;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-feature-settings: "lnum";
 }
 
 .muted {

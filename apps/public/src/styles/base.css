@@ -31,14 +31,14 @@ body {
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
-  font-size: 1.125rem;
-  line-height: 1.65;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
   font-weight: 400;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "kern", "liga", "onum", "lnum" 0;
+  font-feature-settings: "kern", "liga";
   min-height: 100svh;
   overflow-x: hidden;
 }
@@ -162,4 +162,66 @@ hr {
 .bg-deep ::selection {
   background: var(--accent-soft);
   color: var(--paper-deep);
+}
+
+.bg-bone {
+  background: var(--bone);
+  color: var(--bone-ink);
+  --rule: var(--bone-rule);
+  --muted: var(--bone-muted);
+  --accent: var(--vermilion-deep);
+}
+
+.bg-bone ::selection {
+  background: var(--vermilion-deep);
+  color: var(--bone);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.link-line {
+  display: inline-block;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 0.25rem;
+  transition: color var(--t-hover) var(--ease-standard);
+}
+
+.link-line:hover {
+  color: var(--accent);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background var(--t-hover) var(--ease-standard), color var(--t-hover) var(--ease-standard);
+}
+
+.pill--solid {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.bg-bone .pill--solid {
+  background: var(--bone-ink);
+  color: var(--bone);
+}
+
+.pill:hover {
+  border-color: var(--accent);
 }

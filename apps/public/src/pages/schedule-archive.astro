@@ -4,7 +4,7 @@ import PageHero from "../components/PageHero.astro";
 import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
 import { type Concert, groupByYear } from "../lib/concert";
-import past from "../data/concerts-past.json";
+import { pastConcerts as past } from "../lib/season";
 
 const concerts = past as Concert[];
 const grouped = groupByYear(concerts);

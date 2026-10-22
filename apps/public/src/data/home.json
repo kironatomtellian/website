@@ -28,9 +28,8 @@
     }
   ],
   "bio": [
-    "Austrian pianist and composer Kiron Atom Tellian is currently pursuing his bachelor’s degree at The Juilliard School in New York, studying with Maestro Sergei Babayan as a recipient of the prestigious Kovner Fellowship. Born in Vienna, he began his piano studies at the University for Music and Performing Arts Vienna (MDW) at age seven and made his orchestral debut at nine.",
-    "Tellian has garnered top prizes at international competitions across Europe, the USA, and Japan. In 2024, he won the YCA Susan Wadsworth International Auditions, receiving eight special prizes. As a composer, his works have been widely recognised; this season, he has been commissioned to write an orchestral work premiering at the Vienna Musikverein.",
-    "This season, Tellian performs at the Vienna Konzerthaus, the Viotti Festival, the Vienna Musikverein, and made his debut with the Orchestra Sinfonica di Milano in Chopin’s First Piano Concerto. Looking ahead: debuts with the San Diego Symphony, a recital at Villa Senar invited by the Rachmaninov Foundation, and his solo recital debut at Carnegie Hall."
+    "Austrian pianist and composer Kiron Atom Tellian has established himself as one of the most compelling young artists of his generation. Praised for his artistry, imagination, and commanding presence at the keyboard, he has appeared on major stages across Europe, the United States, and South America.",
+    "The upcoming season spans three continents, with highlights including his solo recital debut at the Wiener Musikverein and appearances with the Orchestre National de Lyon, the Antwerp Symphony Orchestra, and the Dallas Symphony Orchestra. Tellian has completed his Bachelor’s degree at The Juilliard School under Emanuel Ax."
   ],
   "secondaryImage": {
     "src": "/img/secondary-2_auf_klaviatur_liegend.jpg",
@@ -80,18 +79,80 @@
     }
   ],
   "gallery": [
-    { "src": "/img/gallery-01.jpg", "alt": "Kiron Atom Tellian portrait 1" },
-    { "src": "/img/gallery-02.jpg", "alt": "Kiron Atom Tellian portrait 2" },
-    { "src": "/img/gallery-03.jpg", "alt": "Kiron Atom Tellian portrait 3" },
-    { "src": "/img/gallery-04.jpg", "alt": "Kiron Atom Tellian portrait 4" },
-    { "src": "/img/gallery-05.jpg", "alt": "Kiron Atom Tellian portrait 5" },
-    { "src": "/img/gallery-06.jpg", "alt": "Kiron Atom Tellian portrait 6" },
-    { "src": "/img/gallery-07.jpg", "alt": "Kiron Atom Tellian portrait 7" },
-    { "src": "/img/gallery-08.jpg", "alt": "Kiron Atom Tellian portrait 8" },
-    { "src": "/img/gallery-09.jpg", "alt": "Kiron Atom Tellian portrait 9" },
-    { "src": "/img/gallery-10.jpg", "alt": "Kiron Atom Tellian portrait 10" },
-    { "src": "/img/gallery-11.jpg", "alt": "Kiron Atom Tellian portrait 11" },
-    { "src": "/img/gallery-12.jpg", "alt": "Kiron Atom Tellian portrait 12" }
+    {
+      "src": "/img/gallery-01.jpg",
+      "alt": "Kiron Atom Tellian portrait 1"
+    },
+    {
+      "src": "/img/gallery-02.jpg",
+      "alt": "Kiron Atom Tellian portrait 2"
+    },
+    {
+      "src": "/img/gallery-03.jpg",
+      "alt": "Kiron Atom Tellian portrait 3"
+    },
+    {
+      "src": "/img/gallery-04.jpg",
+      "alt": "Kiron Atom Tellian portrait 4"
+    },
+    {
+      "src": "/img/gallery-05.jpg",
+      "alt": "Kiron Atom Tellian portrait 5"
+    },
+    {
+      "src": "/img/gallery-06.jpg",
+      "alt": "Kiron Atom Tellian portrait 6"
+    },
+    {
+      "src": "/img/gallery-07.jpg",
+      "alt": "Kiron Atom Tellian portrait 7"
+    },
+    {
+      "src": "/img/gallery-08.jpg",
+      "alt": "Kiron Atom Tellian portrait 8"
+    },
+    {
+      "src": "/img/gallery-09.jpg",
+      "alt": "Kiron Atom Tellian portrait 9"
+    },
+    {
+      "src": "/img/gallery-10.jpg",
+      "alt": "Kiron Atom Tellian portrait 10"
+    },
+    {
+      "src": "/img/gallery-11.jpg",
+      "alt": "Kiron Atom Tellian portrait 11"
+    },
+    {
+      "src": "/img/gallery-12.jpg",
+      "alt": "Kiron Atom Tellian portrait 12"
+    }
   ],
-  "photoCredit": "© Photos Shervin Lainez"
+  "photoCredit": "© Photos Shervin Lainez",
+  "seasonIntro": "Three continents. Musikverein recital debut, Lyon, Antwerp and Dallas with Emmanuel Tjeknavorian.",
+  "pressFeature": {
+    "lead": {
+      "publication": "Operaclick",
+      "date": "May 2026",
+      "quote": "One of the greatest and most original living pianists.",
+      "emphasis": "original"
+    },
+    "others": [
+      {
+        "publication": "Washington Classical Review",
+        "date": "April 2026",
+        "quote": "A daring recital … extraordinary contrapuntal clarity."
+      },
+      {
+        "publication": "Salzburger Nachrichten",
+        "date": "May 2026",
+        "quote": "A new star appeared in the pianistic firmament."
+      },
+      {
+        "publication": "NDR Kultur",
+        "date": "November 2021",
+        "quote": "Devilish, virtuoso and simply: brilliant."
+      }
+    ]
+  }
 }

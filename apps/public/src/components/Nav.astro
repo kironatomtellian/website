@@ -1,18 +1,25 @@
 ---
 import { withBase } from "../lib/url";
+import { upcomingConcerts } from "../lib/season";
+import { cityOf } from "../lib/concert";
 
 const items = [
+  { href: "/schedule", label: "Schedule" },
+  { href: "/media", label: "Listen" },
   { href: "/about", label: "Biography" },
   { href: "/press", label: "Press" },
-  { href: "/schedule", label: "Schedule" },
-  { href: "/media", label: "Media" },
-  { href: "/gallery", label: "Gallery" },
+  { href: "/presenters", label: "Presenters" },
 ];
+
+const next = upcomingConcerts[0];
+const nextLabel = next
+  ? `Next · ${new Date(next.date).toLocaleString("en", { month: "short", day: "numeric", timeZone: "UTC" })} · ${cityOf(next)}`
+  : null;
 ---
 
 <nav class="site-nav" data-nav>
   <div class="site-nav__inner container">
-    <a class="site-nav__brand" href={withBase("/")}>Kiron Atom Tellian</a>
+    <a class="site-nav__brand" href={withBase("/")} aria-label="Kiron Atom Tellian, home">K.A.T.</a>
     <button
       class="site-nav__toggle"
       type="button"
@@ -42,6 +49,11 @@ const items = [
         </li>
       ))}
     </ul>
+    {nextLabel && (
+      <a class="site-nav__next mono" href={withBase("/schedule")}>
+        <span class="site-nav__dot" aria-hidden="true"></span>{nextLabel}
+      </a>
+    )}
   </div>
 </nav>
 
@@ -57,6 +69,10 @@ const items = [
     transition: background var(--t-hover) var(--ease-standard),
                 border-color var(--t-hover) var(--ease-standard);
     border-bottom: 1px solid transparent;
+  }
+
+  :global(body.bg-bone) .site-nav {
+    background: var(--black);
   }
 
   .site-nav.is-scrolled {
@@ -76,9 +92,33 @@ const items = [
     height: var(--nav-h-scrolled);
   }
 
+  .site-nav__next {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 40px;
+    padding: 0 1rem;
+    border: 1px solid rgba(239, 235, 227, 0.35);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: var(--ink-light);
+  }
+
+  .site-nav__next:hover {
+    border-color: var(--accent);
+  }
+
+  .site-nav__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--vermilion);
+  }
+
   .site-nav__brand {
+    font-family: var(--display);
     font-style: italic;
-    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-size: clamp(1.375rem, 2vw, 1.75rem);
     letter-spacing: -0.01em;
     color: var(--ink-light);
     line-height: 1;
@@ -97,7 +137,9 @@ const items = [
 
   .site-nav__link {
     position: relative;
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--ink-light);
     padding-block: 0.5rem;
     transition: color var(--t-hover) var(--ease-standard);
@@ -163,6 +205,10 @@ const items = [
     white-space: nowrap; border: 0;
   }
 
+  @media (max-width: 1024px) {
+    .site-nav__next { display: none; }
+  }
+
   @media (max-width: 768px) {
     .site-nav__toggle { display: block; }
 
@@ -176,18 +222,23 @@ const items = [
       background: var(--paper-deep);
       padding: var(--space-8) var(--gutter);
       gap: var(--space-4);
-      transform: translateY(-110%);
-      transition: transform 350ms var(--ease-out-expo);
+      transform: translateY(calc(-100% - var(--nav-h)));
+      visibility: hidden;
+      transition: transform 350ms var(--ease-out-expo), visibility 0s linear 350ms;
       border-bottom: 1px solid var(--rule-dark);
     }
 
     .site-nav[data-open="true"] .site-nav__list {
       transform: translateY(0);
+      visibility: visible;
+      transition: transform 350ms var(--ease-out-expo), visibility 0s;
     }
 
     .site-nav__link {
-      font-size: 1.25rem;
-      font-style: italic;
+      font-family: var(--display);
+      font-size: 2rem;
+      letter-spacing: 0;
+      text-transform: none;
     }
   }
 </style>

@@ -1,0 +1,231 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { withBase } from "../lib/url";
+import data from "../data/presenters.json";
+---
+
+<Layout title="For presenters · Kiron Atom Tellian" bodyClass="bg-bone">
+  <div class="kit container">
+    <div class="kit__head">
+      <h1 class="display-xxl kit__title">For <em>presenters</em></h1>
+      <p class="kit__intro">{data.intro}</p>
+    </div>
+
+    <section class="kit__section" aria-labelledby="kit-bios">
+      <h2 id="kit-bios" class="display-l kit__h">Biographies</h2>
+      <div class="kit__cards">
+        {data.bios.map((b, i) => (
+          <div class="kit__card">
+            <p class="mono kit__label">{b.label}</p>
+            <div class="kit__bio" id={`bio-${i}`}>
+              {b.text.split("\n\n").map((p) => <p>{p}</p>)}
+            </div>
+            <button class="pill kit__copy" type="button" data-copy={`bio-${i}`}>Copy text</button>
+          </div>
+        ))}
+        <div class="kit__card">
+          <p class="mono kit__label">Full · season biography</p>
+          <p>The full biography with competition history and studies, as on the biography page.</p>
+          <a class="pill pill--solid kit__copy" href={withBase(data.fullBioPath)}>Read and copy →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="kit__section" aria-labelledby="kit-photos">
+      <div class="kit__side">
+        <h2 id="kit-photos" class="display-l kit__h">Photos</h2>
+        <p>Credit {data.photoCredit}. Free for concert promotion.</p>
+      </div>
+      <div class="kit__photos">
+        {data.photos.map((p) => (
+          <figure>
+            <a href={withBase(p.src)} download>
+              <img src={withBase(p.src)} alt={p.alt} loading="lazy" decoding="async" />
+            </a>
+            <figcaption class="mono">{p.label} · download ↓</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section class="kit__section" aria-labelledby="kit-prog">
+      <h2 id="kit-prog" class="display-l kit__h">Programmes 26/27</h2>
+      <dl class="kit__prog">
+        {data.programmes.map((p) => (
+          <div>
+            <dt class="mono">{p.label}</dt>
+            <dd class="kit__prog-title">{p.title}</dd>
+            <dd class="kit__prog-note">{p.note}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const el = document.getElementById(btn.dataset.copy!);
+      if (!el) return;
+      try {
+        await navigator.clipboard.writeText(el.innerText.trim());
+        btn.textContent = "Copied";
+        setTimeout(() => (btn.textContent = "Copy text"), 1800);
+      } catch {
+        btn.textContent = "Select and copy";
+      }
+    });
+  });
+</script>
+
+<style>
+  :global(body.bg-bone) {
+    background: var(--bone);
+    color: var(--bone-ink);
+  }
+
+  .kit {
+    padding-block: calc(var(--nav-h) + var(--space-16)) var(--section-y);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .kit__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .kit__title {
+    margin: 0;
+  }
+
+  .kit__title em {
+    font-style: italic;
+  }
+
+  .kit__intro {
+    max-width: 26rem;
+    margin: 0;
+    font-size: 1.125rem;
+    color: #3d3933;
+  }
+
+  .kit__section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    padding-top: var(--space-10, 2.5rem);
+    border-top: 1px solid var(--bone-rule);
+  }
+
+  .kit__h,
+  .kit__side {
+    flex: 1 1 16rem;
+    margin: 0;
+  }
+
+  .kit__side p {
+    color: #3d3933;
+  }
+
+  .kit__cards,
+  .kit__photos,
+  .kit__prog {
+    flex: 999 1 40rem;
+    min-width: 0;
+  }
+
+  .kit__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-6);
+  }
+
+  .kit__card {
+    background: #fff;
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .kit__card p {
+    margin: 0;
+  }
+
+  .kit__bio {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em;
+  }
+
+  .kit__label {
+    color: var(--bone-muted);
+  }
+
+  .kit__copy {
+    margin-top: auto;
+    align-self: flex-start;
+    border-color: var(--bone-rule);
+  }
+
+  .kit__photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .kit__photos figure {
+    margin: 0;
+  }
+
+  .kit__photos img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .kit__photos figcaption {
+    margin-top: var(--space-2);
+    font-size: 0.75rem;
+    color: var(--bone-muted);
+  }
+
+  .kit__prog {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--bone-rule);
+  }
+
+  .kit__prog div {
+    padding: var(--space-6) var(--space-6) var(--space-6) 0;
+    border-bottom: 1px solid var(--bone-rule);
+  }
+
+  .kit__prog dt {
+    color: var(--bone-muted);
+    font-size: 0.75rem;
+  }
+
+  .kit__prog dd {
+    margin: 0;
+  }
+
+  .kit__prog-title {
+    margin-top: var(--space-2) !important;
+    font-size: 1.125rem;
+  }
+
+  .kit__prog-note {
+    font-size: 0.875rem;
+    color: var(--bone-muted);
+  }
+</style>

@@ -1,0 +1,26 @@
+{
+  "intro": "Everything a hall, festival or orchestra needs to announce a concert, in one place. Approved texts and photos, kept current.",
+  "bios": [
+    {
+      "label": "Short · 50 words",
+      "text": "Austrian pianist and composer Kiron Atom Tellian won the 2024 Young Concert Artists Susan Wadsworth International Auditions, with eight special prizes. A graduate of The Juilliard School, where he studied with Emanuel Ax, he makes his solo recital debut at the Wiener Musikverein in 2027 and appears with orchestras in Lyon, Antwerp and Dallas."
+    },
+    {
+      "label": "Programme book · 150 words",
+      "text": "Austrian pianist and composer Kiron Atom Tellian has established himself as one of the most compelling young artists of his generation. Praised for his artistry, imagination, and commanding presence at the keyboard, he has appeared on major stages across Europe, the United States, and South America.\n\nThe 2026/27 season spans three continents, with his solo recital debut at the Wiener Musikverein and appearances with the Orchestre National de Lyon, the Antwerp Symphony Orchestra, and the Dallas Symphony Orchestra. Recent seasons brought his solo debut at Carnegie Hall’s Zankel Hall, the San Diego Symphony at the Rady Shell, and two New Year’s Concerts at the Großes Festspielhaus Salzburg.\n\nIn 2024 he won the Young Concert Artists Susan Wadsworth International Auditions with eight special prizes. His orchestral commission premiered at the Vienna Musikverein. Tellian completed his Bachelor’s degree at The Juilliard School under Emanuel Ax."
+    }
+  ],
+  "fullBioPath": "/about",
+  "photos": [
+    { "src": "/img/hero-4_vor_dem_klavier.jpg", "alt": "At the piano, arms spread across the keyboard", "label": "Black and white" },
+    { "src": "/img/secondary-2_auf_klaviatur_liegend.jpg", "alt": "Leaning over the keyboard", "label": "Black and white" },
+    { "src": "/img/tertiary-10_vor_der_wand.jpg", "alt": "Standing before a fresco wall", "label": "Colour" }
+  ],
+  "photoCredit": "Shervin Lainez",
+  "programmes": [
+    { "label": "Recital", "title": "Mozart, Brahms, Scriabin & Ravel", "note": "Musikverein, May 5, 2027" },
+    { "label": "With orchestra", "title": "Khachaturian", "note": "Orchestre National de Lyon, Antwerp Symphony Orchestra" },
+    { "label": "With orchestra", "title": "Grieg & Saint-Saëns", "note": "Dallas Symphony Orchestra" },
+    { "label": "Composer", "title": "Orchestral commission, premiered at the Musikverein", "note": "Next commission in 2027/28" }
+  ]
+}

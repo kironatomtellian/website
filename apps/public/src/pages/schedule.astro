@@ -1,145 +1,205 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PageHero from "../components/PageHero.astro";
-import ConcertRow from "../components/ConcertRow.astro";
 import { withBase } from "../lib/url";
-import { type Concert, ensembleLabel, daysUntil, groupByMonth } from "../lib/concert";
-import upcoming from "../data/concerts-upcoming.json";
+import { cityOf, ensembleLabel, groupByMonth, hallOf, regionOf } from "../lib/concert";
+import { upcomingConcerts } from "../lib/season";
 
-const concerts = upcoming as Concert[];
-const featured = concerts[0];
-const rest = concerts.slice(1);
-const grouped = groupByMonth(rest);
+const grouped = groupByMonth(upcomingConcerts);
+const weekday = (iso: string) =>
+  new Date(iso + "T12:00:00Z").toLocaleString("en", { weekday: "short", timeZone: "UTC" }).toUpperCase();
+const country = (venue: string) => venue.split(",").pop()?.trim() ?? "";
 ---
 
 <Layout title="Schedule · Kiron Atom Tellian">
-  <PageHero
-    title="Schedule"
-    eyebrow="Upcoming concerts"
-    image="/img/schedule-hero.jpg"
-    imageAlt="Kiron Atom Tellian preparing for a performance."
-  />
-
   <section class="schedule container">
-    {featured && (
-      <article class="schedule__featured reveal">
-        <div class="schedule__featured-top">
-          <div>
-            <p class="display-l-italic schedule__featured-date">{featured.displayDate}</p>
-            {ensembleLabel(featured) && (
-              <p class="small accent schedule__featured-ensemble italic">{ensembleLabel(featured)}</p>
-            )}
-            <p class="h2 schedule__featured-programme italic">{featured.programme}</p>
-            <p class="schedule__featured-venue">{featured.venue}</p>
-          </div>
-          {featured.date && (
-            <div class="schedule__featured-count">
-              <span class="schedule__featured-count-num accent">{daysUntil(featured.date)}</span>
-              <span class="eyebrow muted">days</span>
-            </div>
-          )}
+    <div class="schedule__head">
+      <h1 class="display-xxl schedule__title">Schedule</h1>
+      <div class="schedule__tools">
+        <div class="schedule__filters" role="group" aria-label="Filter by region" data-filters>
+          <button class="pill" type="button" aria-pressed="true" data-region="all">All dates</button>
+          <button class="pill" type="button" aria-pressed="false" data-region="europe">Europe</button>
+          <button class="pill" type="button" aria-pressed="false" data-region="americas">Americas</button>
         </div>
-        {featured.ticketsUrl && (
-          <p class="schedule__featured-cta">
-            <a class="link-quiet" href={featured.ticketsUrl} target="_blank" rel="noopener">
-              Details &amp; tickets <span aria-hidden="true">→</span>
-            </a>
-          </p>
-        )}
-      </article>
-    )}
+        <a class="mono schedule__ics" href={withBase("/schedule.ics")}>Subscribe in your calendar (.ics) ↗</a>
+      </div>
+    </div>
 
     {grouped.map((group) => (
-      <div class="schedule__group reveal">
-        <h2 class="display-l-italic accent schedule__month">{group.label}</h2>
-        <div class="schedule__rows">
-          {group.items.map((c) => <ConcertRow concert={c} />)}
-        </div>
+      <div class="schedule__group" data-group>
+        <h2 class="mono schedule__month">{group.label}</h2>
+        {group.items.map((c) => (
+          <article class="schedule__row" data-region={regionOf(c)}>
+            <div class="schedule__day">
+              <span class="schedule__num">{c.date.slice(8, 10)}</span>
+              <span class="mono schedule__wd">{weekday(c.date)}</span>
+            </div>
+            <div class="schedule__where">
+              <span class="schedule__city">{cityOf(c)}</span>
+              <span class="schedule__muted">{hallOf(c)} · {country(c.venue)}</span>
+            </div>
+            <div class="schedule__what">
+              {c.programme === "To be announced" ? (
+                <>
+                  <span>{ensembleLabel(c) ?? "Concert"}</span>
+                  <span class="schedule__muted">Programme to be announced</span>
+                </>
+              ) : (
+                <>
+                  <span>{c.programme}</span>
+                  {ensembleLabel(c) && <span class="schedule__muted">{ensembleLabel(c)}</span>}
+                </>
+              )}
+            </div>
+            <div class="schedule__actions">
+              {c.ticketsUrl && (
+                <a class="pill pill--solid" href={c.ticketsUrl} target="_blank" rel="noopener">Tickets</a>
+              )}
+              <a class="pill" href={withBase(`/schedule.ics#${c.date}`)} download>+ Calendar</a>
+            </div>
+          </article>
+        ))}
       </div>
     ))}
 
-    <p class="schedule__cta reveal">
-      <a class="link-quiet" href={withBase("/schedule-archive")}>
-        Past concerts <span aria-hidden="true">→</span>
-      </a>
-    </p>
+    <a class="link-line schedule__past" href={withBase("/schedule-archive")}>Past concerts →</a>
   </section>
 </Layout>
 
+<script>
+  const root = document.querySelector<HTMLElement>("[data-filters]");
+  root?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-region]");
+    if (!btn) return;
+    const region = btn.dataset.region;
+    root.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    document.querySelectorAll<HTMLElement>("[data-group]").forEach((g) => {
+      let shown = 0;
+      g.querySelectorAll<HTMLElement>(".schedule__row").forEach((row) => {
+        const on = region === "all" || row.dataset.region === region;
+        row.hidden = !on;
+        if (on) shown++;
+      });
+      g.hidden = shown === 0;
+    });
+  });
+</script>
+
 <style>
   .schedule {
-    padding-block: var(--section-y-tight) var(--section-y);
-    max-width: 1080px;
+    padding-block: calc(var(--nav-h) + var(--space-16)) var(--section-y);
   }
 
-  .schedule__featured {
-    padding-block: var(--space-8);
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: var(--space-16);
-  }
-
-  .schedule__featured-top {
+  .schedule__head {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--space-6);
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
   }
 
-  .schedule__featured-date {
-    margin: 0 0 var(--space-1);
-  }
-
-  .schedule__featured-ensemble {
-    margin: 0 0 var(--space-3);
-  }
-
-  .schedule__featured-programme {
-    margin: 0 0 var(--space-2);
-    font-weight: 400;
-  }
-
-  .schedule__featured-venue {
+  .schedule__title {
     margin: 0;
-    font-size: 1.0625rem;
   }
 
-  .schedule__featured-count {
-    text-align: right;
-    flex-shrink: 0;
+  .schedule__tools {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-4);
   }
 
-  .schedule__featured-count-num {
-    display: block;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-style: italic;
-    line-height: 1;
-    letter-spacing: -0.02em;
+  .schedule__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
   }
 
-  .schedule__featured-cta {
-    margin-top: var(--space-4);
+  .schedule__filters .pill[aria-pressed="true"] {
+    background: var(--vermilion);
+    border-color: var(--vermilion);
+    color: var(--black);
   }
 
-  .schedule__group + .schedule__group {
-    margin-top: var(--space-12);
+  .schedule__ics {
+    font-size: 0.75rem;
+    color: #c9c3b8;
   }
 
   .schedule__month {
-    margin: 0 0 var(--space-3);
+    margin: 0;
+    padding: var(--space-12) 0 var(--space-3);
+    color: var(--vermilion);
+    border-bottom: 1px solid var(--rule);
   }
 
-  .schedule__cta {
-    text-align: center;
-    margin-top: var(--space-16);
+  .schedule__row {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1.4fr) minmax(0, 2fr) minmax(0, 1.3fr);
+    gap: var(--space-6);
+    align-items: start;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--rule);
   }
 
-  @media (max-width: 768px) {
-    .schedule__featured-top {
-      flex-direction: column;
+  .schedule__day,
+  .schedule__where,
+  .schedule__what {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .schedule__num {
+    font-family: var(--display);
+    font-size: 3.5rem;
+    line-height: 0.9;
+  }
+
+  .schedule__wd,
+  .schedule__muted {
+    color: var(--muted);
+  }
+
+  .schedule__wd {
+    font-size: 0.75rem;
+  }
+
+  .schedule__city {
+    font-family: var(--display);
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .schedule__what {
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  .schedule__what .schedule__muted {
+    font-size: 0.9375rem;
+  }
+
+  .schedule__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: flex-end;
+  }
+
+  .schedule__past {
+    margin-top: var(--space-12);
+  }
+
+  @media (max-width: 900px) {
+    .schedule__tools { align-items: flex-start; }
+    .schedule__row {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
     }
-    .schedule__featured-count {
-      text-align: left;
+    .schedule__what,
+    .schedule__actions {
+      grid-column: 2;
+      justify-content: flex-start;
     }
   }
 </style>

@@ -1,0 +1,65 @@
+---
+import { withBase } from "../lib/url";
+import { type Concert, cityOf, daysUntil, ensembleLabel, hallOf } from "../lib/concert";
+
+export interface Props {
+  concert?: Concert;
+}
+const { concert } = Astro.props;
+const days = concert ? daysUntil(concert.date) : 0;
+const when = days === 0 ? "Today" : days === 1 ? "Tomorrow" : `In ${days} days`;
+---
+
+{concert && (
+  <a class="next-band" href={concert.ticketsUrl ?? withBase("/schedule")} data-next-date={concert.date}>
+    <span class="mono next-band__when" data-days>{when}</span>
+    <span class="next-band__what">
+      {ensembleLabel(concert) ?? "Concert"} · <em>{hallOf(concert)}</em> · {concert.displayDate}
+    </span>
+    <span class="next-band__cta">{concert.ticketsUrl ? "Details & tickets" : cityOf(concert)} <span aria-hidden="true">→</span></span>
+  </a>
+)}
+
+<script>
+  // The page is static, so the day count is refreshed in the visitor's browser.
+  const el = document.querySelector<HTMLElement>("[data-next-date]");
+  const out = el?.querySelector<HTMLElement>("[data-days]");
+  if (el && out) {
+    const d = new Date(el.dataset.nextDate + "T00:00:00");
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    const n = Math.round((d.getTime() - t.getTime()) / 86400000);
+    if (n >= 0) out.textContent = n === 0 ? "Today" : n === 1 ? "Tomorrow" : `In ${n} days`;
+  }
+</script>
+
+<style>
+  .next-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-8);
+    background: var(--vermilion);
+    color: var(--black);
+    padding: 1.375rem var(--gutter);
+  }
+
+  .next-band__what {
+    flex: 1 1 26rem;
+    font-family: var(--display);
+    font-size: clamp(1.625rem, 3vw, 2.5rem);
+    line-height: 1.1;
+  }
+
+  .next-band__cta {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .next-band:hover .next-band__cta {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>
